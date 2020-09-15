@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import './favorite_or_watchlist_page.dart';
-import 'package:movie_app/models/user_account.dart';
+import 'package:movie_app/data/models/user_account.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../helper/verifyUser.dart';
 import '../../helper/account_movie_helper.dart';
-import '../../models/movie.dart';
+import '../../data/models/movie.dart';
 
 Future<bool> changeLoginStatusPreference(bool status) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();

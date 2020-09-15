@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/movie.dart';
+import '../data/models/movie.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:cached_network_image/cached_network_image.dart';

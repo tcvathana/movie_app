@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 
-import '../../models/movie.dart';
+import '../../data/models/movie.dart';
 import './movie_detail_page.dart';
 
 import '../../config.dart';

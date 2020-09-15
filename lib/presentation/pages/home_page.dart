@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import './search_page.dart';
-import '../../models/movie.dart';
+import '../../data/models/movie.dart';
 import 'package:page_transition/page_transition.dart';
 import '../../helper/uihelper.dart';
 

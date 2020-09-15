@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
 import 'account_page.dart';
-import '../../models/user_account.dart';
+import '../../data/models/user_account.dart';
 import '../../helper/verifyUser.dart';
 
 class LoginPage extends StatefulWidget {

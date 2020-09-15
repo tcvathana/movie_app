@@ -2,7 +2,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'dart:convert';
 
-import '../models/user_account.dart';
+import '../data/models/user_account.dart';
 import '../config.dart';
 
 UserAccount _parseAccountData(String input) {

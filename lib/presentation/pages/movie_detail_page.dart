@@ -10,16 +10,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:skeleton_text/skeleton_text.dart';
 
-import 'package:movie_app/models/account_states.dart';
-import 'package:movie_app/models/review.dart';
+import 'package:movie_app/data/models/account_states.dart';
+import 'package:movie_app/data/models/review.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'account_page.dart';
 import '../../helper/account_movie_helper.dart';
-import '../../models/movie_detail.dart';
-import '../../models/movie_credits.dart';
-import '../../models/movie.dart';
 import '../../helper/uihelper.dart';
-import '../../models/movie_video.dart';
+import '../../data/models/movie_detail.dart';
+import '../../data/models/movie_credits.dart';
+import '../../data/models/movie.dart';
+import '../../data/models/movie_video.dart';
 
 import '../../config.dart';
 

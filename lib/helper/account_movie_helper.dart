@@ -1,9 +1,9 @@
 import 'package:http/http.dart' as http;
-import 'package:movie_app/models/account_states.dart';
+import 'package:movie_app/data/models/account_states.dart';
 import 'dart:convert';
 import '../config.dart';
 
-import '../models/movie.dart';
+import '../data/models/movie.dart';
 
 Future<bool> markAsFavorite(String sessionId, int mediaId, bool fav) async {
   http.Response response = await http.post(
