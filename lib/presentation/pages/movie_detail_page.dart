@@ -31,7 +31,7 @@ MovieDetail _parseData(String input) {
 
 Future<MovieDetail> fetchData(String id) async {
   http.Response response = await http
-      .get("https://api.themoviedb.org/3/movie/" + id + "?api_key=$API_KEY");
+      .get("$SERVICE_URL/movie/" + id + "?api_key=$API_KEY");
   if (response.statusCode == 200) {
     return compute(_parseData, response.body);
   } else {
@@ -48,7 +48,7 @@ Review _parseDataReview(String input) {
 
 Future<Review> fetchDataReview(String id) async {
   http.Response response = await http
-      .get("https://api.themoviedb.org/3/movie/$id/reviews?api_key=$API_KEY");
+      .get("$SERVICE_URL/movie/$id/reviews?api_key=$API_KEY");
   if (response.statusCode == 200) {
     return compute(_parseDataReview, response.body);
   } else {
@@ -66,7 +66,7 @@ List<ResultVideo> _parseDataVideo(String input) {
 
 Future<List<ResultVideo>> fetchDataVideos(String movieId) async {
   http.Response response = await http.get(
-      "https://api.themoviedb.org/3/movie/$movieId/videos?api_key=$API_KEY");
+      "$SERVICE_URL/movie/$movieId/videos?api_key=$API_KEY");
   if (response.statusCode == 200) {
     return compute(_parseDataVideo, response.body);
   } else {
@@ -83,7 +83,7 @@ MovieCredit _parseDataCredits(String input) {
 
 Future<MovieCredit> fetchDataCredits(String id) async {
   http.Response response = await http.get(
-      "https://api.themoviedb.org/3/movie/$id/credits?api_key=$API_KEY");
+      "$SERVICE_URL/movie/$id/credits?api_key=$API_KEY");
   if (response.statusCode == 200) {
     return compute(_parseDataCredits, response.body);
   } else {
@@ -100,7 +100,7 @@ Movie _parseDataSimilar(String input) {
 
 Future<Movie> fetchDataSimilar(String id) async {
   http.Response response = await http.get(
-      "https://api.themoviedb.org/3/movie/$id/similar?api_key=$API_KEY");
+      "$SERVICE_URL/movie/$id/similar?api_key=$API_KEY");
   if (response.statusCode == 200) {
     return _parseDataSimilar(response.body);
   } else {

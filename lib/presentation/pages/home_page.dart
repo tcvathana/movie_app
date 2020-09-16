@@ -20,7 +20,7 @@ List<Result> _parseData(String input) {
 
 Future<List<Result>> fetchDataNowPlaying() async {
   http.Response response = await http
-      .get("https://api.themoviedb.org/3/movie/now_playing?api_key=$API_KEY");
+      .get("$SERVICE_URL/movie/now_playing?api_key=$API_KEY");
   if (response.statusCode == 200) {
     return _parseData(response.body);
   } else {
@@ -30,7 +30,7 @@ Future<List<Result>> fetchDataNowPlaying() async {
 
 Future<List<Result>> fetchDataMostPopular() async {
   http.Response response = await http
-      .get("https://api.themoviedb.org/3/movie/popular?api_key=$API_KEY");
+      .get("$SERVICE_URL/movie/popular?api_key=$API_KEY");
   if (response.statusCode == 200) {
     return _parseData(response.body);
   } else {
@@ -40,7 +40,7 @@ Future<List<Result>> fetchDataMostPopular() async {
 
 Future<List<Result>> fetchDataTopRate() async {
   http.Response response = await http
-      .get("https://api.themoviedb.org/3/movie/top_rated?api_key=$API_KEY");
+      .get("$SERVICE_URL/movie/top_rated?api_key=$API_KEY");
   if (response.statusCode == 200) {
     return _parseData(response.body);
   } else {
@@ -50,7 +50,7 @@ Future<List<Result>> fetchDataTopRate() async {
 
 Future<List<Result>> fetchDataUpComing() async {
   http.Response response = await http
-      .get("https://api.themoviedb.org/3/movie/upcoming?api_key=$API_KEY");
+      .get("$SERVICE_URL/movie/upcoming?api_key=$API_KEY");
   if (response.statusCode == 200) {
     return _parseData(response.body);
   } else {

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as prefix0;
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import 'package:intl/intl.dart';
-import 'package:page_transition/page_transition.dart';
 
 import '../../data/models/movie.dart';
 import './movie_detail_page.dart';
@@ -19,7 +17,7 @@ Movie _parseData(String input) {
 
 Future<Movie> fetchData(String query) async {
   http.Response response = await http.get(
-      "https://api.themoviedb.org/3/search/movie?api_key=$API_KEY&query=$query");
+      "$SERVICE_URL/search/movie?api_key=$API_KEY&query=$query");
   if (response.statusCode == 200) {
     return compute(_parseData, response.body);
   } else {

@@ -7,7 +7,7 @@ import '../data/models/movie.dart';
 
 Future<bool> markAsFavorite(String sessionId, int mediaId, bool fav) async {
   http.Response response = await http.post(
-      "https://api.themoviedb.org/3/account/{account_id}/favorite?api_key=$API_KEY&session_id=$sessionId",
+      "$SERVICE_URL/account/{account_id}/favorite?api_key=$API_KEY&session_id=$sessionId",
       body: {
         "media_type": "movie",
         "media_id": mediaId.toString(),
@@ -27,7 +27,7 @@ Future<bool> markAsFavorite(String sessionId, int mediaId, bool fav) async {
 }
 Future<bool> addToWatchlist(String sessionId, int mediaId, bool wat) async {
   http.Response response = await http.post(
-      "https://api.themoviedb.org/3/account/{account_id}/watchlist?api_key=$API_KEY&session_id=$sessionId",
+      "$SERVICE_URL/account/{account_id}/watchlist?api_key=$API_KEY&session_id=$sessionId",
       body: {
         "media_type": "movie",
         "media_id": mediaId.toString(),
@@ -55,7 +55,7 @@ List<Result> _parseData(String input) {
 
 Future<List<Result>> fetchDataFavoriteMovie(String sessionId) async {
   http.Response response = await http.get(
-      "https://api.themoviedb.org/3/account/{account_id}/favorite/movies?api_key=$API_KEY&session_id=$sessionId&sort_by=created_at.asc&page=1");
+      "$SERVICE_URL/account/{account_id}/favorite/movies?api_key=$API_KEY&session_id=$sessionId&sort_by=created_at.asc&page=1");
   if (response.statusCode == 200) {
     return _parseData(response.body);
   } else {
@@ -64,7 +64,7 @@ Future<List<Result>> fetchDataFavoriteMovie(String sessionId) async {
 }
 Future<List<Result>> fetchDataWatchlistMovie(String sessionId) async {
   http.Response response = await http.get(
-      "https://api.themoviedb.org/3/account/{account_id}/watchlist/movies?api_key=$API_KEY&session_id=$sessionId&sort_by=created_at.asc&page=1");
+      "$SERVICE_URL/account/{account_id}/watchlist/movies?api_key=$API_KEY&session_id=$sessionId&sort_by=created_at.asc&page=1");
   if (response.statusCode == 200) {
     return _parseData(response.body);
   } else {
@@ -80,7 +80,7 @@ AccountStates _parseDataAccountStates(String input) {
 
 Future<AccountStates> fetchDataAccountState(String sessionId, int movieId) async {
   http.Response response = await http.get(
-      "https://api.themoviedb.org/3/movie/$movieId/account_states?api_key=$API_KEY&session_id=$sessionId");
+      "$SERVICE_URL/movie/$movieId/account_states?api_key=$API_KEY&session_id=$sessionId");
   if (response.statusCode == 200) {
     return _parseDataAccountStates(response.body);
   } else {

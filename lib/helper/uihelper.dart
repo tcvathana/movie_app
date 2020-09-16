@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-import 'file:///C:/AndroidProjects/movie_app/lib/presentation/pages/see_allmovie_page.dart';
+import '../presentation/pages/see_allmovie_page.dart';
 import '../presentation/pages/movie_detail_page.dart';
 
 List<Result> _listPopularMovie = [];
