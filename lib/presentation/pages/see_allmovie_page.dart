@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/config.dart';
 import 'package:movie_app/data/models/movie.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:intl/intl.dart';
@@ -149,7 +150,7 @@ class _SeeAllMoviesPageState extends State<SeeAllMoviesPage> {
             Container(
               width: 100,
               child: Image.network(
-                "https://image.tmdb.org/t/p/w500${res.posterPath}",
+                "$IMAGE_BASE_URL/w500${res.posterPath}",
                 fit: BoxFit.fill,
               ),
             ),

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_app/config.dart';
 import 'package:movie_app/data/models/movie.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:intl/intl.dart';
@@ -147,7 +148,7 @@ class _FavoriteOrWatchlistPageState extends State<FavoriteOrWatchlistPage> {
             Container(
               width: 100,
               child: CachedNetworkImage(
-                imageUrl: "https://image.tmdb.org/t/p/w500${res.posterPath}",
+                imageUrl: "$IMAGE_BASE_URL/w500${res.posterPath}",
               ),
             ),
             Container(

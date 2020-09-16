@@ -214,7 +214,7 @@ class _HomePageState extends State<HomePage> {
                 CachedNetworkImage(
                   width: MediaQuery.of(context).size.width * 80 / 100,
                   imageUrl:
-                      "https://image.tmdb.org/t/p/w500${result.backdropPath}",
+                      "$IMAGE_BASE_URL/w500${result.backdropPath}",
                   placeholder: (context, url) => Container(
                     child: Center(
                       child: CircularProgressIndicator(),
@@ -258,7 +258,7 @@ class _HomePageState extends State<HomePage> {
                   image: DecorationImage(
                     fit: BoxFit.fill,
                     image: CachedNetworkImageProvider(
-                        "https://image.tmdb.org/t/p/w500${result.posterPath}"),
+                        "$IMAGE_BASE_URL/w500${result.posterPath}"),
                   ),
                 ),
               ),

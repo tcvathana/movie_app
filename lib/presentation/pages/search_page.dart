@@ -140,7 +140,7 @@ class _SearchPageState extends State<SearchPage> {
           children: <Widget>[
             Ink.image(
               image: NetworkImage(
-                "https://image.tmdb.org/t/p/w500${res.posterPath}",
+                "$IMAGE_BASE_URL/w500${res.posterPath}",
               ),
               width: 150,
               height: 200,

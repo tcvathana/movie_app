@@ -390,7 +390,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
               CachedNetworkImage(
                 height: 240,
                 width: 160,
-                imageUrl: "https://image.tmdb.org/t/p/w500${movie.posterPath}",
+                imageUrl: "$IMAGE_BASE_URL/w500${movie.posterPath}",
                 placeholder: (context, url) => Container(
                   width: 120,
                   height: 180,
@@ -920,7 +920,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                 ? Ink.image(
                     alignment: Alignment.center,
                     image: CachedNetworkImageProvider(
-                      "https://image.tmdb.org/t/p/w500/${cast.profilePath}",
+                      "$IMAGE_BASE_URL/w500/${cast.profilePath}",
                     ),
                     width: 120,
                     height: 150,

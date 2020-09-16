@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/config.dart';
 import '../data/models/movie.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
@@ -134,7 +135,7 @@ Widget buildMovieItem(context, Result result, Widget _otherWidget) {
               CachedNetworkImage(
                 height: 240,
                 width: 160,
-                imageUrl: "https://image.tmdb.org/t/p/w500${result.posterPath}",
+                imageUrl: "$IMAGE_BASE_URL/w500${result.posterPath}",
                 placeholder: (context, url) => Container(
                   child: Center(
                     child: CircularProgressIndicator(),
