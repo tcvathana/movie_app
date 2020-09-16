@@ -30,8 +30,8 @@ MovieDetail _parseData(String input) {
 }
 
 Future<MovieDetail> fetchData(String id) async {
-  http.Response response = await http
-      .get("$SERVICE_URL/movie/" + id + "?api_key=$API_KEY");
+  http.Response response =
+      await http.get("$SERVICE_URL/movie/" + id + "?api_key=$API_KEY");
   if (response.statusCode == 200) {
     return compute(_parseData, response.body);
   } else {
@@ -47,8 +47,8 @@ Review _parseDataReview(String input) {
 }
 
 Future<Review> fetchDataReview(String id) async {
-  http.Response response = await http
-      .get("$SERVICE_URL/movie/$id/reviews?api_key=$API_KEY");
+  http.Response response =
+      await http.get("$SERVICE_URL/movie/$id/reviews?api_key=$API_KEY");
   if (response.statusCode == 200) {
     return compute(_parseDataReview, response.body);
   } else {
@@ -65,8 +65,8 @@ List<ResultVideo> _parseDataVideo(String input) {
 }
 
 Future<List<ResultVideo>> fetchDataVideos(String movieId) async {
-  http.Response response = await http.get(
-      "$SERVICE_URL/movie/$movieId/videos?api_key=$API_KEY");
+  http.Response response =
+      await http.get("$SERVICE_URL/movie/$movieId/videos?api_key=$API_KEY");
   if (response.statusCode == 200) {
     return compute(_parseDataVideo, response.body);
   } else {
@@ -82,8 +82,8 @@ MovieCredit _parseDataCredits(String input) {
 }
 
 Future<MovieCredit> fetchDataCredits(String id) async {
-  http.Response response = await http.get(
-      "$SERVICE_URL/movie/$id/credits?api_key=$API_KEY");
+  http.Response response =
+      await http.get("$SERVICE_URL/movie/$id/credits?api_key=$API_KEY");
   if (response.statusCode == 200) {
     return compute(_parseDataCredits, response.body);
   } else {
@@ -99,8 +99,8 @@ Movie _parseDataSimilar(String input) {
 }
 
 Future<Movie> fetchDataSimilar(String id) async {
-  http.Response response = await http.get(
-      "$SERVICE_URL/movie/$id/similar?api_key=$API_KEY");
+  http.Response response =
+      await http.get("$SERVICE_URL/movie/$id/similar?api_key=$API_KEY");
   if (response.statusCode == 200) {
     return _parseDataSimilar(response.body);
   } else {
@@ -409,7 +409,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      "Director:${_directorName}",
+                      "Director:$_directorName",
                       style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
                     Text(
@@ -726,7 +726,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     );
   }
 
-  Widget _buildReviewItem(ResultReview restult) {
+  Widget _buildReviewItem(ResultReview result) {
     return InkWell(
       onTap: () {
         setState(() {
@@ -743,16 +743,16 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              restult.author,
+              result.author,
               style: TextStyle(fontSize: 18, color: Colors.blue),
             ),
             _seeMoreReview
                 ? Text(
-                    restult.content,
+                    result.content,
                     style: TextStyle(color: Colors.white),
                   )
                 : Text(
-                    restult.content,
+                    result.content,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 8,
                     style: TextStyle(color: Colors.white),
@@ -806,7 +806,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
   }
 
   _launchURL(String key) async {
-    String url = 'https://www.youtube.com/watch?v=${key}';
+    String url = 'https://www.youtube.com/watch?v=$key';
     if (await canLaunch(url)) {
       await launch(url);
     } else {
