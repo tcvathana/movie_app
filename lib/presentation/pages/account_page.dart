@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../helper/verifyUser.dart';
 import '../../helper/account_movie_helper.dart';
-import '../../data/models/movie.dart';
+import '../../data/models/movie_list.dart';
 
 Future<bool> changeLoginStatusPreference(bool status) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -103,10 +103,10 @@ class _AccountPageState extends State<AccountPage> {
 
   //account page staff
   Future<UserAccount> dataFetched;
-  Future<List<Result>> dataFetchedFavoriteList;
+  Future<List<MovieResult>> dataFetchedFavoriteList;
 
-  List<Result> _favoriteMovieList;
-  List<Result> _watchlistMovieList;
+  List<MovieResult> _favoriteMovieList;
+  List<MovieResult> _watchlistMovieList;
 
   void initList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

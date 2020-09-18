@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/config.dart';
-import 'package:movie_app/data/models/movie.dart';
+import 'package:movie_app/data/models/movie_list.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:intl/intl.dart';
 
@@ -10,7 +10,7 @@ import 'movie_detail_page.dart';
 
 class FavoriteOrWatchlistPage extends StatefulWidget {
   String title = "";
-  List<Result> listResult = [];
+  List<MovieResult> listResult = [];
 
   FavoriteOrWatchlistPage(this.title, this.listResult);
 
@@ -114,9 +114,9 @@ class _FavoriteOrWatchlistPageState extends State<FavoriteOrWatchlistPage> {
     );
   }
 
-  Widget _buildMovieList(List<Result> _listRes) {
+  Widget _buildMovieList(List<MovieResult> _listRes) {
     List<Widget> listWidget = [];
-    for (Result res in _listRes) {
+    for (MovieResult res in _listRes) {
       listWidget.add(_buildMovieItem(res));
       listWidget.add(
         Divider(
@@ -130,7 +130,7 @@ class _FavoriteOrWatchlistPageState extends State<FavoriteOrWatchlistPage> {
     );
   }
 
-  Widget _buildMovieItem(Result res) {
+  Widget _buildMovieItem(MovieResult res) {
     return Container(
       padding: EdgeInsets.only(left: 10, right: 10),
       child: InkWell(

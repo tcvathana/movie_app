@@ -15,12 +15,11 @@ import 'package:movie_app/data/models/review.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'account_page.dart';
 import '../../helper/account_movie_helper.dart';
-import '../../helper/uihelper.dart';
 import '../../data/models/movie_detail.dart';
 import '../../data/models/movie_credits.dart';
-import '../../data/models/movie.dart';
+import '../../data/models/movie_list.dart';
 import '../../data/models/movie_video.dart';
-
+import '../widgets/movie/movie_item.dart';
 import '../../config.dart';
 
 MovieDetail _parseData(String input) {
@@ -92,13 +91,13 @@ Future<MovieCredit> fetchDataCredits(String id) async {
 }
 
 //Similar movies
-Movie _parseDataSimilar(String input) {
+MovieList _parseDataSimilar(String input) {
   Map<String, dynamic> map = json.decode(input);
-  Movie movie = Movie.fromMap(map);
+  MovieList movie = MovieList.fromMap(map);
   return movie;
 }
 
-Future<Movie> fetchDataSimilar(String id) async {
+Future<MovieList> fetchDataSimilar(String id) async {
   http.Response response =
       await http.get("$SERVICE_URL/movie/$id/similar?api_key=$API_KEY");
   if (response.statusCode == 200) {
@@ -123,7 +122,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
   Future<Review> _dataFetchedReview;
   Future<List<ResultVideo>> _dataFetchedVideo;
   Future<MovieCredit> _dataFetchedCredits;
-  Future<Movie> _dataFetchedSimilar;
+  Future<MovieList> _dataFetchedSimilar;
 
   String _directorName = "";
 
@@ -977,7 +976,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
             "Similar Movie",
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
-          FutureBuilder<Movie>(
+          FutureBuilder<MovieList>(
             future: _dataFetchedSimilar,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
@@ -1000,9 +999,9 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     );
   }
 
-  Widget _buildSimilarMovieList(Movie movie) {
+  Widget _buildSimilarMovieList(MovieList movie) {
     List<Widget> list = [];
-    for (Result res in movie.results) {
+    for (MovieResult res in movie.results) {
       Row row = Row(
         children: <Widget>[
           Icon(
@@ -1016,7 +1015,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
           ),
         ],
       );
-      list.add(buildMovieItem(context, res, row));
+      list.add(MovieItem(result: res, info: row));
     }
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,

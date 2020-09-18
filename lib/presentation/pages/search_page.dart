@@ -4,18 +4,18 @@ import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import 'package:intl/intl.dart';
 
-import '../../data/models/movie.dart';
+import '../../data/models/movie_list.dart';
 import './movie_detail_page.dart';
 
 import '../../config.dart';
 
-Movie _parseData(String input) {
+MovieList _parseData(String input) {
   Map<String, dynamic> map = json.decode(input);
-  Movie movie = Movie.fromMap(map);
+  MovieList movie = MovieList.fromMap(map);
   return movie;
 }
 
-Future<Movie> fetchData(String query) async {
+Future<MovieList> fetchData(String query) async {
   http.Response response = await http.get(
       "$SERVICE_URL/search/movie?api_key=$API_KEY&query=$query");
   if (response.statusCode == 200) {
@@ -31,7 +31,7 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  Future<Movie> _dataFetched;
+  Future<MovieList> _dataFetched;
   String _query;
 
   @override
@@ -87,7 +87,7 @@ class _SearchPageState extends State<SearchPage> {
           ? Container()
           : SingleChildScrollView(
               scrollDirection: Axis.vertical,
-              child: FutureBuilder<Movie>(
+              child: FutureBuilder<MovieList>(
                 future: _dataFetched,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
@@ -112,9 +112,9 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  _buildList(Movie movie) {
+  _buildList(MovieList movie) {
     List<Widget> list = [];
-    for (Result res in movie.results) {
+    for (MovieResult res in movie.results) {
       list.add(_buildItem(res));
     }
     return Column(
@@ -122,7 +122,7 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  _buildItem(Result res) {
+  _buildItem(MovieResult res) {
     return Card(
       color: Colors.transparent,
       child: InkWell(
