@@ -71,29 +71,25 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: _buildBody(),
-    );
-  }
-
-  _buildBody() {
-    return Container(
-      color: Colors.black87,
-      child: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            NowPlayingMovies(
-              fetchData: _dataFetchedNowPlaying,
-            ),
-            PopularMovies(
-              fetchData: _dataFetchedMostPopular,
-            ),
-            TopRatedMovies(
-              fetchData: _dataFetchedTopRated,
-            ),
-            UpComingMovies(
-              fetchData: _dataFetchedUpComing,
-            ),
-          ],
+      body: Container(
+        color: Colors.black87,
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              NowPlayingMovies(
+                fetchData: _dataFetchedNowPlaying,
+              ),
+              PopularMovies(
+                fetchData: _dataFetchedMostPopular,
+              ),
+              TopRatedMovies(
+                fetchData: _dataFetchedTopRated,
+              ),
+              UpComingMovies(
+                fetchData: _dataFetchedUpComing,
+              ),
+            ],
+          ),
         ),
       ),
     );
