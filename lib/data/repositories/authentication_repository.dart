@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../models/user_account.dart';
+import '../models/account.dart';
 import '../../domain/repositories/i_authentication_repository.dart';
 import '../../config.dart';
 

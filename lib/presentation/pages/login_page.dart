@@ -3,8 +3,7 @@ import 'package:movie_app/data/repositories/authentication_repository.dart';
 import 'package:page_transition/page_transition.dart';
 
 import 'account_page.dart';
-import '../../data/models/user_account.dart';
-import '../../helper/verifyUser.dart';
+import '../../data/models/account.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -108,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  _login() async {
+  void _login() async {
     _authenticationRepository
         .createSession(
       username: _usernameCtrl.text,
@@ -116,7 +115,6 @@ class _LoginPageState extends State<LoginPage> {
     )
         .then((session) async {
       if (session != null && session != '') {
-        Future<UserAccount> futureUser = fetchAccountDetails(session);
         Navigator.push(
           context,
           PageTransition(
