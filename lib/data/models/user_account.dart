@@ -1,9 +1,5 @@
 import 'dart:convert';
 
-//UserAccount userAccountFromJson(String str) => UserAccount.fromMap(json.decode(str));
-//
-//String userAccountToJson(UserAccount data) => json.encode(data.toMap());
-
 class UserAccount {
   Avatar avatar;
   int id;
@@ -23,6 +19,9 @@ class UserAccount {
     this.username,
   });
 
+  factory UserAccount.fromJson(String str) => UserAccount.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
 
   factory UserAccount.fromMap(Map<String, dynamic> json) => UserAccount(
     avatar: json["avatar"] == null ? null : Avatar.fromMap(json["avatar"]),

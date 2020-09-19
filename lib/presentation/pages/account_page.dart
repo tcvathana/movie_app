@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:movie_app/data/repositories/authentication_repository.dart';
 import './favorite_or_watchlist_page.dart';
 import 'package:movie_app/data/models/user_account.dart';
 import 'package:page_transition/page_transition.dart';
@@ -34,7 +35,7 @@ Future<UserAccount> saveAccountPreference(sessionId) async {
       iso6391: "",
       iso31661: "",
       avatar: Avatar(gravatar: Gravatar(hash: "")));
-  Future<UserAccount> future = fetchAccountData(sessionId);
+  Future<UserAccount> future = fetchAccountDetails(sessionId);
   future.then((value) {
     prefs.setString("UserAccount_name", value.name);
     prefs.setString("UserAccount_username", value.username);
@@ -87,12 +88,16 @@ Future<UserAccount> getAccountPreference() async {
 }
 
 class AccountPage extends StatefulWidget {
-  AccountPage({Key key}) : super(key: key);
+  const AccountPage({Key key}) : super(key: key);
+
   @override
   _AccountPageState createState() => _AccountPageState();
 }
 
 class _AccountPageState extends State<AccountPage> {
+  AuthenticationRepository _authenticationRepository =
+      new AuthenticationRepository();
+
   //login staff
   var _usernameCtrl = TextEditingController();
   var _passwordCtrl = TextEditingController();
@@ -195,8 +200,11 @@ class _AccountPageState extends State<AccountPage> {
                   ),
                   RaisedButton(
                     onPressed: () async {
-                      Future<String> future = fetchCreateSession(
-                          _usernameCtrl.text, _passwordCtrl.text);
+                      Future<String> future =
+                          _authenticationRepository.createSession(
+                        username: _usernameCtrl.text,
+                        password: _passwordCtrl.text,
+                      );
                       String session = '';
                       future.then((value) async {
                         session = value;
