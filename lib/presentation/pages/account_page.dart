@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:movie_app/data/repositories/account_repository.dart';
+import 'package:movie_app/data/repositories/movie_repository.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,6 +34,7 @@ class _AccountPageState extends State<AccountPage> {
   AuthenticationRepository _authenticationRepository =
       new AuthenticationRepository();
   AccountRepository _userAccountRepository = new AccountRepository();
+  MovieRepository _movieRepository = new MovieRepository();
 
   //login staff
   var _usernameCtrl = TextEditingController();
@@ -46,14 +48,17 @@ class _AccountPageState extends State<AccountPage> {
   Future<Account> dataFetched;
   Future<List<MovieResult>> dataFetchedFavoriteList;
 
-  List<MovieResult> _favoriteMovieList;
-  List<MovieResult> _watchlistMovieList;
+  MovieList _favoriteMovieList;
+  MovieList _watchlistMovieList;
 
   void initList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String session = prefs.getString("session_id");
-    fetchDataFavoriteMovie(session).then((value) => _favoriteMovieList = value);
-    fetchDataWatchlistMovie(session)
+    _movieRepository
+        .fetchFavoriteMovieList(sessionId: session)
+        .then((value) => _favoriteMovieList = value);
+    _movieRepository
+        .fetchWatchlistMovieList(sessionId: session)
         .then((value) => _watchlistMovieList = value);
   }
 
@@ -146,7 +151,8 @@ class _AccountPageState extends State<AccountPage> {
                         session = value;
                         print("Login Page, My session is: $session");
                         if (session != null && session != '') {
-                          fetchDataFavoriteMovie(session)
+                          _movieRepository
+                              .fetchFavoriteMovieList(sessionId: session)
                               .then((value) => _favoriteMovieList = value);
                           _userAccountRepository.saveAccountPreference(
                               sessionId: session);
@@ -294,7 +300,9 @@ class _AccountPageState extends State<AccountPage> {
                     PageTransition(
                       type: PageTransitionType.fade,
                       child: FavoriteOrWatchlistPage(
-                          "Favorite Page", _favoriteMovieList),
+                        title: "Favorite Page",
+                        movieList: _favoriteMovieList,
+                      ),
                     ),
                   );
                 },
@@ -322,7 +330,9 @@ class _AccountPageState extends State<AccountPage> {
                     PageTransition(
                       type: PageTransitionType.fade,
                       child: FavoriteOrWatchlistPage(
-                          "Watchlist Page", _watchlistMovieList),
+                        title: "Watchlist Page",
+                        movieList: _watchlistMovieList,
+                      ),
                     ),
                   );
                 },

@@ -3,8 +3,6 @@ import 'package:movie_app/data/models/account_states.dart';
 import 'dart:convert';
 import '../config.dart';
 
-import '../data/models/movie_list.dart';
-
 Future<bool> markAsFavorite(String sessionId, int mediaId, bool fav) async {
   http.Response response = await http.post(
       "$SERVICE_URL/account/{account_id}/favorite?api_key=$API_KEY&session_id=$sessionId",
@@ -46,32 +44,7 @@ Future<bool> addToWatchlist(String sessionId, int mediaId, bool wat) async {
   }
 }
 
-List<MovieResult> _parseData(String input) {
-  Map<String, dynamic> map = json.decode(input);
-  MovieList movie = MovieList.fromMap(map);
-  List<MovieResult> list = movie.results;
-  return list;
-}
-
-Future<List<MovieResult>> fetchDataFavoriteMovie(String sessionId) async {
-  http.Response response = await http.get(
-      "$SERVICE_URL/account/{account_id}/favorite/movies?api_key=$API_KEY&session_id=$sessionId&sort_by=created_at.asc&page=1");
-  if (response.statusCode == 200) {
-    return _parseData(response.body);
-  } else {
-    throw Exception("Error ${response.toString()}");
-  }
-}
-Future<List<MovieResult>> fetchDataWatchlistMovie(String sessionId) async {
-  http.Response response = await http.get(
-      "$SERVICE_URL/account/{account_id}/watchlist/movies?api_key=$API_KEY&session_id=$sessionId&sort_by=created_at.asc&page=1");
-  if (response.statusCode == 200) {
-    return _parseData(response.body);
-  } else {
-    throw Exception("Error ${response.toString()}");
-  }
-}
-
+// Movie Account State
 AccountStates _parseDataAccountStates(String input) {
   Map<String, dynamic> map = json.decode(input);
   AccountStates accStates = AccountStates.fromMap(map);

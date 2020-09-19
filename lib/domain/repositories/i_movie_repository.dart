@@ -4,4 +4,7 @@ abstract class IMovieRepository {
   Future<MovieList> fetchMostPopularMovieList();
   Future<MovieList> fetchTopRatedMovieList();
   Future<MovieList> fetchUpComingMovieList();
+  //
+  Future<MovieList> fetchFavoriteMovieList({String sessionId});
+  Future<MovieList> fetchWatchlistMovieList({String sessionId});
 }

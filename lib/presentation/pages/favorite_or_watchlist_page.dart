@@ -1,5 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:movie_app/config.dart';
 import 'package:movie_app/data/models/movie_list.dart';
 import 'package:page_transition/page_transition.dart';
@@ -9,10 +10,14 @@ import 'account_page.dart';
 import 'movie_detail_page.dart';
 
 class FavoriteOrWatchlistPage extends StatefulWidget {
-  String title = "";
-  List<MovieResult> listResult = [];
+  final String title;
+  final MovieList movieList;
 
-  FavoriteOrWatchlistPage(this.title, this.listResult);
+  FavoriteOrWatchlistPage({
+    Key key,
+    @required this.title,
+    @required this.movieList,
+  }) : super(key: key);
 
   @override
   _FavoriteOrWatchlistPageState createState() =>
@@ -98,7 +103,8 @@ class _FavoriteOrWatchlistPageState extends State<FavoriteOrWatchlistPage> {
                   ),
                   onPressed: () {
                     setState(() {
-                      widget.listResult = widget.listResult.reversed.toList();
+                      widget.movieList.results =
+                          widget.movieList.results.reversed.toList();
                     });
                   },
                 ),
@@ -107,7 +113,7 @@ class _FavoriteOrWatchlistPageState extends State<FavoriteOrWatchlistPage> {
             Divider(
               color: Colors.white.withOpacity(0.8),
             ),
-            _buildMovieList(widget.listResult),
+            _buildMovieList(widget.movieList.results),
           ],
         ),
       ),
