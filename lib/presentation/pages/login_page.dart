@@ -13,8 +13,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   AuthenticationRepository _authenticationRepository =
       new AuthenticationRepository();
-  var _usernameCtrl = TextEditingController();
-  var _passwordCtrl = TextEditingController();
+  TextEditingController _usernameCtrl = TextEditingController();
+  TextEditingController _passwordCtrl = TextEditingController();
 
   @override
   void dispose() {

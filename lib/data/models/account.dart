@@ -1,14 +1,6 @@
 import 'dart:convert';
 
 class Account {
-  Avatar avatar;
-  int id;
-  String iso6391;
-  String iso31661;
-  String name;
-  bool includeAdult;
-  String username;
-
   Account({
     this.avatar,
     this.id,
@@ -18,6 +10,14 @@ class Account {
     this.includeAdult,
     this.username,
   });
+
+  Avatar avatar;
+  int id;
+  String iso6391;
+  String iso31661;
+  String name;
+  bool includeAdult;
+  String username;
 
   factory Account.fromJson(String str) => Account.fromMap(json.decode(str));
 
@@ -45,11 +45,15 @@ class Account {
 }
 
 class Avatar {
-  Gravatar gravatar;
-
   Avatar({
     this.gravatar,
   });
+
+  Gravatar gravatar;
+
+  factory Avatar.fromJson(String str) => Avatar.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
 
   factory Avatar.fromMap(Map<String, dynamic> json) => Avatar(
     gravatar: json["gravatar"] == null ? null : Gravatar.fromMap(json["gravatar"]),
@@ -61,11 +65,15 @@ class Avatar {
 }
 
 class Gravatar {
-  String hash;
-
   Gravatar({
     this.hash,
   });
+
+  String hash;
+
+  factory Gravatar.fromJson(String str) => Gravatar.fromMap(json.decode(str));
+
+  String toJson() => json.encode(toMap());
 
   factory Gravatar.fromMap(Map<String, dynamic> json) => Gravatar(
     hash: json["hash"] == null ? null : json["hash"],

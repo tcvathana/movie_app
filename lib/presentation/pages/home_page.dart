@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/presentation/pages/login_page.dart';
 import 'package:page_transition/page_transition.dart';
 
 import 'account_page.dart';
@@ -64,7 +65,8 @@ class _HomePageState extends State<HomePage> {
                 context,
                 PageTransition(
                   type: PageTransitionType.fade,
-                  child: AccountPage(),
+                  // child: AccountPage(),
+                  child: LoginPage(),
                 ),
               );
             },
