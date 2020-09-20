@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:duration/duration.dart';
+import 'package:movie_app/data/repositories/account_repository.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -118,6 +119,7 @@ class MovieDetailPage extends StatefulWidget {
 }
 
 class _MovieDetailPageState extends State<MovieDetailPage> {
+  AccountRepository _accountRepository = new AccountRepository();
   Future<MovieDetail> _dataFetched;
   Future<Review> _dataFetchedReview;
   Future<List<ResultVideo>> _dataFetchedVideo;
@@ -135,7 +137,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
   Future<bool> markAsFavor(bool favorite) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String session = prefs.getString("session_id");
-    return markAsFavorite(
+    return _accountRepository.markAsFavorite(
       sessionId: session,
       mediaId: widget.movieId,
       favorite: favorite,
@@ -145,7 +147,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
   Future<bool> addToWatch(bool watchlist) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String session = prefs.getString("session_id");
-    return addToWatchlist(
+    return _accountRepository.addToWatchlist(
       sessionId: session,
       mediaId: widget.movieId,
       watchlist: watchlist,

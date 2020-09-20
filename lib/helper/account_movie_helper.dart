@@ -4,8 +4,11 @@ import 'package:movie_app/data/models/movie_account_states.dart';
 import 'dart:convert';
 import '../config.dart';
 
-Future<bool> markAsFavorite(
-    {String sessionId, int mediaId, bool favorite}) async {
+/*Future<bool> markAsFavorite({
+  String sessionId,
+  int mediaId,
+  bool favorite,
+}) async {
   http.Response response = await http.post(
       "$SERVICE_URL/account/{account_id}/favorite?api_key=$API_KEY&session_id=$sessionId",
       body: {
@@ -23,10 +26,13 @@ Future<bool> markAsFavorite(
   } else {
     return false;
   }
-}
+}*/
 
-Future<bool> addToWatchlist(
-    {String sessionId, int mediaId, bool watchlist}) async {
+/*Future<bool> addToWatchlist({
+  String sessionId,
+  int mediaId,
+  bool watchlist,
+}) async {
   http.Response response = await http.post(
       "$SERVICE_URL/account/{account_id}/watchlist?api_key=$API_KEY&session_id=$sessionId",
       body: {
@@ -44,7 +50,7 @@ Future<bool> addToWatchlist(
   } else {
     return false;
   }
-}
+}*/
 
 // Movie Account State
 MovieAccountStates _parseDataAccountStates(String input) {
