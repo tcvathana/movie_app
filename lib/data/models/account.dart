@@ -1,10 +1,6 @@
 import 'dart:convert';
 
-//UserAccount userAccountFromJson(String str) => UserAccount.fromMap(json.decode(str));
-//
-//String userAccountToJson(UserAccount data) => json.encode(data.toMap());
-
-class UserAccount {
+class Account {
   Avatar avatar;
   int id;
   String iso6391;
@@ -13,7 +9,7 @@ class UserAccount {
   bool includeAdult;
   String username;
 
-  UserAccount({
+  Account({
     this.avatar,
     this.id,
     this.iso6391,
@@ -23,8 +19,11 @@ class UserAccount {
     this.username,
   });
 
+  factory Account.fromJson(String str) => Account.fromMap(json.decode(str));
 
-  factory UserAccount.fromMap(Map<String, dynamic> json) => UserAccount(
+  String toJson() => json.encode(toMap());
+
+  factory Account.fromMap(Map<String, dynamic> json) => Account(
     avatar: json["avatar"] == null ? null : Avatar.fromMap(json["avatar"]),
     id: json["id"] == null ? null : json["id"],
     iso6391: json["iso_639_1"] == null ? null : json["iso_639_1"],

@@ -1,7 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:movie_app/config.dart';
-import 'package:movie_app/data/models/movie.dart';
+import 'package:movie_app/data/models/movie_list.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:intl/intl.dart';
 
@@ -9,10 +10,14 @@ import 'account_page.dart';
 import 'movie_detail_page.dart';
 
 class FavoriteOrWatchlistPage extends StatefulWidget {
-  String title = "";
-  List<Result> listResult = [];
+  final String title;
+  final MovieList movieList;
 
-  FavoriteOrWatchlistPage(this.title, this.listResult);
+  FavoriteOrWatchlistPage({
+    Key key,
+    @required this.title,
+    @required this.movieList,
+  }) : super(key: key);
 
   @override
   _FavoriteOrWatchlistPageState createState() =>
@@ -98,7 +103,8 @@ class _FavoriteOrWatchlistPageState extends State<FavoriteOrWatchlistPage> {
                   ),
                   onPressed: () {
                     setState(() {
-                      widget.listResult = widget.listResult.reversed.toList();
+                      widget.movieList.results =
+                          widget.movieList.results.reversed.toList();
                     });
                   },
                 ),
@@ -107,16 +113,16 @@ class _FavoriteOrWatchlistPageState extends State<FavoriteOrWatchlistPage> {
             Divider(
               color: Colors.white.withOpacity(0.8),
             ),
-            _buildMovieList(widget.listResult),
+            _buildMovieList(widget.movieList.results),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildMovieList(List<Result> _listRes) {
+  Widget _buildMovieList(List<MovieResult> _listRes) {
     List<Widget> listWidget = [];
-    for (Result res in _listRes) {
+    for (MovieResult res in _listRes) {
       listWidget.add(_buildMovieItem(res));
       listWidget.add(
         Divider(
@@ -130,7 +136,7 @@ class _FavoriteOrWatchlistPageState extends State<FavoriteOrWatchlistPage> {
     );
   }
 
-  Widget _buildMovieItem(Result res) {
+  Widget _buildMovieItem(MovieResult res) {
     return Container(
       padding: EdgeInsets.only(left: 10, right: 10),
       child: InkWell(

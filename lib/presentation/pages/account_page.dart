@@ -1,98 +1,40 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import './favorite_or_watchlist_page.dart';
-import 'package:movie_app/data/models/user_account.dart';
+import 'package:movie_app/data/repositories/account_repository.dart';
+import 'package:movie_app/data/repositories/movie_repository.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../helper/verifyUser.dart';
-import '../../helper/account_movie_helper.dart';
-import '../../data/models/movie.dart';
+import './favorite_or_watchlist_page.dart';
+import '../../data/repositories/authentication_repository.dart';
+import '../../data/models/account.dart';
+import '../../data/models/movie_list.dart';
 
 Future<bool> changeLoginStatusPreference(bool status) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setBool("isLogedIn", status);
-  return prefs.getBool("isLogedIn");
+  prefs.setBool("isLoggedIn", status);
+  return prefs.getBool("isLoggedIn");
 }
 
 Future<bool> getLoginStatus() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  bool status = prefs.getBool("isLogedIn");
+  bool status = prefs.getBool("isLoggedIn");
   return status;
 }
 
-//UserAccount
-Future<UserAccount> saveAccountPreference(sessionId) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setString("session_id", sessionId);
-  UserAccount user = UserAccount(
-      name: "",
-      username: "",
-      id: 0,
-      includeAdult: false,
-      iso6391: "",
-      iso31661: "",
-      avatar: Avatar(gravatar: Gravatar(hash: "")));
-  Future<UserAccount> future = fetchAccountData(sessionId);
-  future.then((value) {
-    prefs.setString("UserAccount_name", value.name);
-    prefs.setString("UserAccount_username", value.username);
-    prefs.setInt("UserAccount_id", value.id);
-    prefs.setBool("UserAccount_includeAdult", value.includeAdult);
-    prefs.setString("UserAccount_iso6391", value.iso6391);
-    prefs.setString("UserAccount_iso31661", value.iso31661);
-    prefs.setString(
-        "UserAccount_avatar_gravatar_hash", value.avatar.gravatar.hash);
-    print("value.id: ${value.id}");
-    return value;
-  });
-  /*prefs.setString("UserAccount_name", user.name);
-  prefs.setString("UserAccount_username", user.username);
-  prefs.setInt("UserAccount_id", user.id);
-  prefs.setBool("UserAccount_includeAdult", user.includeAdult);
-  prefs.setString("UserAccount_iso6391", user.iso6391);
-  prefs.setString("UserAccount_iso31661", user.iso31661);
-  prefs.setString("UserAccount_avatar_gravatar_hash", user.avatar.gravatar.hash);*/
-//  print("user.username:"+user.username);
-//  print("saveAccountPreference, user.username: "+user.username);
-//  return user;
-}
-
-Future<UserAccount> getAccountPreference() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  //Assign prefs value to variable
-  String name = prefs.getString("UserAccount_name") ?? "default";
-  String username = prefs.getString("UserAccount_username") ?? "default";
-  int id = prefs.getInt("UserAccount_id") ?? 0;
-  bool includeAdult = prefs.getBool("UserAccount_includeAdult") ?? false;
-  String iso6391 = prefs.getString("UserAccount_iso6391") ?? "default";
-  String iso31661 = prefs.getString("UserAccount_iso31661") ?? "default";
-  String hash =
-      prefs.getString("UserAccount_avatar_gravatar_hash") ?? "default";
-  //Create Object
-  UserAccount user = UserAccount(
-    name: name,
-    username: username,
-    id: id,
-    includeAdult: includeAdult,
-    iso6391: iso6391,
-    iso31661: iso31661,
-    avatar: Avatar(
-      gravatar: Gravatar(hash: hash),
-    ),
-  );
-//  print("prefs.getString: ${prefs.getString("UserAccount_name")}");
-  return user;
-}
-
 class AccountPage extends StatefulWidget {
-  AccountPage({Key key}) : super(key: key);
+  const AccountPage({Key key}) : super(key: key);
+
   @override
   _AccountPageState createState() => _AccountPageState();
 }
 
 class _AccountPageState extends State<AccountPage> {
+  AuthenticationRepository _authenticationRepository =
+      new AuthenticationRepository();
+  AccountRepository _accountRepository = new AccountRepository();
+  MovieRepository _movieRepository = new MovieRepository();
+
   //login staff
   var _usernameCtrl = TextEditingController();
   var _passwordCtrl = TextEditingController();
@@ -102,17 +44,20 @@ class _AccountPageState extends State<AccountPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   //account page staff
-  Future<UserAccount> dataFetched;
-  Future<List<Result>> dataFetchedFavoriteList;
+  Future<Account> dataFetched;
+  Future<List<MovieResult>> dataFetchedFavoriteList;
 
-  List<Result> _favoriteMovieList;
-  List<Result> _watchlistMovieList;
+  MovieList _favoriteMovieList;
+  MovieList _watchlistMovieList;
 
   void initList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String session = prefs.getString("session_id");
-    fetchDataFavoriteMovie(session).then((value) => _favoriteMovieList = value);
-    fetchDataWatchlistMovie(session)
+    _accountRepository
+        .fetchFavoriteMovieList(sessionId: session)
+        .then((value) => _favoriteMovieList = value);
+    _accountRepository
+        .fetchWatchlistMovieList(sessionId: session)
         .then((value) => _watchlistMovieList = value);
   }
 
@@ -128,7 +73,7 @@ class _AccountPageState extends State<AccountPage> {
       _isLoggedIn = false;
     }
     if (_isLoggedIn == true) {
-      this.dataFetched = getAccountPreference();
+      this.dataFetched = _accountRepository.getAccountPreference();
       initList();
     }
     return Scaffold(
@@ -195,16 +140,21 @@ class _AccountPageState extends State<AccountPage> {
                   ),
                   RaisedButton(
                     onPressed: () async {
-                      Future<String> future = fetchCreateSession(
-                          _usernameCtrl.text, _passwordCtrl.text);
+                      Future<String> future =
+                          _authenticationRepository.createSession(
+                        username: _usernameCtrl.text,
+                        password: _passwordCtrl.text,
+                      );
                       String session = '';
                       future.then((value) async {
                         session = value;
                         print("Login Page, My session is: $session");
                         if (session != null && session != '') {
-                          fetchDataFavoriteMovie(session)
+                          _accountRepository
+                              .fetchFavoriteMovieList(sessionId: session)
                               .then((value) => _favoriteMovieList = value);
-                          saveAccountPreference(session);
+                          _accountRepository.saveAccountPreference(
+                              sessionId: session);
                           saveLogin(true);
                         } else {
                           _scaffoldKey.currentState.showSnackBar(new SnackBar(
@@ -238,7 +188,7 @@ class _AccountPageState extends State<AccountPage> {
           icon: Icon(Icons.refresh),
           onPressed: () {
             setState(() {
-              dataFetched = getAccountPreference();
+              dataFetched = _accountRepository.getAccountPreference();
             });
           },
         ),
@@ -272,7 +222,7 @@ class _AccountPageState extends State<AccountPage> {
     return Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
-      child: FutureBuilder<UserAccount>(
+      child: FutureBuilder<Account>(
         future: this.dataFetched,
 //        future: getAccountPreference(),
         builder: (context, snapshot) {
@@ -302,7 +252,7 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 
-  _buildProfile(UserAccount userData) {
+  _buildProfile(Account userData) {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
@@ -349,7 +299,9 @@ class _AccountPageState extends State<AccountPage> {
                     PageTransition(
                       type: PageTransitionType.fade,
                       child: FavoriteOrWatchlistPage(
-                          "Favorite Page", _favoriteMovieList),
+                        title: "Favorite Page",
+                        movieList: _favoriteMovieList,
+                      ),
                     ),
                   );
                 },
@@ -377,7 +329,9 @@ class _AccountPageState extends State<AccountPage> {
                     PageTransition(
                       type: PageTransitionType.fade,
                       child: FavoriteOrWatchlistPage(
-                          "Watchlist Page", _watchlistMovieList),
+                        title: "Watchlist Page",
+                        movieList: _watchlistMovieList,
+                      ),
                     ),
                   );
                 },

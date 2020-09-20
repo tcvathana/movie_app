@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/data/repositories/authentication_repository.dart';
 import 'package:page_transition/page_transition.dart';
 
 import 'account_page.dart';
-import '../../data/models/user_account.dart';
-import '../../helper/verifyUser.dart';
+import '../../data/models/account.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -11,6 +11,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  AuthenticationRepository _authenticationRepository =
+      new AuthenticationRepository();
   var _usernameCtrl = TextEditingController();
   var _passwordCtrl = TextEditingController();
 
@@ -27,18 +29,14 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: _buildAppBar(),
+      appBar: AppBar(
+        backgroundColor: Colors.black87,
+      ),
       body: _buildBody(context),
     );
   }
 
-  _buildAppBar() {
-    return AppBar(
-      backgroundColor: Colors.black87,
-    );
-  }
-
-  _buildBody(context) {
+  Widget _buildBody(context) {
     return Container(
       color: Colors.black87,
       height: MediaQuery.of(context).size.height,
@@ -93,31 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                     height: 25,
                   ),
                   RaisedButton(
-                    onPressed: () async {
-                      Future<String> future = fetchCreateSession(
-                          _usernameCtrl.text, _passwordCtrl.text);
-                      String session = '';
-                      future.then((value) async {
-                        session = value;
-                        print("Login Page, My session is: ${session}");
-
-                        if (session != null && session != '') {
-                          Future<UserAccount> futureUser = fetchAccountData(session);
-                          Navigator.push(
-                              context,
-                              PageTransition(
-                                  type: PageTransitionType.fade,
-                                  child: AccountPage()));
-                        } else {
-                          _scaffoldKey.currentState.showSnackBar(new SnackBar(
-                              content: new Text(
-                                "Login Fails",
-                                style: TextStyle(color: Colors.red),
-                              )));
-                        }
-                      });
-
-                    },
+                    onPressed: _login,
                     child: Text(
                       "Login",
                       style: TextStyle(color: Colors.white),
@@ -131,5 +105,42 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  void _login() async {
+    _authenticationRepository
+        .createSession(
+      username: _usernameCtrl.text,
+      password: _passwordCtrl.text,
+    )
+        .then((session) async {
+      if (session != null && session != '') {
+        Navigator.push(
+          context,
+          PageTransition(
+            type: PageTransitionType.fade,
+            child: AccountPage(),
+          ),
+        );
+      } else {
+        _scaffoldKey.currentState.showSnackBar(
+          new SnackBar(
+            content: new Text(
+              "Login Fails",
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        );
+      }
+    }).catchError((error) {
+      _scaffoldKey.currentState.showSnackBar(
+        new SnackBar(
+          content: new Text(
+            "Login Fails",
+            style: TextStyle(color: Colors.red),
+          ),
+        ),
+      );
+    });
   }
 }
