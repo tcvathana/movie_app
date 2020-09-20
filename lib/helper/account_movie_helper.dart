@@ -53,12 +53,6 @@ import '../config.dart';
 }*/
 
 // Movie Account State
-MovieAccountStates _parseDataAccountStates(String input) {
-  Map<String, dynamic> map = json.decode(input);
-  MovieAccountStates accStates = MovieAccountStates.fromMap(map);
-  return accStates;
-}
-
 Future<MovieAccountStates> fetchDataAccountState({
   @required String sessionId,
   @required int movieId,
@@ -66,7 +60,7 @@ Future<MovieAccountStates> fetchDataAccountState({
   http.Response response = await http.get(
       "$SERVICE_URL/movie/$movieId/account_states?api_key=$API_KEY&session_id=$sessionId");
   if (response.statusCode == 200) {
-    return _parseDataAccountStates(response.body);
+    return MovieAccountStates.fromJson(response.body);
   } else {
     throw Exception("Error ${response.toString()}");
   }
