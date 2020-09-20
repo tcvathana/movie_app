@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:duration/duration.dart';
 import 'package:movie_app/data/repositories/account_repository.dart';
+import 'package:movie_app/data/repositories/movie_repository.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -15,7 +16,6 @@ import 'package:movie_app/data/models/movie_account_states.dart';
 import 'package:movie_app/data/models/review.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'account_page.dart';
-import '../../helper/account_movie_helper.dart';
 import '../../data/models/movie_detail.dart';
 import '../../data/models/movie_credits.dart';
 import '../../data/models/movie_list.dart';
@@ -120,6 +120,9 @@ class MovieDetailPage extends StatefulWidget {
 
 class _MovieDetailPageState extends State<MovieDetailPage> {
   AccountRepository _accountRepository = new AccountRepository();
+  MovieRepository _movieRepository = new MovieRepository();
+
+  // DATA
   Future<MovieDetail> _dataFetched;
   Future<Review> _dataFetchedReview;
   Future<List<ResultVideo>> _dataFetchedVideo;
@@ -163,7 +166,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
       return null;
     } else {
       mySession == session;
-      var future = fetchDataAccountState(
+      var future = _movieRepository.fetchMovieAccountStates(
         sessionId: session,
         movieId: widget.movieId,
       );

@@ -8,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import './favorite_or_watchlist_page.dart';
 import '../../data/repositories/authentication_repository.dart';
 import '../../data/models/account.dart';
-import '../../helper/account_movie_helper.dart';
 import '../../data/models/movie_list.dart';
 
 Future<bool> changeLoginStatusPreference(bool status) async {
