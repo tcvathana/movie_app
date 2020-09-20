@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+import 'package:movie_app/data/models/movie_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/account.dart';
 import '../../domain/repositories/i_account_repository.dart';
@@ -63,6 +64,28 @@ class AccountRepository implements IAccountRepository {
       return value;
     });
     return user;
+  }
+
+  @override
+  Future<MovieList> fetchFavoriteMovieList({String sessionId}) async {
+    http.Response response = await http.get(
+        "$SERVICE_URL/account/{account_id}/favorite/movies?api_key=$API_KEY&session_id=$sessionId&sort_by=created_at.asc&page=1");
+    if (response.statusCode == 200) {
+      return MovieList.fromJson(response.body);
+    } else {
+      throw Exception("Error ${response.toString()}");
+    }
+  }
+
+  @override
+  Future<MovieList> fetchWatchlistMovieList({String sessionId}) async {
+    http.Response response = await http.get(
+        "$SERVICE_URL/account/{account_id}/watchlist/movies?api_key=$API_KEY&session_id=$sessionId&sort_by=created_at.asc&page=1");
+    if (response.statusCode == 200) {
+      return MovieList.fromJson(response.body);
+    } else {
+      throw Exception("Error ${response.toString()}");
+    }
   }
 
 }

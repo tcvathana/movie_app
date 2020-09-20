@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:skeleton_text/skeleton_text.dart';
 
-import 'package:movie_app/data/models/account_states.dart';
+import 'package:movie_app/data/models/movie_account_states.dart';
 import 'package:movie_app/data/models/review.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'account_page.dart';
@@ -130,21 +130,29 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
   bool _isFavorite = false;
   bool _isWatchlist = false;
 
-  AccountStates accountStates;
+  MovieAccountStates accountStates;
 
-  Future<bool> markAsFavor(bool fav) async {
+  Future<bool> markAsFavor(bool favorite) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String session = prefs.getString("session_id");
-    return markAsFavorite(session, widget.movieId, fav);
+    return markAsFavorite(
+      sessionId: session,
+      mediaId: widget.movieId,
+      favorite: favorite,
+    );
   }
 
-  Future<bool> addToWatch(bool fav) async {
+  Future<bool> addToWatch(bool watchlist) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String session = prefs.getString("session_id");
-    return addToWatchlist(session, widget.movieId, fav);
+    return addToWatchlist(
+      sessionId: session,
+      mediaId: widget.movieId,
+      watchlist: watchlist,
+    );
   }
 
-  Future<AccountStates> initAccountStates() async {
+  Future<MovieAccountStates> initAccountStates() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String session = prefs.getString("session_id");
     if (session == 'null') {
@@ -153,7 +161,10 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
       return null;
     } else {
       mySession == session;
-      var future = fetchDataAccountState(session, widget.movieId);
+      var future = fetchDataAccountState(
+        sessionId: session,
+        movieId: widget.movieId,
+      );
       future.then((value) {
         _isFavorite = value.favorite;
         _isWatchlist = value.watchlist;

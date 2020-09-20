@@ -33,7 +33,7 @@ class AccountPage extends StatefulWidget {
 class _AccountPageState extends State<AccountPage> {
   AuthenticationRepository _authenticationRepository =
       new AuthenticationRepository();
-  AccountRepository _userAccountRepository = new AccountRepository();
+  AccountRepository _accountRepository = new AccountRepository();
   MovieRepository _movieRepository = new MovieRepository();
 
   //login staff
@@ -54,10 +54,10 @@ class _AccountPageState extends State<AccountPage> {
   void initList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String session = prefs.getString("session_id");
-    _movieRepository
+    _accountRepository
         .fetchFavoriteMovieList(sessionId: session)
         .then((value) => _favoriteMovieList = value);
-    _movieRepository
+    _accountRepository
         .fetchWatchlistMovieList(sessionId: session)
         .then((value) => _watchlistMovieList = value);
   }
@@ -74,7 +74,7 @@ class _AccountPageState extends State<AccountPage> {
       _isLoggedIn = false;
     }
     if (_isLoggedIn == true) {
-      this.dataFetched = _userAccountRepository.getAccountPreference();
+      this.dataFetched = _accountRepository.getAccountPreference();
       initList();
     }
     return Scaffold(
@@ -151,10 +151,10 @@ class _AccountPageState extends State<AccountPage> {
                         session = value;
                         print("Login Page, My session is: $session");
                         if (session != null && session != '') {
-                          _movieRepository
+                          _accountRepository
                               .fetchFavoriteMovieList(sessionId: session)
                               .then((value) => _favoriteMovieList = value);
-                          _userAccountRepository.saveAccountPreference(
+                          _accountRepository.saveAccountPreference(
                               sessionId: session);
                           saveLogin(true);
                         } else {
@@ -189,7 +189,7 @@ class _AccountPageState extends State<AccountPage> {
           icon: Icon(Icons.refresh),
           onPressed: () {
             setState(() {
-              dataFetched = _userAccountRepository.getAccountPreference();
+              dataFetched = _accountRepository.getAccountPreference();
             });
           },
         ),

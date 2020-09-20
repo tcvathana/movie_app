@@ -4,20 +4,20 @@ import 'dart:convert';
 //
 //String accountStatesToJson(AccountStates data) => json.encode(data.toMap());
 
-class AccountStates {
+class MovieAccountStates {
   int id;
   bool favorite;
   bool rated;
   bool watchlist;
 
-  AccountStates({
+  MovieAccountStates({
     this.id,
     this.favorite,
     this.rated,
     this.watchlist,
   });
 
-  factory AccountStates.fromMap(Map<String, dynamic> json) => AccountStates(
+  factory MovieAccountStates.fromMap(Map<String, dynamic> json) => MovieAccountStates(
     id: json["id"] == null ? null : json["id"],
     favorite: json["favorite"] == null ? null : json["favorite"],
     rated: json["rated"] == null ? null : json["rated"],
