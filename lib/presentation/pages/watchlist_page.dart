@@ -86,6 +86,9 @@ class WatchlistPage extends StatelessWidget {
                             sessionId: sessionId),
                         builder: (context, snap) {
                           if (snap.connectionState == ConnectionState.done) {
+                            if (snap.hasError) {
+                              return Text("${snap.error.toString()}");
+                            }
                             List<MovieResult> movies = snap.data.results;
                             return Container(
                               width: MediaQuery.of(context).size.width,
