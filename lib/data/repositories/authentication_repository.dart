@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../models/account.dart';
@@ -78,6 +79,21 @@ class AuthenticationRepository implements IAuthenticationRepository {
       }
     } else {
       return null;
+    }
+  }
+
+  @override
+  Future<bool> deleteSession({@required String sessionId}) async {
+    http.Response response = await http.delete(
+      "$SERVICE_URL/authentication/session?api_key=$API_KEY",
+    );
+    if (response.statusCode == 200) {
+      Map<String, dynamic> map = json.decode(response.body);
+      bool success = map['success'];
+      return success;
+    } else {
+      //return null;
+      throw Exception("Delete Session, Error ${response.toString()}");
     }
   }
 }

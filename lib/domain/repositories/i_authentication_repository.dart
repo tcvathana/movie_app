@@ -14,4 +14,6 @@ abstract class IAuthenticationRepository {
     @required String username,
     @required String password,
   });
+  // RETURN BOOLEAN
+  Future<bool> deleteSession({@required String sessionId});
 }
