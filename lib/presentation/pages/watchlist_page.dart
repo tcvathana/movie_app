@@ -87,7 +87,15 @@ class WatchlistPage extends StatelessWidget {
                         builder: (context, snap) {
                           if (snap.connectionState == ConnectionState.done) {
                             if (snap.hasError) {
-                              return Text("${snap.error.toString()}");
+                              return Center(
+                                child: Text(
+                                  "UnAuthenticated",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 25
+                                  ),
+                                ),
+                              );
                             }
                             List<MovieResult> movies = snap.data.results;
                             return Container(
