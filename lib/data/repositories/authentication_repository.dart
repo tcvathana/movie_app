@@ -6,6 +6,8 @@ import '../../domain/repositories/i_authentication_repository.dart';
 import '../../config.dart';
 
 class AuthenticationRepository implements IAuthenticationRepository {
+  final client = http.Client();
+
   @override
   Future<String> createRequestToken() async {
     http.Response response = await http.get(
@@ -28,7 +30,7 @@ class AuthenticationRepository implements IAuthenticationRepository {
   }) async {
     String token;
     await createRequestToken().then((value) => token = value);
-    if(token != null) {
+    if (token != null) {
       http.Response response = await http.post(
         "$SERVICE_URL/authentication/token/validate_with_login?api_key=$API_KEY",
         body: {
@@ -55,15 +57,15 @@ class AuthenticationRepository implements IAuthenticationRepository {
   Future<String> createSession({String username, String password}) async {
     String token;
     await validateTokenWithLogin(
-        username: username,
-        password: password,
+      username: username,
+      password: password,
     ).catchError((error) {
       print("Wrong password or username");
     }).then((value) async {
       token = value;
     });
 
-    if(token != null) {
+    if (token != null) {
       print("I'm in create session. Here is my token: $token");
       http.Response response = await http.post(
         "$SERVICE_URL/authentication/session/new?api_key=$API_KEY",
@@ -84,15 +86,18 @@ class AuthenticationRepository implements IAuthenticationRepository {
 
   @override
   Future<bool> deleteSession({@required String sessionId}) async {
-    http.Response response = await http.delete(
-      "$SERVICE_URL/authentication/session?api_key=$API_KEY",
+    http.StreamedResponse response = await client.send(
+      http.Request(
+        "DELETE",
+        Uri.parse(
+          "$SERVICE_URL/authentication/session?api_key=$API_KEY",
+        ),
+      )..bodyFields = {"session_id": sessionId},
     );
     if (response.statusCode == 200) {
-      Map<String, dynamic> map = json.decode(response.body);
-      bool success = map['success'];
-      return success;
+      // response.stream.bytesToString().then((value) => print(value));
+      return true;
     } else {
-      //return null;
       throw Exception("Delete Session, Error ${response.toString()}");
     }
   }

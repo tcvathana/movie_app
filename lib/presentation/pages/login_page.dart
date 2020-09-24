@@ -92,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                     height: 25,
                   ),
                   RaisedButton(
-                    onPressed: _login,
+                    onPressed: login,
                     child: Text(
                       "Login",
                       style: TextStyle(color: Colors.white),
@@ -108,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _login() async {
+  void login() async {
     _authenticationRepository
         .createSession(
       username: _usernameCtrl.text,

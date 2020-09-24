@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/data/repositories/authentication_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/account/favorite_list_button.dart';
 import '../widgets/account/watchlist_button.dart';
@@ -67,15 +68,16 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   void refresh() {
-    setState(() {
-
-    });
+    setState(() {});
   }
+
   void logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      prefs.remove("session_id");
-      prefs.remove("account");
-    });
+    AuthenticationRepository _authRepository = new AuthenticationRepository();
+    await _authRepository.deleteSession(
+      sessionId: prefs.getString("session_id"),
+    );
+    prefs.remove("session_id");
+    prefs.remove("account");
   }
 }
