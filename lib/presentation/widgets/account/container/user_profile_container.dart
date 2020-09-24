@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../data/repositories/account_repository.dart';
-import '../../../data/models/account.dart';
+import '../../../../data/repositories/account_repository.dart';
+import '../../../../data/models/account.dart';
 
 class UserProfileContainer extends StatelessWidget {
   AccountRepository _accountRepository = new AccountRepository();

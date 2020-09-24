@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/account/favorite_list_button.dart';
 import '../widgets/account/watchlist_button.dart';
-import '../widgets/account/user_profile_container.dart';
+import '../widgets/account/container/user_profile_container.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({Key key}) : super(key: key);

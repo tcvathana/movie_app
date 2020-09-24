@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-import '../../../data/repositories/authentication_repository.dart';
-import '../../../data/repositories/account_repository.dart';
+import '../../../../data/repositories/authentication_repository.dart';
+import '../../../../data/repositories/account_repository.dart';
 
 class LoginForm extends StatelessWidget {
   final VoidCallback onLogin;
