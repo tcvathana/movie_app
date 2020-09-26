@@ -1,12 +1,18 @@
 import 'package:meta/meta.dart';
+import 'package:http/http.dart' as http;
+import '../../../config.dart';
 import '../../models/movie_list.dart';
 import '../../models/movie_account_states.dart';
 
 abstract class IMovieRemoteDataSource {
   Future<MovieList> fetchNowPlayingMovieList();
+
   Future<MovieList> fetchMostPopularMovieList();
+
   Future<MovieList> fetchTopRatedMovieList();
+
   Future<MovieList> fetchUpComingMovieList();
+
   Future<MovieAccountStates> fetchMovieAccountStates({
     @required String sessionId,
     @required int movieId,
@@ -15,33 +21,46 @@ abstract class IMovieRemoteDataSource {
 
 class MovieRemoteDataSource implements IMovieRemoteDataSource {
   @override
-  Future<MovieList> fetchMostPopularMovieList() {
-    // TODO: implement fetchMostPopularMovieList
-    throw UnimplementedError();
+  Future<MovieList> fetchMostPopularMovieList() async {
+    return await _getMovieFromUrl("/movie/popular");
   }
 
   @override
-  Future<MovieAccountStates> fetchMovieAccountStates({String sessionId, int movieId}) {
-    // TODO: implement fetchMovieAccountStates
-    throw UnimplementedError();
+  Future<MovieList> fetchNowPlayingMovieList() async {
+    return await _getMovieFromUrl("/movie/now_playing");
   }
 
   @override
-  Future<MovieList> fetchNowPlayingMovieList() {
-    // TODO: implement fetchNowPlayingMovieList
-    throw UnimplementedError();
+  Future<MovieList> fetchTopRatedMovieList() async {
+    return await _getMovieFromUrl("/movie/top_rated");
   }
 
   @override
-  Future<MovieList> fetchTopRatedMovieList() {
-    // TODO: implement fetchTopRatedMovieList
-    throw UnimplementedError();
+  Future<MovieList> fetchUpComingMovieList() async {
+    return await _getMovieFromUrl("/movie/upcoming");
   }
 
   @override
-  Future<MovieList> fetchUpComingMovieList() {
-    // TODO: implement fetchUpComingMovieList
-    throw UnimplementedError();
+  Future<MovieAccountStates> fetchMovieAccountStates({
+    String sessionId,
+    int movieId,
+  }) async {
+    http.Response response = await http.get(
+        "$SERVICE_URL/movie/$movieId/account_states?api_key=$API_KEY&session_id=$sessionId");
+    if (response.statusCode == 200) {
+      return MovieAccountStates.fromJson(response.body);
+    } else {
+      throw Exception("Error ${response.toString()}");
+    }
   }
 
+  Future<MovieList> _getMovieFromUrl(String url) async {
+    http.Response response =
+    await http.get("$SERVICE_URL$url?api_key=$API_KEY");
+    if (response.statusCode == 200) {
+      return MovieList.fromJson(response.body);
+    } else {
+      throw Exception("Error ${response.toString()}");
+    }
+  }
 }

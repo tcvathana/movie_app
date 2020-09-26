@@ -1,54 +1,48 @@
 import 'dart:async';
 import 'package:meta/meta.dart';
-import 'package:http/http.dart' as http;
-import 'package:movie_app/data/models/movie_account_states.dart';
+import '../../core/network/network_info.dart';
 import '../../domain/repositories/i_movie_repository.dart';
-import '../../config.dart';
+import '../data_sources/local/movie_local_data_source.dart';
+import '../data_sources/remote/movie_remote_data_source.dart';
+import '../models/movie_account_states.dart';
 import '../models/movie_list.dart';
 
 class MovieRepository implements IMovieRepository {
+  final MovieRemoteDataSource remoteDataSource;
+  final MovieLocalDataSource localDataSource;
+  final NetworkInfo networkInfo;
+
+  MovieRepository({
+    @required this.remoteDataSource,
+    @required this.localDataSource,
+    @required this.networkInfo
+  });
+
   @override
   Future<MovieList> getNowPlayingMovieList() async {
-    http.Response response =
-        await http.get("$SERVICE_URL/movie/now_playing?api_key=$API_KEY");
-    if (response.statusCode == 200) {
-      return MovieList.fromJson(response.body);
+    if(await networkInfo.isConnected) {
+      final remoteNowPlaying = await remoteDataSource.fetchNowPlayingMovieList();
+      localDataSource.cacheMovieList("now_playing", remoteNowPlaying);
+      return remoteNowPlaying;
     } else {
-      throw Exception("Error ${response.toString()}");
+      return localDataSource.getLastNowPlayingMovieList();
     }
+
   }
 
   @override
   Future<MovieList> getMostPopularMovieList() async {
-    http.Response response =
-        await http.get("$SERVICE_URL/movie/popular?api_key=$API_KEY");
-    if (response.statusCode == 200) {
-      return MovieList.fromJson(response.body);
-    } else {
-      throw Exception("Error ${response.toString()}");
-    }
+    return remoteDataSource.fetchMostPopularMovieList();
   }
 
   @override
   Future<MovieList> getTopRatedMovieList() async {
-    http.Response response =
-        await http.get("$SERVICE_URL/movie/top_rated?api_key=$API_KEY");
-    if (response.statusCode == 200) {
-      return MovieList.fromJson(response.body);
-    } else {
-      throw Exception("Error ${response.toString()}");
-    }
+    return remoteDataSource.fetchTopRatedMovieList();
   }
 
   @override
   Future<MovieList> getUpComingMovieList() async {
-    http.Response response =
-        await http.get("$SERVICE_URL/movie/upcoming?api_key=$API_KEY");
-    if (response.statusCode == 200) {
-      return MovieList.fromJson(response.body);
-    } else {
-      throw Exception("Error ${response.toString()}");
-    }
+    return remoteDataSource.fetchUpComingMovieList();
   }
 
   //
@@ -57,12 +51,9 @@ class MovieRepository implements IMovieRepository {
     @required String sessionId,
     @required int movieId,
   }) async {
-    http.Response response = await http.get(
-        "$SERVICE_URL/movie/$movieId/account_states?api_key=$API_KEY&session_id=$sessionId");
-    if (response.statusCode == 200) {
-      return MovieAccountStates.fromJson(response.body);
-    } else {
-      throw Exception("Error ${response.toString()}");
-    }
+    return remoteDataSource.fetchMovieAccountStates(
+      sessionId: sessionId,
+      movieId: movieId,
+    );
   }
 }

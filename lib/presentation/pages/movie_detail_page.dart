@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:duration/duration.dart';
+import 'package:movie_app/data/data_sources/remote/movie_remote_data_source.dart';
 import 'package:movie_app/data/repositories/account_repository.dart';
 import 'package:movie_app/data/repositories/movie_repository.dart';
 import 'package:page_transition/page_transition.dart';
@@ -120,7 +121,8 @@ class MovieDetailPage extends StatefulWidget {
 
 class _MovieDetailPageState extends State<MovieDetailPage> {
   AccountRepository _accountRepository = new AccountRepository();
-  MovieRepository _movieRepository = new MovieRepository();
+  final MovieRemoteDataSource remoteDataSource = new MovieRemoteDataSource();
+  MovieRepository _movieRepository;
 
   // DATA
   Future<MovieDetail> _dataFetched;
@@ -130,6 +132,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
   Future<MovieList> _dataFetchedSimilar;
 
   String _directorName = "";
+  String mySession;
 
   bool _seeMoreReview = false;
   bool _isFavorite = false;
@@ -160,12 +163,12 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
   Future<MovieAccountStates> initAccountStates() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String session = prefs.getString("session_id");
-    if (session == 'null') {
+    if (session == null) {
       print("session null here");
-      mySession == null;
+      session = null;
       return null;
     } else {
-      mySession == session;
+      mySession = session;
       var future = _movieRepository.getMovieAccountStates(
         sessionId: session,
         movieId: widget.movieId,
@@ -181,18 +184,17 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
   Future<String> getSession() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String session = prefs.getString("session_id");
-    if (session == 'null') {
+    if (session == null) {
       return null;
     } else {
       return session;
     }
   }
 
-  String mySession = null;
-
   @override
   void initState() {
     super.initState();
+    _movieRepository = new MovieRepository(remoteDataSource: remoteDataSource);
     setState(() {
       _dataFetched = fetchData(widget.movieId.toString());
       _dataFetchedReview = fetchDataReview(widget.movieId.toString());
