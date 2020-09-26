@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/data/repositories/authentication_repository.dart';
 import 'package:page_transition/page_transition.dart';
 
 import 'account_page.dart';
-import '../../data/models/account.dart';
+import '../../data/repositories/account_repository.dart';
+import '../../data/repositories/authentication_repository.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -13,8 +13,9 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   AuthenticationRepository _authenticationRepository =
       new AuthenticationRepository();
-  var _usernameCtrl = TextEditingController();
-  var _passwordCtrl = TextEditingController();
+  AccountRepository _accountRepository = new AccountRepository();
+  TextEditingController _usernameCtrl = TextEditingController();
+  TextEditingController _passwordCtrl = TextEditingController();
 
   @override
   void dispose() {
@@ -91,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                     height: 25,
                   ),
                   RaisedButton(
-                    onPressed: _login,
+                    onPressed: login,
                     child: Text(
                       "Login",
                       style: TextStyle(color: Colors.white),
@@ -107,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _login() async {
+  void login() async {
     _authenticationRepository
         .createSession(
       username: _usernameCtrl.text,
@@ -115,6 +116,7 @@ class _LoginPageState extends State<LoginPage> {
     )
         .then((session) async {
       if (session != null && session != '') {
+        _accountRepository.saveAccountPreference(sessionId: session);
         Navigator.push(
           context,
           PageTransition(
