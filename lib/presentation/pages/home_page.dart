@@ -28,10 +28,10 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     setState(() {
-      _dataFetchedNowPlaying = movieRepository.fetchNowPlayingMovieList();
-      _dataFetchedMostPopular = movieRepository.fetchMostPopularMovieList();
-      _dataFetchedTopRated = movieRepository.fetchTopRatedMovieList();
-      _dataFetchedUpComing = movieRepository.fetchUpComingMovieList();
+      _dataFetchedNowPlaying = movieRepository.getNowPlayingMovieList();
+      _dataFetchedMostPopular = movieRepository.getMostPopularMovieList();
+      _dataFetchedTopRated = movieRepository.getTopRatedMovieList();
+      _dataFetchedUpComing = movieRepository.getUpComingMovieList();
     });
   }
 

@@ -8,7 +8,7 @@ import '../models/movie_list.dart';
 
 class MovieRepository implements IMovieRepository {
   @override
-  Future<MovieList> fetchNowPlayingMovieList() async {
+  Future<MovieList> getNowPlayingMovieList() async {
     http.Response response =
         await http.get("$SERVICE_URL/movie/now_playing?api_key=$API_KEY");
     if (response.statusCode == 200) {
@@ -19,7 +19,7 @@ class MovieRepository implements IMovieRepository {
   }
 
   @override
-  Future<MovieList> fetchMostPopularMovieList() async {
+  Future<MovieList> getMostPopularMovieList() async {
     http.Response response =
         await http.get("$SERVICE_URL/movie/popular?api_key=$API_KEY");
     if (response.statusCode == 200) {
@@ -30,7 +30,7 @@ class MovieRepository implements IMovieRepository {
   }
 
   @override
-  Future<MovieList> fetchTopRatedMovieList() async {
+  Future<MovieList> getTopRatedMovieList() async {
     http.Response response =
         await http.get("$SERVICE_URL/movie/top_rated?api_key=$API_KEY");
     if (response.statusCode == 200) {
@@ -41,7 +41,7 @@ class MovieRepository implements IMovieRepository {
   }
 
   @override
-  Future<MovieList> fetchUpComingMovieList() async {
+  Future<MovieList> getUpComingMovieList() async {
     http.Response response =
         await http.get("$SERVICE_URL/movie/upcoming?api_key=$API_KEY");
     if (response.statusCode == 200) {
@@ -53,7 +53,7 @@ class MovieRepository implements IMovieRepository {
 
   //
   @override
-  Future<MovieAccountStates> fetchMovieAccountStates({
+  Future<MovieAccountStates> getMovieAccountStates({
     @required String sessionId,
     @required int movieId,
   }) async {

@@ -166,7 +166,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
       return null;
     } else {
       mySession == session;
-      var future = _movieRepository.fetchMovieAccountStates(
+      var future = _movieRepository.getMovieAccountStates(
         sessionId: session,
         movieId: widget.movieId,
       );

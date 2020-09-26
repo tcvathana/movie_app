@@ -3,16 +3,16 @@ import '../../data/models/movie_list.dart';
 import '../../data/models/movie_account_states.dart';
 
 abstract class IMovieRepository {
-  Future<MovieList> fetchNowPlayingMovieList();
+  Future<MovieList> getNowPlayingMovieList();
 
-  Future<MovieList> fetchMostPopularMovieList();
+  Future<MovieList> getMostPopularMovieList();
 
-  Future<MovieList> fetchTopRatedMovieList();
+  Future<MovieList> getTopRatedMovieList();
 
-  Future<MovieList> fetchUpComingMovieList();
+  Future<MovieList> getUpComingMovieList();
 
   //
-  Future<MovieAccountStates> fetchMovieAccountStates({
+  Future<MovieAccountStates> getMovieAccountStates({
     @required String sessionId,
     @required int movieId,
   });
