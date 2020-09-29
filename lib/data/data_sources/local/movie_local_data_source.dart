@@ -12,6 +12,8 @@ abstract class IMovieLocalDataSource {
 
   Future<MovieList> getLastUpComingMovieList();
 
+  Future<MovieList> getMovieList(String listName);
+
   Future<MovieAccountStates> getLastMovieAccountStates({
     @required String sessionId,
     @required int movieId,
@@ -27,12 +29,8 @@ class MovieLocalDataSource implements IMovieLocalDataSource {
 
   @override
   Future<MovieList> getLastNowPlayingMovieList() {
-    final String jsonString = sharedPreferences.getString('now_playing');
-    if (jsonString != null) {
-      return Future.value(MovieList.fromJson(jsonString));
-    } else {
-      throw Exception("Error");
-    }
+    // TODO: implement getLastNowPlayingMovieList
+    throw UnimplementedError();
   }
 
   @override
@@ -54,6 +52,16 @@ class MovieLocalDataSource implements IMovieLocalDataSource {
   }
 
   @override
+  Future<MovieList> getMovieList(String listName) {
+    final String jsonString = sharedPreferences.getString(listName);
+    if (jsonString != null) {
+      return Future.value(MovieList.fromJson(jsonString));
+    } else {
+      throw Exception("Error");
+    }
+  }
+
+  @override
   Future<MovieAccountStates> getLastMovieAccountStates(
       {String sessionId, int movieId}) {
     // TODO: implement getLastMovieAccountStates
@@ -61,7 +69,7 @@ class MovieLocalDataSource implements IMovieLocalDataSource {
   }
 
   @override
-  Future<void> cacheMovieList(String listType, MovieList movieList) {
-    return sharedPreferences.setString(listType, movieList.toJson());
+  Future<void> cacheMovieList(String listName, MovieList movieList) {
+    return sharedPreferences.setString(listName, movieList.toJson());
   }
 }
