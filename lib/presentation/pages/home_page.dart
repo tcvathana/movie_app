@@ -1,15 +1,20 @@
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
-import 'package:movie_app/presentation/pages/login_page.dart';
+import 'package:movie_app/core/network/network_info.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'account_page.dart';
-import './search_page.dart';
+import '../../data/data_sources/remote/movie_remote_data_source.dart';
+import '../../data/data_sources/local/movie_local_data_source.dart';
+import '../../data/repositories/movie_repository.dart';
 import '../widgets/movie/container/popular_movies.dart';
 import '../widgets/movie/container/top_rated_movies.dart';
 import '../widgets/movie/container/up_coming_movies.dart';
 import '../widgets/movie/container/now_playing_movies.dart';
-import '../../data/models/movie_list.dart';
-import '../../data/repositories/movie_repository.dart';
+import './search_page.dart';
+import './login_page.dart';
+import '../../injection_container.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -17,22 +22,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  MovieRepository movieRepository = new MovieRepository();
-
-  Future<MovieList> _dataFetchedNowPlaying;
-  Future<MovieList> _dataFetchedMostPopular;
-  Future<MovieList> _dataFetchedTopRated;
-  Future<MovieList> _dataFetchedUpComing;
+  MovieRepository movieRepository = sl<MovieRepository>();
 
   @override
   void initState() {
     super.initState();
-    setState(() {
-      _dataFetchedNowPlaying = movieRepository.fetchNowPlayingMovieList();
-      _dataFetchedMostPopular = movieRepository.fetchMostPopularMovieList();
-      _dataFetchedTopRated = movieRepository.fetchTopRatedMovieList();
-      _dataFetchedUpComing = movieRepository.fetchUpComingMovieList();
-    });
   }
 
   @override
@@ -79,16 +73,16 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             children: <Widget>[
               NowPlayingMovies(
-                fetchData: _dataFetchedNowPlaying,
+                fetchData: movieRepository.getNowPlayingMovieList(),
               ),
               PopularMovies(
-                fetchData: _dataFetchedMostPopular,
+                fetchData: movieRepository.getMostPopularMovieList(),
               ),
               TopRatedMovies(
-                fetchData: _dataFetchedTopRated,
+                fetchData: movieRepository.getTopRatedMovieList(),
               ),
               UpComingMovies(
-                fetchData: _dataFetchedUpComing,
+                fetchData: movieRepository.getUpComingMovieList(),
               ),
             ],
           ),
