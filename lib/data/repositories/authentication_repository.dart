@@ -11,7 +11,7 @@ class AuthenticationRepository implements IAuthenticationRepository {
   @override
   Future<String> createRequestToken() async {
     http.Response response = await http.get(
-      "$SERVICE_URL/authentication/token/new?api_key=$API_KEY",
+      "$BASE_URL/authentication/token/new?api_key=$API_KEY",
     );
     if (response.statusCode == 200) {
       Map<String, dynamic> map = json.decode(response.body);
@@ -32,7 +32,7 @@ class AuthenticationRepository implements IAuthenticationRepository {
     await createRequestToken().then((value) => token = value);
     if (token != null) {
       http.Response response = await http.post(
-        "$SERVICE_URL/authentication/token/validate_with_login?api_key=$API_KEY",
+        "$BASE_URL/authentication/token/validate_with_login?api_key=$API_KEY",
         body: {
           "username": username,
           "password": password,
@@ -68,7 +68,7 @@ class AuthenticationRepository implements IAuthenticationRepository {
     if (token != null) {
       print("I'm in create session. Here is my token: $token");
       http.Response response = await http.post(
-        "$SERVICE_URL/authentication/session/new?api_key=$API_KEY",
+        "$BASE_URL/authentication/session/new?api_key=$API_KEY",
         body: {"request_token": token},
       );
       if (response.statusCode == 200) {
@@ -90,7 +90,7 @@ class AuthenticationRepository implements IAuthenticationRepository {
       http.Request(
         "DELETE",
         Uri.parse(
-          "$SERVICE_URL/authentication/session?api_key=$API_KEY",
+          "$BASE_URL/authentication/session?api_key=$API_KEY",
         ),
       )..bodyFields = {"session_id": sessionId},
     );

@@ -46,7 +46,7 @@ class MovieRemoteDataSource implements IMovieRemoteDataSource {
     int movieId,
   }) async {
     http.Response response = await http.get(
-        "$SERVICE_URL/movie/$movieId/account_states?api_key=$API_KEY&session_id=$sessionId");
+        "$BASE_URL/movie/$movieId/account_states?api_key=$API_KEY&session_id=$sessionId");
     if (response.statusCode == 200) {
       return MovieAccountStates.fromJson(response.body);
     } else {
@@ -56,7 +56,7 @@ class MovieRemoteDataSource implements IMovieRemoteDataSource {
 
   Future<MovieList> _getMovieFromUrl(String url) async {
     http.Response response =
-    await http.get("$SERVICE_URL$url?api_key=$API_KEY");
+    await http.get("$BASE_URL$url?api_key=$API_KEY");
     if (response.statusCode == 200) {
       return MovieList.fromJson(response.body);
     } else {

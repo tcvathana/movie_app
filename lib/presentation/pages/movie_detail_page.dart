@@ -32,7 +32,7 @@ MovieDetail _parseData(String input) {
 
 Future<MovieDetail> fetchData(String id) async {
   http.Response response =
-      await http.get("$SERVICE_URL/movie/" + id + "?api_key=$API_KEY");
+      await http.get("$BASE_URL/movie/" + id + "?api_key=$API_KEY");
   if (response.statusCode == 200) {
     return compute(_parseData, response.body);
   } else {
@@ -49,7 +49,7 @@ MovieReview _parseDataReview(String input) {
 
 Future<MovieReview> fetchDataReview(String id) async {
   http.Response response =
-      await http.get("$SERVICE_URL/movie/$id/reviews?api_key=$API_KEY");
+      await http.get("$BASE_URL/movie/$id/reviews?api_key=$API_KEY");
   if (response.statusCode == 200) {
     return compute(_parseDataReview, response.body);
   } else {
@@ -67,7 +67,7 @@ List<ResultVideo> _parseDataVideo(String input) {
 
 Future<List<ResultVideo>> fetchDataVideos(String movieId) async {
   http.Response response =
-      await http.get("$SERVICE_URL/movie/$movieId/videos?api_key=$API_KEY");
+      await http.get("$BASE_URL/movie/$movieId/videos?api_key=$API_KEY");
   if (response.statusCode == 200) {
     return compute(_parseDataVideo, response.body);
   } else {
@@ -84,7 +84,7 @@ MovieCredit _parseDataCredits(String input) {
 
 Future<MovieCredit> fetchDataCredits(String id) async {
   http.Response response =
-      await http.get("$SERVICE_URL/movie/$id/credits?api_key=$API_KEY");
+      await http.get("$BASE_URL/movie/$id/credits?api_key=$API_KEY");
   if (response.statusCode == 200) {
     return compute(_parseDataCredits, response.body);
   } else {
@@ -101,7 +101,7 @@ MovieList _parseDataSimilar(String input) {
 
 Future<MovieList> fetchDataSimilar(String id) async {
   http.Response response =
-      await http.get("$SERVICE_URL/movie/$id/similar?api_key=$API_KEY");
+      await http.get("$BASE_URL/movie/$id/similar?api_key=$API_KEY");
   if (response.statusCode == 200) {
     return _parseDataSimilar(response.body);
   } else {

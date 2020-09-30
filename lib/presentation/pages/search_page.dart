@@ -17,7 +17,7 @@ MovieList _parseData(String input) {
 
 Future<MovieList> fetchData(String query) async {
   http.Response response = await http.get(
-      "$SERVICE_URL/search/movie?api_key=$API_KEY&query=$query");
+      "$BASE_URL/search/movie?api_key=$API_KEY&query=$query");
   if (response.statusCode == 200) {
     return compute(_parseData, response.body);
   } else {

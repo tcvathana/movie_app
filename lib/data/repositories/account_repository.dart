@@ -9,7 +9,7 @@ class AccountRepository implements IAccountRepository {
   @override
   Future<Account> fetchAccountDetails({String sessionId}) async {
     http.Response response = await http.get(
-      "$SERVICE_URL/account?api_key=$API_KEY&session_id=$sessionId",
+      "$BASE_URL/account?api_key=$API_KEY&session_id=$sessionId",
     );
     if (response.statusCode == 200) {
       return Account.fromJson(response.body);
@@ -44,7 +44,7 @@ class AccountRepository implements IAccountRepository {
   @override
   Future<MovieList> fetchFavoriteMovieList({String sessionId}) async {
     http.Response response = await http.get(
-        "$SERVICE_URL/account/{account_id}/favorite/movies?api_key=$API_KEY&session_id=$sessionId&sort_by=created_at.asc&page=1");
+        "$BASE_URL/account/{account_id}/favorite/movies?api_key=$API_KEY&session_id=$sessionId&sort_by=created_at.asc&page=1");
     if (response.statusCode == 200) {
       return MovieList.fromJson(response.body);
     } else {
@@ -55,7 +55,7 @@ class AccountRepository implements IAccountRepository {
   @override
   Future<MovieList> fetchWatchlistMovieList({String sessionId}) async {
     http.Response response = await http.get(
-        "$SERVICE_URL/account/{account_id}/watchlist/movies?api_key=$API_KEY&session_id=$sessionId&sort_by=created_at.asc&page=1");
+        "$BASE_URL/account/{account_id}/watchlist/movies?api_key=$API_KEY&session_id=$sessionId&sort_by=created_at.asc&page=1");
     if (response.statusCode == 200) {
       return MovieList.fromJson(response.body);
     } else {
@@ -71,7 +71,7 @@ class AccountRepository implements IAccountRepository {
     bool watchlist,
   }) async {
     http.Response response = await http.post(
-        "$SERVICE_URL/account/{account_id}/watchlist?api_key=$API_KEY&session_id=$sessionId",
+        "$BASE_URL/account/{account_id}/watchlist?api_key=$API_KEY&session_id=$sessionId",
         body: {
           "media_type": "movie",
           "media_id": mediaId.toString(),
@@ -96,7 +96,7 @@ class AccountRepository implements IAccountRepository {
     bool favorite,
   }) async {
     http.Response response = await http.post(
-        "$SERVICE_URL/account/{account_id}/favorite?api_key=$API_KEY&session_id=$sessionId",
+        "$BASE_URL/account/{account_id}/favorite?api_key=$API_KEY&session_id=$sessionId",
         body: {
           "media_type": "movie",
           "media_id": mediaId.toString(),
