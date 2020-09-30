@@ -1,11 +1,11 @@
-class Review {
+class MovieReview {
   int id;
   int page;
   List<ResultReview> results;
   int totalPages;
   int totalResults;
 
-  Review({
+  MovieReview({
     this.id,
     this.page,
     this.results,
@@ -13,7 +13,7 @@ class Review {
     this.totalResults,
   });
 
-  factory Review.fromJson(Map<String, dynamic> json) => Review(
+  factory MovieReview.fromJson(Map<String, dynamic> json) => MovieReview(
     id: json["id"],
     page: json["page"],
     results: List<ResultReview>.from(json["results"].map((x) => ResultReview.fromJson(x))),

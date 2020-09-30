@@ -14,7 +14,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:skeleton_text/skeleton_text.dart';
 
 import 'package:movie_app/data/models/movie_account_states.dart';
-import 'package:movie_app/data/models/review.dart';
+import 'package:movie_app/data/models/movie_review.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'account_page.dart';
 import '../../data/models/movie_detail.dart';
@@ -41,13 +41,13 @@ Future<MovieDetail> fetchData(String id) async {
 }
 
 //Reviews
-Review _parseDataReview(String input) {
+MovieReview _parseDataReview(String input) {
   Map<String, dynamic> map = json.decode(input);
-  Review review = Review.fromJson(map);
+  MovieReview review = MovieReview.fromJson(map);
   return review;
 }
 
-Future<Review> fetchDataReview(String id) async {
+Future<MovieReview> fetchDataReview(String id) async {
   http.Response response =
       await http.get("$SERVICE_URL/movie/$id/reviews?api_key=$API_KEY");
   if (response.statusCode == 200) {
@@ -126,7 +126,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
 
   // DATA
   Future<MovieDetail> _dataFetched;
-  Future<Review> _dataFetchedReview;
+  Future<MovieReview> _dataFetchedReview;
   Future<List<ResultVideo>> _dataFetchedVideo;
   Future<MovieCredit> _dataFetchedCredits;
   Future<MovieList> _dataFetchedSimilar;
@@ -633,7 +633,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
             "Reviews",
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
-          FutureBuilder<Review>(
+          FutureBuilder<MovieReview>(
             future: _dataFetchedReview,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
@@ -659,7 +659,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     );
   }
 
-  Widget _buildReviewList(Review review) {
+  Widget _buildReviewList(MovieReview review) {
     List<Widget> list = [];
     for (ResultReview result in review.results) {
       list.add(_buildReviewItem(result));
