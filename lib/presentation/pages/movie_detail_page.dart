@@ -78,7 +78,7 @@ Future<List<ResultVideo>> fetchDataVideos(String movieId) async {
 //Credits
 MovieCredit _parseDataCredits(String input) {
   Map<String, dynamic> map = json.decode(input);
-  MovieCredit credits = MovieCredit.fromJson(map);
+  MovieCredit credits = MovieCredit.fromMap(map);
   return credits;
 }
 
