@@ -62,9 +62,13 @@ class MovieDetailRemoteDataSource implements IMovieDetailRemoteDataSource {
   }
 
   @override
-  Future<MovieVideo> fetchMovieVideo({String movieId}) {
-    // TODO: implement fetchMovieVideo
-    throw UnimplementedError();
+  Future<MovieVideo> fetchMovieVideo({String movieId}) async {
+    http.Response response =
+        await http.get("$BASE_URL/movie/$movieId/videos?api_key=$API_KEY");
+    if (response.statusCode == 200) {
+      return MovieVideo.fromJson(response.body);
+    } else {
+      throw Exception("Error ${response.toString()}");
+    }
   }
-
 }

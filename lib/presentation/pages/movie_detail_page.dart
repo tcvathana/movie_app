@@ -60,7 +60,7 @@ Future<MovieReview> fetchDataReview(String id) async {
 //Video
 List<ResultVideo> _parseDataVideo(String input) {
   Map<String, dynamic> map = json.decode(input);
-  MovieVideo movieVideo = MovieVideo.fromJson(map);
+  MovieVideo movieVideo = MovieVideo.fromMap(map);
   List<ResultVideo> list = movieVideo.results;
   return list;
 }
