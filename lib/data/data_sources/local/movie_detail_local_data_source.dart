@@ -43,32 +43,52 @@ class MovieDetailLocalDataSource implements IMovieDetailLocalDataSource {
 
   @override
   Future<MovieCredit> getMovieCredit({@required String movieId}) {
-    // TODO: implement getMovieCredit
-    throw UnimplementedError();
+    final String jsonString = sharedPreferences.getString("/movie/$movieId/credits");
+    if (jsonString != null) {
+      return Future.value(MovieCredit.fromJson(jsonString));
+    } else {
+      throw Exception("Cache error");
+    }
   }
 
   @override
   Future<MovieDetail> getMovieDetail({@required String movieId}) {
-    // TODO: implement getMovieDetail
-    throw UnimplementedError();
+    final String jsonString = sharedPreferences.getString("/movie/$movieId");
+    if (jsonString != null) {
+      return Future.value(MovieDetail.fromJson(jsonString));
+    } else {
+      throw Exception("Cache error");
+    }
   }
 
   @override
   Future<MovieReview> getMovieReview({@required String movieId}) {
-    // TODO: implement getMovieReview
-    throw UnimplementedError();
+    final String jsonString = sharedPreferences.getString("/movie/$movieId/reviews");
+    if (jsonString != null) {
+      return Future.value(MovieReview.fromJson(jsonString));
+    } else {
+      throw Exception("Cache error");
+    }
   }
 
   @override
   Future<MovieList> getMovieSimilar({@required String movieId}) {
-    // TODO: implement getMovieSimilar
-    throw UnimplementedError();
+    final String jsonString = sharedPreferences.getString("/movie/$movieId/similar");
+    if (jsonString != null) {
+      return Future.value(MovieList.fromJson(jsonString));
+    } else {
+      throw Exception("Cache error");
+    }
   }
 
   @override
   Future<MovieVideo> getMovieVideo({@required String movieId}) {
-    // TODO: implement getMovieVideo
-    throw UnimplementedError();
+    final String jsonString = sharedPreferences.getString("/movie/$movieId/videos");
+    if (jsonString != null) {
+      return Future.value(MovieVideo.fromJson(jsonString));
+    } else {
+      throw Exception("Cache error");
+    }
   }
 
   // CACHE METHOD
