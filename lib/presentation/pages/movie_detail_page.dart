@@ -43,7 +43,7 @@ Future<MovieDetail> fetchData(String id) async {
 //Reviews
 MovieReview _parseDataReview(String input) {
   Map<String, dynamic> map = json.decode(input);
-  MovieReview review = MovieReview.fromJson(map);
+  MovieReview review = MovieReview.fromMap(map);
   return review;
 }
 

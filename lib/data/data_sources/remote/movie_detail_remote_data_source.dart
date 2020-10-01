@@ -40,9 +40,14 @@ class MovieDetailRemoteDataSource implements IMovieDetailRemoteDataSource {
   }
 
   @override
-  Future<MovieReview> fetchMovieReview({String movieId}) {
-    // TODO: implement fetchMovieReview
-    throw UnimplementedError();
+  Future<MovieReview> fetchMovieReview({String movieId}) async {
+    http.Response response =
+        await http.get("$BASE_URL/movie/$movieId/reviews?api_key=$API_KEY");
+    if (response.statusCode == 200) {
+      return MovieReview.fromJson(response.body);
+    } else {
+      throw Exception("Error ${response.toString()}");
+    }
   }
 
   @override
