@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
-import '../../injection_container.dart';
-import '../../data/repositories/movie_repository.dart';
 import '../../data/models/movie_list.dart';
 import '../widgets/movie/movie_item_horizontal.dart';
 import './account_page.dart';
