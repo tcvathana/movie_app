@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import '../../injection_container.dart';
+import '../../data/repositories/movie_repository.dart';
 import '../../data/models/movie_list.dart';
 import '../widgets/movie/movie_item_horizontal.dart';
 import './account_page.dart';
 
 class SeeAllMoviesPage extends StatefulWidget {
-  String title = "";
-  String sortedBy = "";
-  List<MovieResult> listResult = [];
+  String title;
+  String sortedBy;
 
-  SeeAllMoviesPage(this.title, this.sortedBy, this.listResult);
+  MovieList movieList;
+
+  SeeAllMoviesPage(this.title, this.sortedBy, this.movieList);
 
   @override
   _SeeAllMoviesPageState createState() => _SeeAllMoviesPageState();
@@ -86,14 +89,16 @@ class _SeeAllMoviesPageState extends State<SeeAllMoviesPage> {
               Expanded(
                 child: ListView.separated(
                   scrollDirection: Axis.vertical,
-                  itemCount: widget.listResult.length,
-                  separatorBuilder: (BuildContext context, int index){
+                  itemCount: widget.movieList.results.length,
+                  separatorBuilder: (BuildContext context, int index) {
                     return Divider(
                       color: Colors.white.withOpacity(0.8),
                     );
                   },
                   itemBuilder: (BuildContext context, int index) {
-                    return MovieItemHorizontal(movieResult: widget.listResult[index],);
+                    return MovieItemHorizontal(
+                      movieResult: widget.movieList.results[index],
+                    );
                   },
                 ),
               )
