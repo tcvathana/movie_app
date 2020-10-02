@@ -43,7 +43,7 @@ Future<MovieDetail> fetchData(String id) async {
 //Reviews
 MovieReview _parseDataReview(String input) {
   Map<String, dynamic> map = json.decode(input);
-  MovieReview review = MovieReview.fromJson(map);
+  MovieReview review = MovieReview.fromMap(map);
   return review;
 }
 
@@ -60,7 +60,7 @@ Future<MovieReview> fetchDataReview(String id) async {
 //Video
 List<ResultVideo> _parseDataVideo(String input) {
   Map<String, dynamic> map = json.decode(input);
-  MovieVideo movieVideo = MovieVideo.fromJson(map);
+  MovieVideo movieVideo = MovieVideo.fromMap(map);
   List<ResultVideo> list = movieVideo.results;
   return list;
 }
@@ -78,7 +78,7 @@ Future<List<ResultVideo>> fetchDataVideos(String movieId) async {
 //Credits
 MovieCredit _parseDataCredits(String input) {
   Map<String, dynamic> map = json.decode(input);
-  MovieCredit credits = MovieCredit.fromJson(map);
+  MovieCredit credits = MovieCredit.fromMap(map);
   return credits;
 }
 

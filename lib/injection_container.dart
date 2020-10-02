@@ -2,8 +2,11 @@ import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_app/core/network/network_info.dart';
+import 'package:movie_app/data/data_sources/local/movie_detail_local_data_source.dart';
 import 'package:movie_app/data/data_sources/local/movie_local_data_source.dart';
+import 'package:movie_app/data/data_sources/remote/movie_detail_remote_data_source.dart';
 import 'package:movie_app/data/data_sources/remote/movie_remote_data_source.dart';
+import 'package:movie_app/data/repositories/movie_detail_repository.dart';
 import 'package:movie_app/data/repositories/movie_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,13 +17,21 @@ Future<void> init() async {
   // Use Case
   // Repository
   sl.registerLazySingleton(() => MovieRepository(
-    remoteDataSource: sl(),
-    localDataSource: sl(),
-    networkInfo: sl(),
-  ));
+        remoteDataSource: sl(),
+        localDataSource: sl(),
+        networkInfo: sl(),
+      ));
+  sl.registerLazySingleton(() => MovieDetailRepository(
+        remoteDataSource: sl(),
+        localDataSource: sl(),
+        networkInfo: sl(),
+      ));
   // Data source
   sl.registerLazySingleton(() => MovieRemoteDataSource());
   sl.registerLazySingleton(() => MovieLocalDataSource(sharedPreferences: sl()));
+  sl.registerLazySingleton(() => MovieDetailRemoteDataSource());
+  sl.registerLazySingleton(
+      () => MovieDetailLocalDataSource(sharedPreferences: sl()));
   // Core
   sl.registerLazySingleton(() => NetworkInfo(connectionChecker: sl()));
   // External

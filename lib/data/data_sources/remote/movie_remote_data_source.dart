@@ -22,22 +22,22 @@ abstract class IMovieRemoteDataSource {
 class MovieRemoteDataSource implements IMovieRemoteDataSource {
   @override
   Future<MovieList> fetchMostPopularMovieList() async {
-    return await _getMovieFromUrl("/movie/popular");
+    return await _getMovieListFromUrl("/movie/popular");
   }
 
   @override
   Future<MovieList> fetchNowPlayingMovieList() async {
-    return await _getMovieFromUrl("/movie/now_playing");
+    return await _getMovieListFromUrl("/movie/now_playing");
   }
 
   @override
   Future<MovieList> fetchTopRatedMovieList() async {
-    return await _getMovieFromUrl("/movie/top_rated");
+    return await _getMovieListFromUrl("/movie/top_rated");
   }
 
   @override
   Future<MovieList> fetchUpComingMovieList() async {
-    return await _getMovieFromUrl("/movie/upcoming");
+    return await _getMovieListFromUrl("/movie/upcoming");
   }
 
   @override
@@ -54,7 +54,7 @@ class MovieRemoteDataSource implements IMovieRemoteDataSource {
     }
   }
 
-  Future<MovieList> _getMovieFromUrl(String url) async {
+  Future<MovieList> _getMovieListFromUrl(String url) async {
     http.Response response =
     await http.get("$BASE_URL$url?api_key=$API_KEY");
     if (response.statusCode == 200) {
