@@ -1019,7 +1019,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
 
   Widget _buildSimilarMovieList(MovieList movie) {
     List<Widget> list = [];
-    for (MovieResult res in movie.results) {
+    for (ResultMovie res in movie.results) {
       Row row = Row(
         children: <Widget>[
           Icon(

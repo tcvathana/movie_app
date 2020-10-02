@@ -6,7 +6,7 @@ import '../../../data/models/movie_list.dart';
 import 'movie_item.dart';
 
 class MovieItemUpComing extends StatelessWidget {
-  final MovieResult result;
+  final ResultMovie result;
 
   const MovieItemUpComing({Key key, @required this.result}) : super(key: key);
 

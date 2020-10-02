@@ -7,7 +7,7 @@ import 'package:page_transition/page_transition.dart';
 import '../../../config.dart';
 
 class MovieItem extends StatelessWidget {
-  final MovieResult result;
+  final ResultMovie result;
   final Widget info;
 
   const MovieItem({Key key, @required this.result, @required this.info})

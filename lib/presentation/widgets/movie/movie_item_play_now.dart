@@ -6,7 +6,7 @@ import '../../../data/models/movie_list.dart';
 import '../../../config.dart';
 
 class MovieItemPlayNow extends StatelessWidget {
-  final MovieResult movieResult;
+  final ResultMovie movieResult;
 
   const MovieItemPlayNow({Key key, @required this.movieResult})
       : super(key: key);

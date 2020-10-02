@@ -97,7 +97,7 @@ class FavoriteListPage extends StatelessWidget {
                                 ),
                               );
                             }
-                            List<MovieResult> movies = snap.data.results;
+                            List<ResultMovie> movies = snap.data.results;
                             return Container(
                               width: MediaQuery.of(context).size.width,
                               height: MediaQuery.of(context).size.height - 180,
