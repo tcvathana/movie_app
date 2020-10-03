@@ -1,4 +1,5 @@
 import 'package:meta/meta.dart';
+import 'package:movie_app/data/models/movie_account_states.dart';
 import '../../core/network/network_info.dart';
 import '../../domain/repositories/i_movie_detail_repository.dart';
 import '../models/movie_credits.dart';
@@ -98,5 +99,16 @@ class MovieDetailRepository implements IMovieDetailRepository {
     } else {
       return localDataSource.getMovieVideo(movieId: movieId);
     }
+  }
+
+  @override
+  Future<MovieAccountStates> getMovieAccountStates({
+    @required String sessionId,
+    @required int movieId,
+  }) async {
+    return remoteDataSource.fetchMovieAccountStates(
+      sessionId: sessionId,
+      movieId: movieId,
+    );
   }
 }

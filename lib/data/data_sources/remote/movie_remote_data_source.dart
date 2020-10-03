@@ -12,11 +12,6 @@ abstract class IMovieRemoteDataSource {
   Future<MovieList> fetchTopRatedMovieList();
 
   Future<MovieList> fetchUpComingMovieList();
-
-  Future<MovieAccountStates> fetchMovieAccountStates({
-    @required String sessionId,
-    @required int movieId,
-  });
 }
 
 class MovieRemoteDataSource implements IMovieRemoteDataSource {
@@ -40,23 +35,8 @@ class MovieRemoteDataSource implements IMovieRemoteDataSource {
     return await _getMovieListFromUrl("/movie/upcoming");
   }
 
-  @override
-  Future<MovieAccountStates> fetchMovieAccountStates({
-    String sessionId,
-    int movieId,
-  }) async {
-    http.Response response = await http.get(
-        "$BASE_URL/movie/$movieId/account_states?api_key=$API_KEY&session_id=$sessionId");
-    if (response.statusCode == 200) {
-      return MovieAccountStates.fromJson(response.body);
-    } else {
-      throw Exception("Error ${response.toString()}");
-    }
-  }
-
   Future<MovieList> _getMovieListFromUrl(String url) async {
-    http.Response response =
-    await http.get("$BASE_URL$url?api_key=$API_KEY");
+    http.Response response = await http.get("$BASE_URL$url?api_key=$API_KEY");
     if (response.statusCode == 200) {
       return MovieList.fromJson(response.body);
     } else {
