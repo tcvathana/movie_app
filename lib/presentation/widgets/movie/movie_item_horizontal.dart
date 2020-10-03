@@ -7,7 +7,7 @@ import '../../../data/models/movie_list.dart';
 import '../../pages/movie_detail_page.dart';
 
 class MovieItemHorizontal extends StatelessWidget {
-  final MovieResult movieResult;
+  final ResultMovie movieResult;
 
   const MovieItemHorizontal({Key key, this.movieResult}) : super(key: key);
 

@@ -4,7 +4,6 @@ import '../../core/network/network_info.dart';
 import '../../domain/repositories/i_movie_repository.dart';
 import '../data_sources/local/movie_local_data_source.dart';
 import '../data_sources/remote/movie_remote_data_source.dart';
-import '../models/movie_account_states.dart';
 import '../models/movie_list.dart';
 
 typedef Future<MovieList> _MovieListName();
@@ -63,17 +62,5 @@ class MovieRepository implements IMovieRepository {
     } else {
       return localDataSource.getMovieList(listName);
     }
-  }
-
-  //
-  @override
-  Future<MovieAccountStates> getMovieAccountStates({
-    @required String sessionId,
-    @required int movieId,
-  }) async {
-    return remoteDataSource.fetchMovieAccountStates(
-      sessionId: sessionId,
-      movieId: movieId,
-    );
   }
 }

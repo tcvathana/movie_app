@@ -4,7 +4,7 @@ import '../../../data/models/movie_list.dart';
 import 'movie_item.dart';
 
 class MovieItemPopular extends StatelessWidget {
-  final MovieResult result;
+  final ResultMovie result;
 
   const MovieItemPopular({Key key, @required this.result}) : super(key: key);
 

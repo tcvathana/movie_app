@@ -1,29 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter/foundation.dart';
-import 'dart:convert';
-import 'package:intl/intl.dart';
-
+import 'package:movie_app/data/repositories/search_repository.dart';
+import '../widgets/movie/movie_item_horizontal.dart';
 import '../../data/models/movie_list.dart';
-import './movie_detail_page.dart';
-
-import '../../config.dart';
-
-MovieList _parseData(String input) {
-  Map<String, dynamic> map = json.decode(input);
-  MovieList movie = MovieList.fromMap(map);
-  return movie;
-}
-
-Future<MovieList> fetchData(String query) async {
-  http.Response response = await http.get(
-      "$BASE_URL/search/movie?api_key=$API_KEY&query=$query");
-  if (response.statusCode == 200) {
-    return compute(_parseData, response.body);
-  } else {
-    throw Exception("Error ${response.toString()}");
-  }
-}
+import '../../injection_container.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -31,8 +10,8 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  SearchRepository searchRepository = sl<SearchRepository>();
   Future<MovieList> _dataFetched;
-  String _query;
 
   @override
   void initState() {
@@ -42,144 +21,89 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppBar(),
-      body: _buildBody(),
-    );
-  }
-
-  _buildAppBar() {
-    return AppBar(
-      backgroundColor: Colors.black87,
-      title: Container(
-        padding: EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 0),
-        height: 40,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: TextField(
-          textAlignVertical: TextAlignVertical.center,
-          style: TextStyle(color: Colors.white),
-          autofocus: true,
-          cursorColor: Colors.white,
-          decoration: InputDecoration(
-            hintText: "Search...",
-            hintStyle: TextStyle(color: Colors.white),
-            border: InputBorder.none,
+      appBar: AppBar(
+        backgroundColor: Colors.black87,
+        title: Container(
+          padding: EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 0),
+          height: 40,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(20),
           ),
-          onSubmitted: (text) {
-            setState(() {
-              _dataFetched = fetchData(text);
-            });
+          child: TextField(
+            textAlignVertical: TextAlignVertical.center,
+            style: TextStyle(color: Colors.white),
+            autofocus: true,
+            cursorColor: Colors.white,
+            decoration: InputDecoration(
+              hintText: "Search...",
+              hintStyle: TextStyle(color: Colors.white),
+              border: InputBorder.none,
+            ),
+            onSubmitted: (text) {
+              onSearch(text);
+            },
+          ),
+        ),
+      ),
+      body: Container(
+        color: Colors.black87,
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.symmetric(vertical: 10),
+        child: FutureBuilder<MovieList>(
+          future: _dataFetched,
+          builder: (context, snapshot) {
+            if (_dataFetched == null) {
+              return Center(
+                child: Text(
+                  "Enter something",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              );
+            }
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasData) {
+                return ListView.separated(
+                  scrollDirection: Axis.vertical,
+                  itemCount: snapshot.data.results.length,
+                  separatorBuilder: (context, index) {
+                    return Divider(
+                      color: Colors.grey,
+                      thickness: 1,
+                    );
+                  },
+                  itemBuilder: (context, index) {
+                    return MovieItemHorizontal(
+                      movieResult: snapshot.data.results[index],
+                    );
+                  },
+                );
+              } else {
+                return Center(
+                  child: Text(
+                    "No result",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                );
+              }
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
           },
         ),
       ),
     );
   }
 
-  _buildBody() {
-    return Container(
-      color: Colors.black87,
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child: _dataFetched == null
-          ? Container()
-          : SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: FutureBuilder<MovieList>(
-                future: _dataFetched,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.hasData) {
-                      return _buildList(snapshot.data);
-                    } else {
-                      return Center(
-                        child: Text(
-                          "Not Available",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      );
-                    }
-                  } else {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },
-              ),
-            ),
-    );
-  }
-
-  _buildList(MovieList movie) {
-    List<Widget> list = [];
-    for (MovieResult res in movie.results) {
-      list.add(_buildItem(res));
-    }
-    return Column(
-      children: list,
-    );
-  }
-
-  _buildItem(MovieResult res) {
-    return Card(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => MovieDetailPage(res.id, res.title),
-            ),
-          );
-        },
-        highlightColor: Colors.black26,
-        splashColor: Colors.black26,
-        child: Row(
-          children: <Widget>[
-            Ink.image(
-              image: NetworkImage(
-                "$IMAGE_BASE_URL/w500${res.posterPath}",
-              ),
-              width: 150,
-              height: 200,
-            ),
-            Container(
-              padding: EdgeInsets.all(10),
-              width: MediaQuery.of(context).size.width - 150 - 5 - 5,
-              height: 200,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    res.title,
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  Text(
-                    DateFormat.yMMMd().format(res.releaseDate),
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                  Divider(
-                    color: Colors.white,
-                  ),
-                  Text(
-                    res.overview,
-                    style: TextStyle(color: Colors.grey),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 5,
-                  ),
-                  Text(
-                    "Rate: ${res.voteAverage.toString()}/10",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+  void onSearch(String text) {
+    setState(() {
+      _dataFetched = searchRepository.getSearchMovie(query: text);
+    });
   }
 }

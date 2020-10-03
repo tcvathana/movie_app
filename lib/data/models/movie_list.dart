@@ -9,7 +9,7 @@ class MovieList {
     this.totalPages,
   });
 
-  List<MovieResult> results;
+  List<ResultMovie> results;
   int page;
   int totalResults;
   Dates dates;
@@ -20,7 +20,7 @@ class MovieList {
   String toJson() => json.encode(toMap());
 
   factory MovieList.fromMap(Map<String, dynamic> json) => MovieList(
-    results: json["results"] == null ? null : List<MovieResult>.from(json["results"].map((x) => MovieResult.fromMap(x))),
+    results: json["results"] == null ? null : List<ResultMovie>.from(json["results"].map((x) => ResultMovie.fromMap(x))),
     page: json["page"] == null ? null : json["page"],
     totalResults: json["total_results"] == null ? null : json["total_results"],
     dates: json["dates"] == null ? null : Dates.fromMap(json["dates"]),
@@ -60,8 +60,8 @@ class Dates {
   };
 }
 
-class MovieResult {
-  MovieResult({
+class ResultMovie {
+  ResultMovie({
     this.popularity,
     this.voteCount,
     this.video,
@@ -93,11 +93,11 @@ class MovieResult {
   String overview;
   DateTime releaseDate;
 
-  factory MovieResult.fromJson(String str) => MovieResult.fromMap(json.decode(str));
+  factory ResultMovie.fromJson(String str) => ResultMovie.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory MovieResult.fromMap(Map<String, dynamic> json) => MovieResult(
+  factory ResultMovie.fromMap(Map<String, dynamic> json) => ResultMovie(
     popularity: json["popularity"] == null ? null : json["popularity"].toDouble(),
     voteCount: json["vote_count"] == null ? null : json["vote_count"],
     video: json["video"] == null ? null : json["video"],
