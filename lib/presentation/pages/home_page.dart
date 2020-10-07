@@ -1,6 +1,7 @@
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/core/network/network_info.dart';
+import 'package:movie_app/presentation/pages/auth_page.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -60,7 +61,7 @@ class _HomePageState extends State<HomePage> {
                 PageTransition(
                   type: PageTransitionType.fade,
                   // child: AccountPage(),
-                  child: LoginPage(),
+                  child: AuthPage(),
                 ),
               );
             },

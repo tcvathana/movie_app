@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
-import '../../../../data/repositories/authentication_repository.dart';
-import '../../../../data/repositories/account_repository.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/presentation/bloc/authentication/auth_bloc.dart';
 
-class LoginForm extends StatelessWidget {
-  final VoidCallback onLogin;
+class LoginForm extends StatefulWidget {
 
-  LoginForm({Key key, @required this.onLogin}) : super(key: key);
+  LoginForm({Key key}) : super(key: key);
 
-  final AuthRepository _authenticationRepository =
-      new AuthRepository();
-  final AccountRepository _accountRepository = new AccountRepository();
+  @override
+  _LoginFormState createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
   TextEditingController _usernameCtrl = TextEditingController();
   TextEditingController _passwordCtrl = TextEditingController();
+
+  @override
+  void dispose() {
+    _usernameCtrl.dispose();
+    _passwordCtrl.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +68,7 @@ class LoginForm extends StatelessWidget {
             height: 25,
           ),
           RaisedButton(
-            onPressed: onLogin,
+            onPressed: dispatchLogin,
             child: Text(
               "Login",
               style: TextStyle(color: Colors.white),
@@ -73,21 +80,10 @@ class LoginForm extends StatelessWidget {
     );
   }
 
-  void _login() async {
-    /*Future<String> future = _authenticationRepository.createSession(
-      username: _usernameCtrl.text,
-      password: _passwordCtrl.text,
-    );
-    String session;
-    future.then((value) async {
-      session = value;
-      print("Login Page, My session is: $session");
-      if (session != null && session != '') {
-        _accountRepository.saveAccountPreference(sessionId: session);
-      } else {
-        // TODO: Implement login fails here
-        print("Login fails");
-      }
-    });*/
+  void dispatchLogin() async {
+    BlocProvider.of<AuthBloc>(context).add(LoginEvent(
+      _usernameCtrl.text,
+      _passwordCtrl.text,
+    ));
   }
 }

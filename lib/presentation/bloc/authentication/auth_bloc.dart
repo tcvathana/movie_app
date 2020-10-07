@@ -18,17 +18,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthEvent event,
   ) async* {
     if (event is LoginEvent) {
-      yield AuthLoading();
-      String requestToken = await authRepository.createRequestToken();
-      String requestTokenNew = await authRepository.validateTokenWithLogin(
-        username: event.username,
-        password: event.password,
-        requestToken: requestToken,
-      );
-      String sessionId = await authRepository.createSession(
-        requestToken: requestTokenNew,
-      );
-      yield AuthLoaded(sessionId);
+      try{
+        yield AuthLoading();
+        String requestToken = await authRepository.createRequestToken();
+        String requestTokenNew = await authRepository.validateTokenWithLogin(
+          username: event.username,
+          password: event.password,
+          requestToken: requestToken,
+        );
+        String sessionId = await authRepository.createSession(
+          requestToken: requestTokenNew,
+        );
+        yield AuthLoaded(sessionId);
+      } catch (e) {
+        yield AuthError(e.message);
+      }
     } else {
       yield AuthInitial();
     }
