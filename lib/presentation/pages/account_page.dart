@@ -73,7 +73,7 @@ class _AccountPageState extends State<AccountPage> {
 
   void logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    AuthenticationRepository _authRepository = new AuthenticationRepository();
+    AuthRepository _authRepository = new AuthRepository();
     await _authRepository.deleteSession(
       sessionId: prefs.getString("session_id"),
     );

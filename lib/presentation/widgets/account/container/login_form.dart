@@ -8,8 +8,8 @@ class LoginForm extends StatelessWidget {
 
   LoginForm({Key key, @required this.onLogin}) : super(key: key);
 
-  final AuthenticationRepository _authenticationRepository =
-      new AuthenticationRepository();
+  final AuthRepository _authenticationRepository =
+      new AuthRepository();
   final AccountRepository _accountRepository = new AccountRepository();
   TextEditingController _usernameCtrl = TextEditingController();
   TextEditingController _passwordCtrl = TextEditingController();
@@ -74,7 +74,7 @@ class LoginForm extends StatelessWidget {
   }
 
   void _login() async {
-    Future<String> future = _authenticationRepository.createSession(
+    /*Future<String> future = _authenticationRepository.createSession(
       username: _usernameCtrl.text,
       password: _passwordCtrl.text,
     );
@@ -88,6 +88,6 @@ class LoginForm extends StatelessWidget {
         // TODO: Implement login fails here
         print("Login fails");
       }
-    });
+    });*/
   }
 }

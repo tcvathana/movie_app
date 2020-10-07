@@ -11,8 +11,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  AuthenticationRepository _authenticationRepository =
-      new AuthenticationRepository();
+  AuthRepository _authenticationRepository =
+      new AuthRepository();
   AccountRepository _accountRepository = new AccountRepository();
   TextEditingController _usernameCtrl = TextEditingController();
   TextEditingController _passwordCtrl = TextEditingController();
@@ -109,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void login() async {
-    _authenticationRepository
+    /*_authenticationRepository
         .createSession(
       username: _usernameCtrl.text,
       password: _passwordCtrl.text,
@@ -143,6 +143,6 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       );
-    });
+    });*/
   }
 }
