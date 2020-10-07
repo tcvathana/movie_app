@@ -5,20 +5,25 @@ import 'package:movie_app/core/network/network_info.dart';
 import 'package:movie_app/data/data_sources/local/movie_detail_local_data_source.dart';
 import 'package:movie_app/data/data_sources/local/movie_local_data_source.dart';
 import 'package:movie_app/data/data_sources/local/search_local_data_source.dart';
+import 'package:movie_app/data/data_sources/remote/auth_remote_data_source.dart';
 import 'package:movie_app/data/data_sources/remote/movie_detail_remote_data_source.dart';
 import 'package:movie_app/data/data_sources/remote/movie_remote_data_source.dart';
 import 'package:movie_app/data/data_sources/remote/search_remote_data_source.dart';
+import 'package:movie_app/data/repositories/authentication_repository.dart';
 import 'package:movie_app/data/repositories/movie_detail_repository.dart';
 import 'package:movie_app/data/repositories/movie_repository.dart';
 import 'package:movie_app/data/repositories/search_repository.dart';
+import 'package:movie_app/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final sl = GetIt.instance;
 
 Future<void> init() async {
   // BLoC
+  sl.registerFactory(() => AuthBloc(authRepository: sl()));
   // Use Case
   // Repository
+  sl.registerLazySingleton(() => AuthRepository(remoteDataSource: sl()));
   sl.registerLazySingleton(() => MovieRepository(
         remoteDataSource: sl(),
         localDataSource: sl(),
@@ -35,6 +40,7 @@ Future<void> init() async {
         networkInfo: sl(),
       ));
   // Data source
+  sl.registerLazySingleton(() => AuthRemoteDataSource());
   sl.registerLazySingleton(() => MovieRemoteDataSource());
   sl.registerLazySingleton(() => MovieLocalDataSource(sharedPreferences: sl()));
   sl.registerLazySingleton(() => MovieDetailRemoteDataSource());
