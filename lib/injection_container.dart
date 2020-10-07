@@ -9,7 +9,7 @@ import 'package:movie_app/data/data_sources/remote/auth_remote_data_source.dart'
 import 'package:movie_app/data/data_sources/remote/movie_detail_remote_data_source.dart';
 import 'package:movie_app/data/data_sources/remote/movie_remote_data_source.dart';
 import 'package:movie_app/data/data_sources/remote/search_remote_data_source.dart';
-import 'package:movie_app/data/repositories/authentication_repository.dart';
+import 'package:movie_app/data/repositories/auth_repository.dart';
 import 'package:movie_app/data/repositories/movie_detail_repository.dart';
 import 'package:movie_app/data/repositories/movie_repository.dart';
 import 'package:movie_app/data/repositories/search_repository.dart';

@@ -6,7 +6,7 @@ import 'package:page_transition/page_transition.dart';
 
 import 'account_page.dart';
 import '../../data/repositories/account_repository.dart';
-import '../../data/repositories/authentication_repository.dart';
+import '../../data/repositories/auth_repository.dart';
 
 class LoginPage extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/data/repositories/authentication_repository.dart';
+import 'package:movie_app/data/repositories/auth_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/account/favorite_list_button.dart';
 import '../widgets/account/watchlist_button.dart';

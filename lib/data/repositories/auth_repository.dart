@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/data/data_sources/remote/auth_remote_data_source.dart';
-import '../../domain/repositories/i_authentication_repository.dart';
+import '../../domain/repositories/i_auth_repository.dart';
 
 class AuthRepository implements IAuthRepository {
   final AuthRemoteDataSource remoteDataSource;
