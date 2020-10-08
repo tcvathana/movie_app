@@ -1,16 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/presentation/bloc/account/account_bloc.dart';
+import 'package:movie_app/presentation/bloc/account/favorite_movie/favorite_movie_bloc.dart';
+import 'package:movie_app/presentation/bloc/authentication/auth_bloc.dart';
+import 'package:movie_app/presentation/widgets/account/container/favorite_list_movie_container.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../../data/repositories/account_repository.dart';
-import '../../data/models/movie_list.dart';
-import '../widgets/movie/movie_item_horizontal.dart';
 import 'account_page.dart';
 
 class FavoriteListPage extends StatelessWidget {
-  final AccountRepository _accountRepository = new AccountRepository();
+
+  const FavoriteListPage({Key key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final AuthLoaded authLoaded =context.bloc<AuthBloc>().state;
+    final AccountLoadedState accountState = context.bloc<AccountBloc>().state;
+    BlocProvider.of<FavoriteMovieBloc>(context).add(
+      GetFavoriteMovieEvent(
+        sessionId: authLoaded.sessionId,
+        accountId: accountState.account.id.toString(),
+      ),
+    );
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black87,
@@ -76,51 +87,7 @@ class FavoriteListPage extends StatelessWidget {
               Divider(
                 color: Colors.white.withOpacity(0.8),
               ),
-              FutureBuilder<SharedPreferences>(
-                  future: SharedPreferences.getInstance(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      String sessionId = snapshot.data.getString("session_id");
-                      return FutureBuilder<MovieList>(
-                        future: _accountRepository.fetchFavoriteMovieList(
-                            sessionId: sessionId),
-                        builder: (context, snap) {
-                          if (snap.connectionState == ConnectionState.done) {
-                            if (snap.hasError) {
-                              return Center(
-                                child: Text(
-                                  "UnAuthenticated",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 25
-                                  ),
-                                ),
-                              );
-                            }
-                            List<ResultMovie> movies = snap.data.results;
-                            return Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height - 180,
-                              child: ListView.separated(
-                                itemCount: movies.length,
-                                itemBuilder: (context, index) {
-                                  return MovieItemHorizontal(
-                                      movieResult: movies[index]);
-                                },
-                                separatorBuilder: (context, index) {
-                                  return Divider();
-                                },
-                              ),
-                            );
-                          } else {
-                            return Container();
-                          }
-                        },
-                      );
-                    } else {
-                      return Container();
-                    }
-                  }),
+              FavoriteListMovieContainer(),
             ],
           ),
         ),

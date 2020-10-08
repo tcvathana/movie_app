@@ -1,65 +1,72 @@
 import 'package:http/http.dart' as http;
+import 'package:movie_app/core/network/network_info.dart';
+import 'package:movie_app/data/data_sources/local/account_local_data_source.dart';
+import 'package:movie_app/data/data_sources/remote/account_remote_data_source.dart';
 import 'package:movie_app/data/models/movie_list.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../models/account.dart';
 import '../../domain/repositories/i_account_repository.dart';
 import '../../config.dart';
 
 class AccountRepository implements IAccountRepository {
+  final AccountRemoteDataSource remoteDataSource;
+  final AccountLocalDataSource localDataSource;
+  final NetworkInfo networkInfo;
+
+  const AccountRepository({
+    this.networkInfo,
+    this.remoteDataSource,
+    this.localDataSource,
+  });
+
   @override
-  Future<Account> fetchAccountDetails({String sessionId}) async {
-    http.Response response = await http.get(
-      "$BASE_URL/account?api_key=$API_KEY&session_id=$sessionId",
-    );
-    if (response.statusCode == 200) {
-      return Account.fromJson(response.body);
+  Future<Account> getAccountDetails({String sessionId}) async {
+    if (await networkInfo.isConnected) {
+      final remoteAccount = await remoteDataSource.getAccountDetails(
+        sessionId: sessionId,
+      );
+      localDataSource.cacheAccountDetails(account: remoteAccount);
+      return remoteAccount;
     } else {
-      throw Exception("Error ${response.toString()}");
+      return localDataSource.getAccountDetails();
+    }
+  }
+
+  // List
+  @override
+  Future<MovieList> getFavoriteMovieList({
+    String sessionId,
+    String accountId,
+  }) async {
+    if (await networkInfo.isConnected) {
+      final remoteMovieList = await remoteDataSource.getFavoriteMovieList(
+        sessionId: sessionId,
+        accountId: accountId,
+      );
+      localDataSource.cacheFavoriteMovieList(
+        favoriteMovieList: remoteMovieList,
+      );
+      return remoteMovieList;
+    } else {
+      return localDataSource.getFavoriteMovieList();
     }
   }
 
   @override
-  Future<Account> getAccountPreference() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String account = prefs.getString("account");
-    Account user = Account.fromJson(account);
-    return user;
-  }
-
-  @override
-  Future<Account> saveAccountPreference({String sessionId}) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("session_id", sessionId);
-    Account user;
-    await fetchAccountDetails(sessionId: sessionId).then((value) {
-      prefs.setString("account", value.toJson());
-      print("value.id: ${value.id}");
-      user = value;
-      return value;
-    });
-    return user;
-  }
-
-  //
-  @override
-  Future<MovieList> fetchFavoriteMovieList({String sessionId}) async {
-    http.Response response = await http.get(
-        "$BASE_URL/account/{account_id}/favorite/movies?api_key=$API_KEY&session_id=$sessionId&sort_by=created_at.asc&page=1");
-    if (response.statusCode == 200) {
-      return MovieList.fromJson(response.body);
+  Future<MovieList> getWatchlistMovieList({
+    String sessionId,
+    String accountId,
+  }) async {
+    if (await networkInfo.isConnected) {
+      final remoteMovieList = await remoteDataSource.getWatchlistMovieList(
+        sessionId: sessionId,
+        accountId: accountId,
+      );
+      localDataSource.cacheWatchlistMovieList(
+        watchlistMovie: remoteMovieList,
+      );
+      return remoteMovieList;
     } else {
-      throw Exception("Error ${response.toString()}");
-    }
-  }
-
-  @override
-  Future<MovieList> fetchWatchlistMovieList({String sessionId}) async {
-    http.Response response = await http.get(
-        "$BASE_URL/account/{account_id}/watchlist/movies?api_key=$API_KEY&session_id=$sessionId&sort_by=created_at.asc&page=1");
-    if (response.statusCode == 200) {
-      return MovieList.fromJson(response.body);
-    } else {
-      throw Exception("Error ${response.toString()}");
+      return localDataSource.getWatchlistMovieList();
     }
   }
 
@@ -77,7 +84,6 @@ class AccountRepository implements IAccountRepository {
           "media_id": mediaId.toString(),
           "watchlist": watchlist.toString()
         });
-    print("wat.toString(): ${watchlist.toString()}");
     if (response.statusCode == 200) {
       print("status: 200");
       return true;

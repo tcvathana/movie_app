@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/data/repositories/auth_repository.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/presentation/bloc/account/account_bloc.dart';
+import 'package:movie_app/presentation/bloc/authentication/auth_bloc.dart';
 import '../widgets/account/favorite_list_button.dart';
 import '../widgets/account/watchlist_button.dart';
 import '../widgets/account/container/user_profile_container.dart';
@@ -20,9 +21,14 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   Widget build(BuildContext context) {
+    final AuthLoaded authLoaded = context.bloc<AuthBloc>().state;
+    BlocProvider.of<AccountBloc>(context).add(
+      GetAccountEvent(authLoaded.sessionId),
+    );
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.black87,
+        backgroundColor: Colors.white.withOpacity(0.1),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.refresh),
@@ -33,35 +39,33 @@ class _AccountPageState extends State<AccountPage> {
               Icons.exit_to_app,
             ),
             color: Colors.red,
-            onPressed: logout,
+            onPressed: dispatchLogout,
           )
         ],
       ),
       body: Container(
-        color: Colors.black87,
-        height: MediaQuery.of(context).size.height,
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                UserProfileContainer(),
-                Divider(
-                  color: Colors.white,
+        color: Colors.white.withOpacity(0.2),
+        child: BlocBuilder<AccountBloc, AccountState>(
+          builder: (context, state) {
+            if (state is AccountLoadedState) {
+              return AccountPageBody();
+            } else if (state is AccountLoadingState) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (state is AccountErrorState) {
+              return Center(
+                child: Text(
+                  state.error,
+                  style: TextStyle(color: Colors.red),
                 ),
-                Column(
-                  children: <Widget>[
-                    FavoriteListButton(),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    WatchlistButton(),
-                  ],
-                ),
-              ],
-            ),
-          ),
+              );
+            } else {
+              return Center(
+                child: Text("Init"),
+              );
+            }
+          },
         ),
       ),
     );
@@ -71,13 +75,37 @@ class _AccountPageState extends State<AccountPage> {
     setState(() {});
   }
 
-  void logout() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    AuthRepository _authRepository = new AuthRepository();
-    await _authRepository.deleteSession(
-      sessionId: prefs.getString("session_id"),
+  void dispatchLogout() async {
+    BlocProvider.of<AuthBloc>(context).add(LogoutEvent());
+  }
+}
+
+class AccountPageBody extends StatelessWidget {
+  const AccountPageBody({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      child: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              UserProfileContainer(),
+              Divider(
+                color: Colors.white,
+              ),
+              FavoriteListButton(),
+              SizedBox(
+                height: 10,
+              ),
+              WatchlistButton(),
+            ],
+          ),
+        ),
+      ),
     );
-    prefs.remove("session_id");
-    prefs.remove("account");
   }
 }
