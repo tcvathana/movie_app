@@ -6,6 +6,7 @@ import 'package:movie_app/injection_container.dart';
 import 'package:movie_app/presentation/widgets/movie_detail/button_add_to_watchlist.dart';
 import 'package:movie_app/presentation/widgets/movie_detail/button_mark_as_favorite.dart';
 import 'package:movie_app/presentation/widgets/movie_detail/container/cast_list.dart';
+import 'package:movie_app/presentation/widgets/movie_detail/container/movie_account_states_widget.dart';
 import 'package:movie_app/presentation/widgets/movie_detail/container/movie_detail_widget.dart';
 import 'package:movie_app/presentation/widgets/movie_detail/container/review_list.dart';
 import 'package:movie_app/presentation/widgets/movie_detail/container/similar_movie_list.dart';
@@ -22,9 +23,6 @@ class MovieDetailPage extends StatelessWidget {
   final MovieDetailRepository movieDetailRepository =
       sl<MovieDetailRepository>();
 
-  bool _isFavorite = true;
-  bool _isWatchlist = true;
-
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
@@ -35,10 +33,7 @@ class MovieDetailPage extends StatelessWidget {
         title: Text(movieTitle.toString()),
         backgroundColor: Colors.black87,
         actions: <Widget>[
-          ButtonMarkAsFavorite(
-            isFavorite: _isFavorite,
-            onFavoritePress: onFavoritePress,
-          ),
+
         ],
       ),
       body: SingleChildScrollView(
@@ -56,10 +51,7 @@ class MovieDetailPage extends StatelessWidget {
               Divider(
                 color: Colors.white.withOpacity(0.8),
               ),
-              ButtonAddToWatchList(
-                isWatchlist: _isWatchlist,
-                onAddToWatchList: onAddToWatchList,
-              ),
+              MovieAccountStatesWidget(),
               Divider(
                 color: Colors.white.withOpacity(0.8),
               ),
@@ -97,37 +89,5 @@ class MovieDetailPage extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void onFavoritePress() {
-    if (_isFavorite == true) {
-      _scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text("Video Added to Favorite List"),
-        backgroundColor: Colors.green,
-        duration: Duration(seconds: 1),
-      ));
-    } else {
-      _scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text("Video removed from Favorite List"),
-        backgroundColor: Colors.red,
-        duration: Duration(seconds: 1),
-      ));
-    }
-  }
-
-  void onAddToWatchList() {
-    if (_isWatchlist == true) {
-      _scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text("Video Added to Watchlist"),
-        backgroundColor: Colors.green,
-        duration: Duration(seconds: 1),
-      ));
-    } else {
-      _scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text("Video removed from Watchlist"),
-        backgroundColor: Colors.red,
-        duration: Duration(seconds: 1),
-      ));
-    }
   }
 }

@@ -17,8 +17,7 @@ class ButtonAddToWatchList extends StatelessWidget {
         onAddToWatchList();
       },
       child: Container(
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.only(top: 10, bottom: 10, left: 10),
+        padding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
         decoration: BoxDecoration(
             color: isWatchlist == false
                 ? Colors.white.withOpacity(0.3)

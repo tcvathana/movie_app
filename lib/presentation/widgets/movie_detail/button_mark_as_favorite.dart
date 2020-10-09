@@ -9,19 +9,37 @@ class ButtonMarkAsFavorite extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: isFavorite == false
-          ? Icon(
-              Icons.favorite_border,
-              color: Colors.white,
-            )
-          : Icon(
-              Icons.favorite,
-              color: Colors.red,
-            ),
-      onPressed: () {
+    return InkWell(
+      onTap: () {
         onFavoritePress();
       },
+      child: Container(
+        padding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
+        decoration: BoxDecoration(
+            color: isFavorite == false
+                ? Colors.white.withOpacity(0.3)
+                : Colors.white.withOpacity(0.0),
+            borderRadius: BorderRadius.circular(5),
+            border: Border.all(
+              color: Colors.white.withOpacity(0.3),
+              width: 0.5,
+            )),
+        child: Row(
+          children: <Widget>[
+            Icon(
+              isFavorite == false ? Icons.favorite_border : Icons.favorite,
+              color: Colors.red,
+            ),
+            SizedBox(
+              width: 15,
+            ),
+            Text(
+              isFavorite == false ? "Mark As Favorite" : "Added to Favorite",
+              style: TextStyle(color: Colors.white),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
