@@ -74,11 +74,12 @@ class AccountRepository implements IAccountRepository {
   @override
   Future<bool> addToWatchlist({
     String sessionId,
+    String accountId,
     int mediaId,
     bool watchlist,
   }) async {
     http.Response response = await http.post(
-        "$BASE_URL/account/{account_id}/watchlist?api_key=$API_KEY&session_id=$sessionId",
+        "$BASE_URL/account/$accountId/watchlist?api_key=$API_KEY&session_id=$sessionId",
         body: {
           "media_type": "movie",
           "media_id": mediaId.toString(),
@@ -98,11 +99,12 @@ class AccountRepository implements IAccountRepository {
   @override
   Future<bool> markAsFavorite({
     String sessionId,
+    String accountId,
     int mediaId,
     bool favorite,
   }) async {
     http.Response response = await http.post(
-        "$BASE_URL/account/{account_id}/favorite?api_key=$API_KEY&session_id=$sessionId",
+        "$BASE_URL/account/$accountId/favorite?api_key=$API_KEY&session_id=$sessionId",
         body: {
           "media_type": "movie",
           "media_id": mediaId.toString(),
