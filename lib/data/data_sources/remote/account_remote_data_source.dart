@@ -13,15 +13,16 @@ abstract class IAccountRemoteDataSource {
   Future<MovieList> getWatchlistMovieList({String sessionId, String accountId});
 
   // USE_CASE
-  Future<bool> markAsFavorite({String sessionId, int mediaId, bool favorite});
+  Future<String> markAsFavorite(
+      {String sessionId, int accountId, int mediaId, bool favorite});
 
-  Future<bool> addToWatchlist({String sessionId, int mediaId, bool watchlist});
+  Future<String> addToWatchlist(
+      {String sessionId, int accountId, int mediaId, bool watchlist});
 }
 
 class AccountRemoteDataSource implements IAccountRemoteDataSource {
-
   @override
-  Future<Account> getAccountDetails({String sessionId})async {
+  Future<Account> getAccountDetails({String sessionId}) async {
     http.Response response = await http.get(
       "$BASE_URL/account?api_key=$API_KEY&session_id=$sessionId",
     );
@@ -35,7 +36,8 @@ class AccountRemoteDataSource implements IAccountRemoteDataSource {
   }
 
   @override
-  Future<MovieList> getFavoriteMovieList({String sessionId,  String accountId}) async {
+  Future<MovieList> getFavoriteMovieList(
+      {String sessionId, String accountId}) async {
     http.Response response = await http.get(
         "$BASE_URL/account/$accountId/favorite/movies?api_key=$API_KEY&session_id=$sessionId&sort_by=created_at.asc&page=1");
     if (response.statusCode == 200) {
@@ -48,7 +50,8 @@ class AccountRemoteDataSource implements IAccountRemoteDataSource {
   }
 
   @override
-  Future<MovieList> getWatchlistMovieList({String sessionId, String accountId}) async {
+  Future<MovieList> getWatchlistMovieList(
+      {String sessionId, String accountId}) async {
     http.Response response = await http.get(
         "$BASE_URL/account/$accountId/watchlist/movies?api_key=$API_KEY&session_id=$sessionId&sort_by=created_at.asc&page=1");
     if (response.statusCode == 200) {
@@ -61,14 +64,70 @@ class AccountRemoteDataSource implements IAccountRemoteDataSource {
   }
 
   @override
-  Future<bool> markAsFavorite({String sessionId, int mediaId, bool favorite}) {
-    // TODO: implement markAsFavorite
-    throw UnimplementedError();
+  Future<String> markAsFavorite({
+    String sessionId,
+    int accountId,
+    int mediaId,
+    bool favorite,
+  }) async {
+    final body = json.encode(
+      {
+        "media_type": "movie",
+        "media_id": mediaId,
+        "favorite": favorite,
+      },
+    );
+    http.Response response = await http.post(
+      "$BASE_URL/account/$accountId/favorite?api_key=$API_KEY&session_id=$sessionId",
+      body: body,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    );
+    final responseMap = json.decode(response.body);
+    if (response.statusCode == 200) {
+      final String statusMessage = responseMap["status_message"];
+      return statusMessage;
+    } else if (response.statusCode == 201) {
+      final String statusMessage = responseMap["status_message"];
+      return statusMessage;
+    } else {
+      final String statusMessage = responseMap["status_message"];
+      throw Exception(statusMessage);
+    }
   }
 
   @override
-  Future<bool> addToWatchlist({String sessionId, int mediaId, bool watchlist}) {
-    // TODO: implement addToWatchlist
-    throw UnimplementedError();
+  Future<String> addToWatchlist({
+    String sessionId,
+    int accountId,
+    int mediaId,
+    bool watchlist,
+  }) async {
+    final body = json.encode(
+      {
+        "media_type": "movie",
+        "media_id": mediaId,
+        "watchlist": watchlist,
+      },
+    );
+    http.Response response = await http.post(
+      "$BASE_URL/account/$accountId/watchlist?api_key=$API_KEY&session_id=$sessionId",
+      body: body,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    );
+    final responseMap = json.decode(response.body);
+    if (response.statusCode == 200) {
+      final String statusMessage = responseMap["status_message"];
+      return statusMessage;
+    } else if (response.statusCode == 201) {
+      final String statusMessage = responseMap["status_message"];
+      return statusMessage;
+    } else {
+      final String statusMessage = responseMap["status_message"];
+      throw Exception(statusMessage);
+    }
   }
 }

@@ -3,9 +3,6 @@ import '../button_add_to_watchlist.dart';
 import '../button_mark_as_favorite.dart';
 
 class MovieAccountStatesWidget extends StatelessWidget {
-  bool _isFavorite = true;
-  bool _isWatchlist = true;
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -13,36 +10,10 @@ class MovieAccountStatesWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          ButtonMarkAsFavorite(
-            isFavorite: _isFavorite,
-            onFavoritePress: onFavoritePress,
-          ),
-          ButtonAddToWatchList(
-            isWatchlist: _isWatchlist,
-            onAddToWatchList: onAddToWatchList,
-          ),
+          ButtonMarkAsFavorite(),
+          ButtonAddToWatchList(),
         ],
       ),
     );
-  }
-
-  void onFavoritePress() {
-    if (_isFavorite == true) {
-      // TODO: Implement SnackBar
-      print("Success");
-    } else {
-      // TODO: Implement SnackBar
-      print("Removed");
-    }
-  }
-
-  void onAddToWatchList() {
-    if (_isWatchlist == true) {
-      // TODO: Implement SnackBar
-      print("Success");
-    } else {
-      // TODO: Implement SnackBar
-      print("Removed");
-    }
   }
 }

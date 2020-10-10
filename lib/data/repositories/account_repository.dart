@@ -1,11 +1,10 @@
-import 'package:http/http.dart' as http;
+import 'package:meta/meta.dart';
 import 'package:movie_app/core/network/network_info.dart';
 import 'package:movie_app/data/data_sources/local/account_local_data_source.dart';
 import 'package:movie_app/data/data_sources/remote/account_remote_data_source.dart';
 import 'package:movie_app/data/models/movie_list.dart';
 import '../models/account.dart';
 import '../../domain/repositories/i_account_repository.dart';
-import '../../config.dart';
 
 class AccountRepository implements IAccountRepository {
   final AccountRemoteDataSource remoteDataSource;
@@ -19,7 +18,7 @@ class AccountRepository implements IAccountRepository {
   });
 
   @override
-  Future<Account> getAccountDetails({String sessionId}) async {
+  Future<Account> getAccountDetails({@required String sessionId}) async {
     if (await networkInfo.isConnected) {
       final remoteAccount = await remoteDataSource.getAccountDetails(
         sessionId: sessionId,
@@ -34,8 +33,8 @@ class AccountRepository implements IAccountRepository {
   // List
   @override
   Future<MovieList> getFavoriteMovieList({
-    String sessionId,
-    String accountId,
+    @required String sessionId,
+    @required String accountId,
   }) async {
     if (await networkInfo.isConnected) {
       final remoteMovieList = await remoteDataSource.getFavoriteMovieList(
@@ -53,8 +52,8 @@ class AccountRepository implements IAccountRepository {
 
   @override
   Future<MovieList> getWatchlistMovieList({
-    String sessionId,
-    String accountId,
+    @required String sessionId,
+    @required String accountId,
   }) async {
     if (await networkInfo.isConnected) {
       final remoteMovieList = await remoteDataSource.getWatchlistMovieList(
@@ -72,53 +71,32 @@ class AccountRepository implements IAccountRepository {
 
   // USE_CASE
   @override
-  Future<bool> addToWatchlist({
-    String sessionId,
-    String accountId,
-    int mediaId,
-    bool watchlist,
-  }) async {
-    http.Response response = await http.post(
-        "$BASE_URL/account/$accountId/watchlist?api_key=$API_KEY&session_id=$sessionId",
-        body: {
-          "media_type": "movie",
-          "media_id": mediaId.toString(),
-          "watchlist": watchlist.toString()
-        });
-    if (response.statusCode == 200) {
-      print("status: 200");
-      return true;
-    } else if (response.statusCode == 201) {
-      print("status: 201");
-      return true;
-    } else {
-      return false;
-    }
+  Future<String> markAsFavorite({
+    @required String sessionId,
+    @required int accountId,
+    @required int mediaId,
+    @required bool favorite,
+  }) {
+    return remoteDataSource.markAsFavorite(
+      sessionId: sessionId,
+      accountId: accountId,
+      mediaId: mediaId,
+      favorite: favorite,
+    );
   }
 
   @override
-  Future<bool> markAsFavorite({
-    String sessionId,
-    String accountId,
-    int mediaId,
-    bool favorite,
-  }) async {
-    http.Response response = await http.post(
-        "$BASE_URL/account/$accountId/favorite?api_key=$API_KEY&session_id=$sessionId",
-        body: {
-          "media_type": "movie",
-          "media_id": mediaId.toString(),
-          "favorite": favorite.toString()
-        });
-    print("fav.toString(): ${favorite.toString()}");
-    if (response.statusCode == 200) {
-      print("deleted");
-      return true;
-    } else if (response.statusCode == 201) {
-      print("created");
-      return true;
-    } else {
-      return false;
-    }
+  Future<String> addToWatchlist({
+    @required String sessionId,
+    @required int accountId,
+    @required int mediaId,
+    @required bool watchlist,
+  }) {
+    return remoteDataSource.addToWatchlist(
+      sessionId: sessionId,
+      accountId: accountId,
+      mediaId: mediaId,
+      watchlist: watchlist,
+    );
   }
 }

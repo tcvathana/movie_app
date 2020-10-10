@@ -1,6 +1,5 @@
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:get_it/get_it.dart';
-import 'package:http/http.dart' as http;
 import 'package:movie_app/core/network/network_info.dart';
 import 'package:movie_app/data/data_sources/local/account_local_data_source.dart';
 import 'package:movie_app/data/data_sources/local/movie_detail_local_data_source.dart';
@@ -20,6 +19,9 @@ import 'package:movie_app/presentation/bloc/account/account_bloc.dart';
 import 'package:movie_app/presentation/bloc/account/favorite_movie/favorite_movie_bloc.dart';
 import 'package:movie_app/presentation/bloc/account/watchlist_movie/watchlist_movie_bloc.dart';
 import 'package:movie_app/presentation/bloc/authentication/auth_bloc.dart';
+import 'package:movie_app/presentation/bloc/movie_detail/movie_detail_bloc.dart';
+import 'package:movie_app/presentation/bloc/movie_detail/movie_favorite_status/movie_favorite_status_bloc.dart';
+import 'package:movie_app/presentation/bloc/movie_detail/movie_watchlist_status/movie_watchlist_status_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final sl = GetIt.instance;
@@ -30,6 +32,15 @@ Future<void> init() async {
   sl.registerFactory(() => AccountBloc(accountRepository: sl()));
   sl.registerFactory(() => FavoriteMovieBloc(accountRepository: sl()));
   sl.registerFactory(() => WatchlistMovieBloc(accountRepository: sl()));
+  sl.registerFactory(() => MovieDetailBloc(movieDetailRepository: sl()));
+  sl.registerFactory(() => MovieFavoriteStatusBloc(
+        accountRepository: sl(),
+        movieDetailRepository: sl(),
+      ));
+  sl.registerFactory(() => MovieWatchlistStatusBloc(
+        accountRepository: sl(),
+        movieDetailRepository: sl(),
+      ));
   // Use Case
   // Repository
   sl.registerLazySingleton(() => AuthRepository(remoteDataSource: sl()));

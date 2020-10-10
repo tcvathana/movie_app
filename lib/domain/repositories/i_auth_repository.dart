@@ -1,5 +1,4 @@
 import 'package:meta/meta.dart';
-import '../../data/models/account.dart';
 
 abstract class IAuthRepository {
   // RETURN token

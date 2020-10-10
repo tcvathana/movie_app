@@ -1,20 +1,33 @@
+import 'package:meta/meta.dart';
 import '../../data/models/account.dart';
 import '../../data/models/movie_list.dart';
 
 abstract class IAccountRepository {
-  Future<Account> getAccountDetails({String sessionId});
-
-  //Future<Account> saveAccountPreference({String sessionId});
-
-  //Future<Account> getAccountPreference();
+  Future<Account> getAccountDetails({@required String sessionId});
 
   //
-  Future<MovieList> getFavoriteMovieList({String sessionId});
+  Future<MovieList> getFavoriteMovieList({
+    @required String sessionId,
+    @required String accountId,
+  });
 
-  Future<MovieList> getWatchlistMovieList({String sessionId});
+  Future<MovieList> getWatchlistMovieList({
+    @required String sessionId,
+    @required String accountId,
+  });
 
   // USE_CASE
-  Future<bool> markAsFavorite({String sessionId, int mediaId, bool favorite});
+  Future<String> markAsFavorite({
+    @required String sessionId,
+    @required int accountId,
+    @required int mediaId,
+    @required bool favorite,
+  });
 
-  Future<bool> addToWatchlist({String sessionId, int mediaId, bool watchlist});
+  Future<String> addToWatchlist({
+    @required String sessionId,
+    @required int accountId,
+    @required int mediaId,
+    @required bool watchlist,
+  });
 }

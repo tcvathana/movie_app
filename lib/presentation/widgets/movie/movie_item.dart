@@ -25,7 +25,9 @@ class MovieItem extends StatelessWidget {
             context,
             PageTransition(
               type: PageTransitionType.fade,
-              child: MovieDetailPage(result.id, result.title),
+              child: MovieDetailPage(
+                movieId: result.id,
+              ),
             ),
           );
         },
