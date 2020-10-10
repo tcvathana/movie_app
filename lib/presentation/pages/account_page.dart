@@ -31,10 +31,6 @@ class _AccountPageState extends State<AccountPage> {
         backgroundColor: Colors.white.withOpacity(0.1),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.refresh),
-            onPressed: refresh,
-          ),
-          IconButton(
             icon: Icon(
               Icons.exit_to_app,
             ),
@@ -50,9 +46,7 @@ class _AccountPageState extends State<AccountPage> {
             if (state is AccountLoadedState) {
               return AccountPageBody();
             } else if (state is AccountLoadingState) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
+              return Center(child: CircularProgressIndicator());
             } else if (state is AccountErrorState) {
               return Center(
                 child: Text(
@@ -69,10 +63,6 @@ class _AccountPageState extends State<AccountPage> {
         ),
       ),
     );
-  }
-
-  void refresh() {
-    setState(() {});
   }
 
   void dispatchLogout() async {

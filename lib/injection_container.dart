@@ -28,57 +28,120 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   // BLoC
-  sl.registerFactory(() => AuthBloc(authRepository: sl()));
-  sl.registerFactory(() => AccountBloc(accountRepository: sl()));
-  sl.registerFactory(() => FavoriteMovieBloc(accountRepository: sl()));
-  sl.registerFactory(() => WatchlistMovieBloc(accountRepository: sl()));
-  sl.registerFactory(() => MovieDetailBloc(movieDetailRepository: sl()));
-  sl.registerFactory(() => MovieFavoriteStatusBloc(
-        accountRepository: sl(),
-        movieDetailRepository: sl(),
-      ));
-  sl.registerFactory(() => MovieWatchlistStatusBloc(
-        accountRepository: sl(),
-        movieDetailRepository: sl(),
-      ));
+  sl.registerFactory(
+    () => AuthBloc(
+      authRepository: sl(),
+    ),
+  );
+  sl.registerFactory(
+    () => AccountBloc(
+      accountRepository: sl(),
+    ),
+  );
+  sl.registerFactory(
+    () => FavoriteMovieBloc(
+      accountRepository: sl(),
+    ),
+  );
+  sl.registerFactory(
+    () => WatchlistMovieBloc(
+      accountRepository: sl(),
+    ),
+  );
+  sl.registerFactory(
+    () => MovieDetailBloc(
+      movieDetailRepository: sl(),
+    ),
+  );
+  sl.registerFactory(
+    () => MovieFavoriteStatusBloc(
+      accountRepository: sl(),
+      movieDetailRepository: sl(),
+    ),
+  );
+  sl.registerFactory(
+    () => MovieWatchlistStatusBloc(
+      accountRepository: sl(),
+      movieDetailRepository: sl(),
+    ),
+  );
   // Use Case
   // Repository
-  sl.registerLazySingleton(() => AuthRepository(remoteDataSource: sl()));
-  sl.registerLazySingleton(() => AccountRepository(
-        remoteDataSource: sl(),
-        localDataSource: sl(),
-        networkInfo: sl(),
-      ));
-  sl.registerLazySingleton(() => MovieRepository(
-        remoteDataSource: sl(),
-        localDataSource: sl(),
-        networkInfo: sl(),
-      ));
-  sl.registerLazySingleton(() => MovieDetailRepository(
-        remoteDataSource: sl(),
-        localDataSource: sl(),
-        networkInfo: sl(),
-      ));
-  sl.registerLazySingleton(() => SearchRepository(
-        remoteDataSource: sl(),
-        localDataSource: sl(),
-        networkInfo: sl(),
-      ));
+  sl.registerLazySingleton(
+    () => AuthRepository(
+      remoteDataSource: sl(),
+    ),
+  );
+  sl.registerLazySingleton(
+    () => AccountRepository(
+      remoteDataSource: sl(),
+      localDataSource: sl(),
+      networkInfo: sl(),
+    ),
+  );
+  sl.registerLazySingleton(
+    () => MovieRepository(
+      remoteDataSource: sl(),
+      localDataSource: sl(),
+      networkInfo: sl(),
+    ),
+  );
+  sl.registerLazySingleton(
+    () => MovieDetailRepository(
+      remoteDataSource: sl(),
+      localDataSource: sl(),
+      networkInfo: sl(),
+    ),
+  );
+  sl.registerLazySingleton(
+    () => SearchRepository(
+      remoteDataSource: sl(),
+      localDataSource: sl(),
+      networkInfo: sl(),
+    ),
+  );
   // Data source
-  sl.registerLazySingleton(() => AuthRemoteDataSource());
-  sl.registerLazySingleton(() => AccountRemoteDataSource());
   sl.registerLazySingleton(
-      () => AccountLocalDataSource(sharedPreferences: sl()));
-  sl.registerLazySingleton(() => MovieRemoteDataSource());
-  sl.registerLazySingleton(() => MovieLocalDataSource(sharedPreferences: sl()));
-  sl.registerLazySingleton(() => MovieDetailRemoteDataSource());
+    () => AuthRemoteDataSource(),
+  );
   sl.registerLazySingleton(
-      () => MovieDetailLocalDataSource(sharedPreferences: sl()));
-  sl.registerLazySingleton(() => SearchRemoteDataSource());
+    () => AccountRemoteDataSource(),
+  );
   sl.registerLazySingleton(
-      () => SearchLocalDataSource(sharedPreferences: sl()));
+    () => AccountLocalDataSource(
+      sharedPreferences: sl(),
+    ),
+  );
+  sl.registerLazySingleton(
+    () => MovieRemoteDataSource(),
+  );
+  sl.registerLazySingleton(
+    () => MovieLocalDataSource(
+      sharedPreferences: sl(),
+    ),
+  );
+  sl.registerLazySingleton(
+    () => MovieDetailRemoteDataSource(),
+  );
+  sl.registerLazySingleton(
+    () => MovieDetailLocalDataSource(
+      sharedPreferences: sl(),
+    ),
+  );
+  sl.registerLazySingleton(
+    () => SearchRemoteDataSource(),
+  );
+  sl.registerLazySingleton(
+    () => SearchLocalDataSource(
+      sharedPreferences: sl(),
+    ),
+  );
   // Core
-  sl.registerLazySingleton(() => NetworkInfo(connectionChecker: sl()));
+  sl.registerLazySingleton(
+    () => NetworkInfo(
+      connectionChecker: sl(),
+    ),
+  );
   // External
   final sharedPreferences = await SharedPreferences.getInstance();
   sl.registerLazySingleton(() => sharedPreferences);

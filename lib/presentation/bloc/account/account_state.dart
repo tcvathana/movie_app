@@ -20,7 +20,7 @@ class AccountLoadedState extends AccountState {
   AccountLoadedState(this.account);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [account];
 }
 
 class AccountErrorState extends AccountState {

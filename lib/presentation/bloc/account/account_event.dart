@@ -12,8 +12,3 @@ class GetAccountEvent extends AccountEvent {
   @override
   List<Object> get props => [sessionId];
 }
-
-class RemoveAccountEvent extends AccountEvent {
-  @override
-  List<Object> get props => [];
-}
