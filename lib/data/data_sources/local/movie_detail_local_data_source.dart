@@ -1,7 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../config.dart';
 import '../../models/movie_credits.dart';
 import '../../models/movie_detail.dart';
 import '../../models/movie_list.dart';

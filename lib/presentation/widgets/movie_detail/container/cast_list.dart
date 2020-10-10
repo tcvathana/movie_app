@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/data/repositories/movie_detail_repository.dart';
 import '../../../../data/models/movie_credits.dart';
 import '../cast_item.dart';
 

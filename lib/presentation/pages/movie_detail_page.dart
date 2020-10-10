@@ -1,45 +1,85 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:movie_app/data/repositories/account_repository.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/data/models/movie_detail.dart';
 import 'package:movie_app/data/repositories/movie_detail_repository.dart';
 import 'package:movie_app/injection_container.dart';
-import 'package:movie_app/presentation/widgets/movie_detail/button_add_to_watchlist.dart';
-import 'package:movie_app/presentation/widgets/movie_detail/button_mark_as_favorite.dart';
+import 'package:movie_app/presentation/bloc/movie_detail/movie_detail_bloc.dart';
+import 'package:movie_app/presentation/bloc/movie_detail/movie_favorite_status/movie_favorite_status_bloc.dart';
+import 'package:movie_app/presentation/bloc/movie_detail/movie_watchlist_status/movie_watchlist_status_bloc.dart';
 import 'package:movie_app/presentation/widgets/movie_detail/container/cast_list.dart';
+import 'package:movie_app/presentation/widgets/movie_detail/container/movie_account_states_widget.dart';
 import 'package:movie_app/presentation/widgets/movie_detail/container/movie_detail_widget.dart';
 import 'package:movie_app/presentation/widgets/movie_detail/container/review_list.dart';
 import 'package:movie_app/presentation/widgets/movie_detail/container/similar_movie_list.dart';
 import 'package:movie_app/presentation/widgets/movie_detail/container/video_list.dart';
-
+import '../../injection_container.dart' as di;
 
 class MovieDetailPage extends StatelessWidget {
   final int movieId;
-  final String movieTitle;
 
-  MovieDetailPage(this.movieId, this.movieTitle);
-
-  final AccountRepository accountRepository = new AccountRepository();
-  final MovieDetailRepository movieDetailRepository =
-      sl<MovieDetailRepository>();
-
-  bool _isFavorite = true;
-  bool _isWatchlist = true;
-
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  const MovieDetailPage({Key key, this.movieId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print("MovieID: $movieId");
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<MovieDetailBloc>(
+          create: (_) => di.sl<MovieDetailBloc>(),
+        ),
+        BlocProvider<MovieFavoriteStatusBloc>(
+          create: (_) => di.sl<MovieFavoriteStatusBloc>(),
+        ),
+        BlocProvider<MovieWatchlistStatusBloc>(
+          create: (_) => di.sl<MovieWatchlistStatusBloc>(),
+        ),
+      ],
+      child: BlocBuilder<MovieDetailBloc, MovieDetailState>(
+        builder: (context, state) {
+          if (state is MovieDetailInitial) {
+            BlocProvider.of<MovieDetailBloc>(context).add(
+              GetMovieDetailEvent(movieId),
+            );
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (state is MovieDetailLoaded) {
+            return MovieDetailBody(
+              movieDetail: state.movieDetail,
+            );
+          }
+          if (state is MovieDetailLoading) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return Container();
+        },
+      ),
+    );
+  }
+}
+
+class MovieDetailBody extends StatelessWidget {
+  final MovieDetail movieDetail;
+
+  const MovieDetailBody({Key key, this.movieDetail}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> _scaffoldKey =
+        new GlobalKey<ScaffoldState>();
+
+    final MovieDetailRepository movieDetailRepository =
+        sl<MovieDetailRepository>();
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text(movieTitle.toString()),
+        title: Text(movieDetail.title),
         backgroundColor: Colors.black87,
-        actions: <Widget>[
-          ButtonMarkAsFavorite(
-            isFavorite: _isFavorite,
-            onFavoritePress: onFavoritePress,
-          ),
-        ],
+        actions: <Widget>[],
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -50,22 +90,19 @@ class MovieDetailPage extends StatelessWidget {
             children: <Widget>[
               MovieDetailWidget(
                 getMovieDetail: movieDetailRepository.getMovieDetail(
-                  movieId: movieId.toString(),
+                  movieId: movieDetail.id.toString(),
                 ),
               ),
               Divider(
                 color: Colors.white.withOpacity(0.8),
               ),
-              ButtonAddToWatchList(
-                isWatchlist: _isWatchlist,
-                onAddToWatchList: onAddToWatchList,
-              ),
+              MovieAccountStatesWidget(),
               Divider(
                 color: Colors.white.withOpacity(0.8),
               ),
               ReviewList(
                 getMovieReview: movieDetailRepository.getMovieReview(
-                  movieId: movieId.toString(),
+                  movieId: movieDetail.id.toString(),
                 ),
               ),
               Divider(
@@ -73,7 +110,7 @@ class MovieDetailPage extends StatelessWidget {
               ),
               VideoList(
                 getMovieVideo: movieDetailRepository.getMovieVideo(
-                  movieId: movieId.toString(),
+                  movieId: movieDetail.id.toString(),
                 ),
               ),
               Divider(
@@ -81,7 +118,7 @@ class MovieDetailPage extends StatelessWidget {
               ),
               CastList(
                 getMovieCredit: movieDetailRepository.getMovieCredit(
-                  movieId: movieId.toString(),
+                  movieId: movieDetail.id.toString(),
                 ),
               ),
               Divider(
@@ -89,7 +126,7 @@ class MovieDetailPage extends StatelessWidget {
               ),
               SimilarMovieList(
                 getMovieSimilar: movieDetailRepository.getMovieSimilar(
-                  movieId: movieId.toString(),
+                  movieId: movieDetail.id.toString(),
                 ),
               ),
             ],
@@ -98,89 +135,4 @@ class MovieDetailPage extends StatelessWidget {
       ),
     );
   }
-
-  void onFavoritePress() {
-    if (_isFavorite == true) {
-      _scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text("Video Added to Favorite List"),
-        backgroundColor: Colors.green,
-        duration: Duration(seconds: 1),
-      ));
-    } else {
-      _scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text("Video removed from Favorite List"),
-        backgroundColor: Colors.red,
-        duration: Duration(seconds: 1),
-      ));
-    }
-  }
-
-  void onAddToWatchList() {
-    if (_isWatchlist == true) {
-      _scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text("Video Added to Watchlist"),
-        backgroundColor: Colors.green,
-        duration: Duration(seconds: 1),
-      ));
-    } else {
-      _scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text("Video removed from Watchlist"),
-        backgroundColor: Colors.red,
-        duration: Duration(seconds: 1),
-      ));
-    }
-  }
-
-/*
-String mySession = '';
-Future<bool> markAsFavor(bool favorite) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String session = prefs.getString("session_id");
-    return accountRepository.markAsFavorite(
-      sessionId: session,
-      mediaId: widget.movieId,
-      favorite: favorite,
-    );
-  }
-
-  Future<bool> addToWatch(bool watchlist) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String session = prefs.getString("session_id");
-    return accountRepository.addToWatchlist(
-      sessionId: session,
-      mediaId: widget.movieId,
-      watchlist: watchlist,
-    );
-  }
-
-  Future<MovieAccountStates> initAccountStates() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String session = prefs.getString("session_id");
-    if (session == null) {
-      print("session null here");
-      session = null;
-      return null;
-    } else {
-      mySession = session;
-      var future = movieDetailRepository.getMovieAccountStates(
-        sessionId: session,
-        movieId: widget.movieId,
-      );
-      future.then((value) {
-        _isFavorite = value.favorite;
-        _isWatchlist = value.watchlist;
-      });
-      return future;
-    }
-  }
-
-  Future<String> getSession() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String session = prefs.getString("session_id");
-    if (session == null) {
-      return null;
-    } else {
-      return session;
-    }
-  }*/
 }

@@ -1,4 +1,5 @@
 import 'package:meta/meta.dart';
+import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import '../../../config.dart';
@@ -37,10 +38,12 @@ class MovieDetailRemoteDataSource implements IMovieDetailRemoteDataSource {
   Future<MovieDetail> fetchMovieDetail({String movieId}) async {
     http.Response response =
         await http.get("$BASE_URL/movie/$movieId?api_key=$API_KEY");
+    final responseMap = json.decode(response.body);
     if (response.statusCode == 200) {
       return MovieDetail.fromJson(response.body);
     } else {
-      throw Exception("Error ${response.toString()}");
+      final String statusMessage = responseMap["status_message"];
+      throw Exception(statusMessage);
     }
   }
 
@@ -84,10 +87,12 @@ class MovieDetailRemoteDataSource implements IMovieDetailRemoteDataSource {
   }) async {
     http.Response response = await http.get(
         "$BASE_URL/movie/$movieId/account_states?api_key=$API_KEY&session_id=$sessionId");
+    final responseMap = json.decode(response.body);
     if (response.statusCode == 200) {
       return MovieAccountStates.fromJson(response.body);
     } else {
-      throw Exception("Error ${response.toString()}");
+      final String statusMessage = responseMap["status_message"];
+      throw Exception(statusMessage);
     }
   }
 }

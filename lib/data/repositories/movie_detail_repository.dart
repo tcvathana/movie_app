@@ -105,7 +105,7 @@ class MovieDetailRepository implements IMovieDetailRepository {
   Future<MovieAccountStates> getMovieAccountStates({
     @required String sessionId,
     @required int movieId,
-  }) async {
+  }) {
     return remoteDataSource.fetchMovieAccountStates(
       sessionId: sessionId,
       movieId: movieId,

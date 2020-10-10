@@ -24,7 +24,9 @@ class MovieItemPlayNow extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  MovieDetailPage(movieResult.id, movieResult.title),
+                  MovieDetailPage(
+                    movieId: movieResult.id,
+                  ),
             ),
           );
         },

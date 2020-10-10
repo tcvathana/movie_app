@@ -1,8 +1,6 @@
-import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
 import '../../../config.dart';
 import '../../models/movie_list.dart';
-import '../../models/movie_account_states.dart';
 
 abstract class IMovieRemoteDataSource {
   Future<MovieList> fetchNowPlayingMovieList();

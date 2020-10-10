@@ -3,6 +3,8 @@ import 'package:page_transition/page_transition.dart';
 import '../../pages/favorite_list_page.dart';
 
 class FavoriteListButton extends StatelessWidget {
+  const FavoriteListButton({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return InkWell(

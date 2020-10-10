@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/data/models/movie_list.dart';
-import 'package:movie_app/presentation/widgets/movie/movie_item.dart';
 import 'package:movie_app/presentation/widgets/movie_detail/similar_movie_item.dart';
 
 class SimilarMovieList extends StatelessWidget {
