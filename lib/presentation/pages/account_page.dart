@@ -76,7 +76,8 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   void dispatchLogout() async {
-    BlocProvider.of<AuthBloc>(context).add(LogoutEvent());
+    final AuthLoaded authLoaded = BlocProvider.of<AuthBloc>(context).state;
+    BlocProvider.of<AuthBloc>(context).add(LogoutEvent(authLoaded.sessionId));
   }
 }
 

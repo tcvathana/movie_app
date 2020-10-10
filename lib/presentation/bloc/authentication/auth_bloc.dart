@@ -33,8 +33,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } catch (e) {
         yield AuthError(e.message);
       }
-    } else {
-      yield AuthInitial();
+    } else if(event is LogoutEvent) {
+      try {
+        await authRepository.deleteSession(sessionId: event.sessionId);
+        yield AuthInitial();
+      } catch(e) {
+        yield AuthError(e.message);
+      }
     }
   }
 }
