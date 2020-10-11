@@ -13,6 +13,7 @@ import 'package:movie_app/presentation/widgets/movie_detail/container/movie_deta
 import 'package:movie_app/presentation/widgets/movie_detail/container/review_list.dart';
 import 'package:movie_app/presentation/widgets/movie_detail/container/similar_movie_list.dart';
 import 'package:movie_app/presentation/widgets/movie_detail/container/video_list.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../injection_container.dart' as di;
 
 class MovieDetailPage extends StatelessWidget {
@@ -46,9 +47,7 @@ class MovieDetailPage extends StatelessWidget {
             );
           }
           if (state is MovieDetailLoaded) {
-            return MovieDetailBody(
-              movieDetail: state.movieDetail,
-            );
+            return MovieDetailBody();
           }
           if (state is MovieDetailLoading) {
             return Center(
@@ -63,9 +62,7 @@ class MovieDetailPage extends StatelessWidget {
 }
 
 class MovieDetailBody extends StatelessWidget {
-  final MovieDetail movieDetail;
-
-  const MovieDetailBody({Key key, this.movieDetail}) : super(key: key);
+  const MovieDetailBody({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -74,10 +71,11 @@ class MovieDetailBody extends StatelessWidget {
 
     final MovieDetailRepository movieDetailRepository =
         sl<MovieDetailRepository>();
+    final MovieDetailLoaded loadedMovie = context.bloc<MovieDetailBloc>().state;
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text(movieDetail.title),
+        title: Text(loadedMovie.movieDetail.title),
         backgroundColor: Colors.black87,
         actions: <Widget>[],
       ),
@@ -88,11 +86,17 @@ class MovieDetailBody extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              MovieDetailWidget(
-                getMovieDetail: movieDetailRepository.getMovieDetail(
-                  movieId: movieDetail.id.toString(),
+              SizedBox(
+                child: Shimmer.fromColors(
+                  baseColor: Colors.white,
+                  highlightColor: Colors.grey,
+                  child: Container(
+                    height: 10,
+                    color: Colors.white,
+                  ),
                 ),
               ),
+              MovieDetailWidget(),
               Divider(
                 color: Colors.white.withOpacity(0.8),
               ),
@@ -100,35 +104,19 @@ class MovieDetailBody extends StatelessWidget {
               Divider(
                 color: Colors.white.withOpacity(0.8),
               ),
-              ReviewList(
-                getMovieReview: movieDetailRepository.getMovieReview(
-                  movieId: movieDetail.id.toString(),
-                ),
-              ),
+              ReviewList(),
               Divider(
                 color: Colors.white.withOpacity(0.8),
               ),
-              VideoList(
-                getMovieVideo: movieDetailRepository.getMovieVideo(
-                  movieId: movieDetail.id.toString(),
-                ),
-              ),
+              VideoList(),
               Divider(
                 color: Colors.white.withOpacity(0.8),
               ),
-              CastList(
-                getMovieCredit: movieDetailRepository.getMovieCredit(
-                  movieId: movieDetail.id.toString(),
-                ),
-              ),
+              CastList(),
               Divider(
                 color: Colors.white.withOpacity(0.8),
               ),
-              SimilarMovieList(
-                getMovieSimilar: movieDetailRepository.getMovieSimilar(
-                  movieId: movieDetail.id.toString(),
-                ),
-              ),
+              SimilarMovieList(),
             ],
           ),
         ),

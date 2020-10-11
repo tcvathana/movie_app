@@ -22,7 +22,7 @@ class MovieDetailRepository implements IMovieDetailRepository {
   });
 
   @override
-  Future<MovieCredit> getMovieCredit({@required String movieId}) async {
+  Future<MovieCredit> getMovieCredit({@required int movieId}) async {
     if (await networkInfo.isConnected) {
       final remoteMovieCredit = await remoteDataSource.fetchMovieCredit(
         movieId: movieId,
@@ -38,7 +38,7 @@ class MovieDetailRepository implements IMovieDetailRepository {
   }
 
   @override
-  Future<MovieDetail> getMovieDetail({@required String movieId}) async {
+  Future<MovieDetail> getMovieDetail({@required int movieId}) async {
     if (await networkInfo.isConnected) {
       final remoteMovieDetail = await remoteDataSource.fetchMovieDetail(
         movieId: movieId,
@@ -54,7 +54,7 @@ class MovieDetailRepository implements IMovieDetailRepository {
   }
 
   @override
-  Future<MovieReview> getMovieReview({@required String movieId}) async {
+  Future<MovieReview> getMovieReview({@required int movieId}) async {
     if (await networkInfo.isConnected) {
       final remoteMovieReview = await remoteDataSource.fetchMovieReview(
         movieId: movieId,
@@ -70,7 +70,7 @@ class MovieDetailRepository implements IMovieDetailRepository {
   }
 
   @override
-  Future<MovieList> getMovieSimilar({@required String movieId}) async {
+  Future<MovieList> getMovieSimilar({@required int movieId}) async {
     if (await networkInfo.isConnected) {
       final remoteMovieSimilar = await remoteDataSource.fetchMovieSimilar(
         movieId: movieId,
@@ -86,7 +86,7 @@ class MovieDetailRepository implements IMovieDetailRepository {
   }
 
   @override
-  Future<MovieVideo> getMovieVideo({@required String movieId}) async {
+  Future<MovieVideo> getMovieVideo({@required int movieId}) async {
     if (await networkInfo.isConnected) {
       final remoteMovieVideo = await remoteDataSource.fetchMovieVideo(
         movieId: movieId,
