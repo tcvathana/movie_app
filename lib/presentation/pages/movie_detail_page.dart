@@ -1,9 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_app/data/models/movie_detail.dart';
-import 'package:movie_app/data/repositories/movie_detail_repository.dart';
-import 'package:movie_app/injection_container.dart';
 import 'package:movie_app/presentation/bloc/movie_detail/movie_detail_bloc.dart';
 import 'package:movie_app/presentation/bloc/movie_detail/movie_favorite_status/movie_favorite_status_bloc.dart';
 import 'package:movie_app/presentation/bloc/movie_detail/movie_watchlist_status/movie_watchlist_status_bloc.dart';
@@ -42,19 +39,9 @@ class MovieDetailPage extends StatelessWidget {
             BlocProvider.of<MovieDetailBloc>(context).add(
               GetMovieDetailEvent(movieId),
             );
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+            return Container();
           }
-          if (state is MovieDetailLoaded) {
-            return MovieDetailBody();
-          }
-          if (state is MovieDetailLoading) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return Container();
+          return MovieDetailBody();
         },
       ),
     );
@@ -68,34 +55,32 @@ class MovieDetailBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> _scaffoldKey =
         new GlobalKey<ScaffoldState>();
-
-    final MovieDetailRepository movieDetailRepository =
-        sl<MovieDetailRepository>();
-    final MovieDetailLoaded loadedMovie = context.bloc<MovieDetailBloc>().state;
+    final MovieDetailState movieDetailState =
+        context.bloc<MovieDetailBloc>().state;
     return Scaffold(
       key: _scaffoldKey,
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text(loadedMovie.movieDetail.title),
-        backgroundColor: Colors.black87,
-        actions: <Widget>[],
+        title: (movieDetailState is MovieDetailLoaded)
+            ? Text(movieDetailState.movieDetail.title)
+            : Shimmer.fromColors(
+                baseColor: Colors.white,
+                highlightColor: Colors.grey,
+                child: Container(
+                  height: 20,
+                  width: 100,
+                  color: Colors.white,
+                ),
+              ),
+        backgroundColor: Colors.white.withOpacity(0.1),
       ),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 30),
-          color: Colors.black87,
+          color: Colors.white.withOpacity(0.2),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(
-                child: Shimmer.fromColors(
-                  baseColor: Colors.white,
-                  highlightColor: Colors.grey,
-                  child: Container(
-                    height: 10,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
               MovieDetailWidget(),
               Divider(
                 color: Colors.white.withOpacity(0.8),

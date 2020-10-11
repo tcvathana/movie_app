@@ -98,8 +98,8 @@ class MovieDetailWidget extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                 return Chip(
                   label: Text(movieDetailState.movieDetail.genres[index].name),
-                  backgroundColor: Colors.black.withOpacity(0.8),
-                  labelStyle: TextStyle(color: Colors.blue),
+                  backgroundColor: Colors.blue,
+                  labelStyle: TextStyle(color: Colors.white),
                 );
               },
             ),

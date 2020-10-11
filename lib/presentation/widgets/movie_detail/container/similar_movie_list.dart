@@ -37,5 +37,6 @@ class SimilarMovieList extends StatelessWidget {
       );
     }
     // TODO: Implement Shimmer HERE
+    return Container();
   }
 }
