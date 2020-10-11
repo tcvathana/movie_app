@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/presentation/bloc/movie_detail/movie_detail_bloc.dart';
 import 'package:movie_app/presentation/widgets/movie_detail/similar_movie_item.dart';
 
-class SimilarMovieList extends StatelessWidget {
-  const SimilarMovieList({Key key}) : super(key: key);
+class SimilarMovieListWidget extends StatelessWidget {
+  const SimilarMovieListWidget({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

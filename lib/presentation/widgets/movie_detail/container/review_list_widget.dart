@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/presentation/bloc/movie_detail/movie_detail_bloc.dart';
 import '../review_item.dart';
 
-class ReviewList extends StatelessWidget {
-  const ReviewList({Key key}) : super(key: key);
+class ReviewListWidget extends StatelessWidget {
+  const ReviewListWidget({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

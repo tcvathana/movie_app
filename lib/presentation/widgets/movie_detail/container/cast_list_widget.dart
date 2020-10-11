@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/presentation/bloc/movie_detail/movie_detail_bloc.dart';
 import '../cast_item.dart';
 
-class CastList extends StatelessWidget {
-  const CastList({Key key}) : super(key: key);
+class CastListWidget extends StatelessWidget {
+  const CastListWidget({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

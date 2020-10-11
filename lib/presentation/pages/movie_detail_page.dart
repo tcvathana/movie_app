@@ -4,12 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/presentation/bloc/movie_detail/movie_detail_bloc.dart';
 import 'package:movie_app/presentation/bloc/movie_detail/movie_favorite_status/movie_favorite_status_bloc.dart';
 import 'package:movie_app/presentation/bloc/movie_detail/movie_watchlist_status/movie_watchlist_status_bloc.dart';
-import 'package:movie_app/presentation/widgets/movie_detail/container/cast_list.dart';
+import 'package:movie_app/presentation/widgets/movie_detail/container/cast_list_widget.dart';
 import 'package:movie_app/presentation/widgets/movie_detail/container/movie_account_states_widget.dart';
 import 'package:movie_app/presentation/widgets/movie_detail/container/movie_detail_widget.dart';
-import 'package:movie_app/presentation/widgets/movie_detail/container/review_list.dart';
-import 'package:movie_app/presentation/widgets/movie_detail/container/similar_movie_list.dart';
-import 'package:movie_app/presentation/widgets/movie_detail/container/video_list.dart';
+import 'package:movie_app/presentation/widgets/movie_detail/container/review_list_widget.dart';
+import 'package:movie_app/presentation/widgets/movie_detail/container/similar_movie_list_widget.dart';
+import 'package:movie_app/presentation/widgets/movie_detail/container/video_list_widget.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../injection_container.dart' as di;
 
@@ -89,19 +89,19 @@ class MovieDetailBody extends StatelessWidget {
               Divider(
                 color: Colors.white.withOpacity(0.8),
               ),
-              ReviewList(),
+              ReviewListWidget(),
               Divider(
                 color: Colors.white.withOpacity(0.8),
               ),
-              VideoList(),
+              VideoListWidget(),
               Divider(
                 color: Colors.white.withOpacity(0.8),
               ),
-              CastList(),
+              CastListWidget(),
               Divider(
                 color: Colors.white.withOpacity(0.8),
               ),
-              SimilarMovieList(),
+              SimilarMovieListWidget(),
             ],
           ),
         ),

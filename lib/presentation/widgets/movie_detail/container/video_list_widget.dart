@@ -4,9 +4,9 @@ import 'package:movie_app/data/models/movie_video.dart';
 import 'package:movie_app/presentation/bloc/movie_detail/movie_detail_bloc.dart';
 import '../video_item.dart';
 
-class VideoList extends StatelessWidget {
+class VideoListWidget extends StatelessWidget {
 
-  const VideoList({Key key}) : super(key: key);
+  const VideoListWidget({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
