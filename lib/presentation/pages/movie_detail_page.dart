@@ -74,35 +74,38 @@ class MovieDetailBody extends StatelessWidget {
               ),
         backgroundColor: Colors.white.withOpacity(0.1),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 30),
-          color: Colors.white.withOpacity(0.2),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              MovieDetailWidget(),
-              Divider(
-                color: Colors.white.withOpacity(0.8),
-              ),
-              MovieAccountStatesWidget(),
-              Divider(
-                color: Colors.white.withOpacity(0.8),
-              ),
-              ReviewListWidget(),
-              Divider(
-                color: Colors.white.withOpacity(0.8),
-              ),
-              VideoListWidget(),
-              Divider(
-                color: Colors.white.withOpacity(0.8),
-              ),
-              CastListWidget(),
-              Divider(
-                color: Colors.white.withOpacity(0.8),
-              ),
-              SimilarMovieListWidget(),
-            ],
+      body: Container(
+        color: Colors.white.withOpacity(0.2),
+        padding: EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 30),
+        height: MediaQuery.of(context).size.height,
+        child: SingleChildScrollView(
+          child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                MovieDetailWidget(),
+                Divider(
+                  color: Colors.white.withOpacity(0.8),
+                ),
+                MovieAccountStatesWidget(),
+                Divider(
+                  color: Colors.white.withOpacity(0.8),
+                ),
+                ReviewListWidget(),
+                Divider(
+                  color: Colors.white.withOpacity(0.8),
+                ),
+                VideoListWidget(),
+                Divider(
+                  color: Colors.white.withOpacity(0.8),
+                ),
+                CastListWidget(),
+                Divider(
+                  color: Colors.white.withOpacity(0.8),
+                ),
+                SimilarMovieListWidget(),
+              ],
+            ),
           ),
         ),
       ),
