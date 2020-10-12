@@ -65,14 +65,15 @@ class WatchlistButtonWidget extends StatelessWidget {
         dispatchAddToWatchlist(context, true);
       },
       child: Container(
-        padding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.3),
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(
             color: Colors.white.withOpacity(0.3),
-            borderRadius: BorderRadius.circular(5),
-            border: Border.all(
-              color: Colors.white.withOpacity(0.3),
-              width: 0.5,
-            )),
+            width: 0.5,
+          ),
+        ),
         child: Row(
           children: <Widget>[
             Icon(
@@ -80,10 +81,10 @@ class WatchlistButtonWidget extends StatelessWidget {
               color: Colors.white,
             ),
             SizedBox(
-              width: 15,
+              width: 5,
             ),
             Text(
-              "Add to WatchList",
+              "WatchList",
               style: TextStyle(color: Colors.white),
             ),
           ],
@@ -100,12 +101,13 @@ class WatchlistButtonWidget extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
         decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.0),
-            borderRadius: BorderRadius.circular(5),
-            border: Border.all(
-              color: Colors.white.withOpacity(0.3),
-              width: 0.5,
-            )),
+          color: Colors.white.withOpacity(0.0),
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(
+            color: Colors.white.withOpacity(0.3),
+            width: 0.5,
+          ),
+        ),
         child: Row(
           children: <Widget>[
             Icon(
@@ -116,7 +118,7 @@ class WatchlistButtonWidget extends StatelessWidget {
               width: 15,
             ),
             Text(
-              "Added to Watchlist",
+              "Watchlist",
               style: TextStyle(color: Colors.white),
             ),
           ],

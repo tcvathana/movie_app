@@ -63,14 +63,15 @@ class FavoriteButtonWidget extends StatelessWidget {
         dispatchMarkAsFavorite(context, true);
       },
       child: Container(
-        padding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.3),
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(
             color: Colors.white.withOpacity(0.3),
-            borderRadius: BorderRadius.circular(5),
-            border: Border.all(
-              color: Colors.white.withOpacity(0.3),
-              width: 0.5,
-            )),
+            width: 0.5,
+          ),
+        ),
         child: Row(
           children: <Widget>[
             Icon(
@@ -78,10 +79,10 @@ class FavoriteButtonWidget extends StatelessWidget {
               color: Colors.red,
             ),
             SizedBox(
-              width: 15,
+              width: 5,
             ),
             Text(
-              "Mark As Favorite",
+              "Favorite",
               style: TextStyle(color: Colors.white),
             ),
           ],
@@ -98,12 +99,13 @@ class FavoriteButtonWidget extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
         decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.0),
-            borderRadius: BorderRadius.circular(5),
-            border: Border.all(
-              color: Colors.white.withOpacity(0.3),
-              width: 0.5,
-            )),
+          color: Colors.white.withOpacity(0.0),
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(
+            color: Colors.white.withOpacity(0.3),
+            width: 0.5,
+          ),
+        ),
         child: Row(
           children: <Widget>[
             Icon(
@@ -114,7 +116,7 @@ class FavoriteButtonWidget extends StatelessWidget {
               width: 15,
             ),
             Text(
-              "Added to Favorite",
+              "Favorite",
               style: TextStyle(color: Colors.white),
             ),
           ],
