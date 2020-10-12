@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_app/presentation/bloc/search/search_bloc.dart';
+import 'package:movie_app/presentation/bloc/search_movie/search_movie_bloc.dart';
 import 'package:movie_app/presentation/widgets/movie/movie_item_horizontal.dart';
 
 class SearchMovieListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final SearchState searchState = context.bloc<SearchBloc>().state;
-    if (searchState is SearchLoaded) {
+    final SearchMovieState searchState = context.bloc<SearchMovieBloc>().state;
+    if (searchState is SearchMovieLoaded) {
       if (searchState.movieList.results.length == 0) {
         return Center(
           child: Text(
@@ -32,15 +32,15 @@ class SearchMovieListWidget extends StatelessWidget {
         },
       );
     }
-    if (searchState is SearchLoading) {
+    if (searchState is SearchMovieLoading) {
       return Center(
         child: CircularProgressIndicator(),
       );
     }
-    if (searchState is SearchError) {
+    if (searchState is SearchMovieError) {
       return Center(child: Text(searchState.error));
     }
-    if (searchState is SearchInitial) {
+    if (searchState is SearchMovieInitial) {
       return Center(
         child: Text(
           "Enter something",

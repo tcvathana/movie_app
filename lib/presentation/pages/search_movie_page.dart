@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_app/presentation/bloc/search/search_bloc.dart';
+import 'package:movie_app/presentation/bloc/search_movie/search_movie_bloc.dart';
 import 'package:movie_app/presentation/widgets/search_movie/container/search_movie_list_widget.dart';
 import '../../injection_container.dart' as di;
 
@@ -8,9 +8,9 @@ class SearchMoviePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => di.sl<SearchBloc>(),
-      child: BlocBuilder<SearchBloc, SearchState>(
-        builder: (BuildContext context, SearchState state){
+      create: (_) => di.sl<SearchMovieBloc>(),
+      child: BlocBuilder<SearchMovieBloc, SearchMovieState>(
+        builder: (BuildContext context, SearchMovieState state){
           return Scaffold(
             backgroundColor: Colors.black,
             appBar: AppBar(
@@ -49,6 +49,6 @@ class SearchMoviePage extends StatelessWidget {
   }
 
   void dispatchSearchMovie(BuildContext context, String query) {
-    BlocProvider.of<SearchBloc>(context).add(GetSearchEvent(query));
+    BlocProvider.of<SearchMovieBloc>(context).add(GetSearchEvent(query));
   }
 }
