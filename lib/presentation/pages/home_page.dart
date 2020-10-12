@@ -6,7 +6,7 @@ import '../widgets/movie/container/popular_movies.dart';
 import '../widgets/movie/container/top_rated_movies.dart';
 import '../widgets/movie/container/up_coming_movies.dart';
 import '../widgets/movie/container/now_playing_movies.dart';
-import './search_page.dart';
+import './search_movie_page.dart';
 import '../../injection_container.dart';
 
 class HomePage extends StatefulWidget {
@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
                 context,
                 PageTransition(
                   type: PageTransitionType.fade,
-                  child: SearchPage(),
+                  child: SearchMoviePage(),
                 ),
               );
             },

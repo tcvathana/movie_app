@@ -22,6 +22,7 @@ import 'package:movie_app/presentation/bloc/authentication/auth_bloc.dart';
 import 'package:movie_app/presentation/bloc/movie_detail/movie_detail_bloc.dart';
 import 'package:movie_app/presentation/bloc/movie_detail/movie_favorite_status/movie_favorite_status_bloc.dart';
 import 'package:movie_app/presentation/bloc/movie_detail/movie_watchlist_status/movie_watchlist_status_bloc.dart';
+import 'package:movie_app/presentation/bloc/search/search_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final sl = GetIt.instance;
@@ -63,6 +64,11 @@ Future<void> init() async {
     () => MovieWatchlistStatusBloc(
       accountRepository: sl(),
       movieDetailRepository: sl(),
+    ),
+  );
+  sl.registerFactory(
+    () => SearchBloc(
+      searchRepository: sl(),
     ),
   );
   // Use Case
