@@ -18,7 +18,7 @@ class PopularMovies extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.only(left: 10, top: 15, bottom: 30),
       margin: EdgeInsets.only(top: 20),
-      color: Colors.white.withOpacity(0.08),
+      color: Colors.white.withOpacity(0.1),
       child: BlocBuilder<MovieListBloc, MovieListState>(
         builder: (BuildContext context, MovieListState state) {
           if (state is MovieListLoaded) {
