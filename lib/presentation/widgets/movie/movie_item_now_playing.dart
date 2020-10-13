@@ -23,10 +23,9 @@ class MovieItemNowPlaying extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  MovieDetailPage(
-                    movieId: movieResult.id,
-                  ),
+              builder: (context) => MovieDetailPage(
+                movieId: movieResult.id,
+              ),
             ),
           );
         },
@@ -36,10 +35,12 @@ class MovieItemNowPlaying extends StatelessWidget {
               children: <Widget>[
                 CachedNetworkImage(
                   width: 300,
+                  height: 170,
                   imageUrl: "$IMAGE_BASE_URL/w300${movieResult.backdropPath}",
                   placeholder: (context, url) => Container(
-                    child: Center(
-                      child: CircularProgressIndicator(),
+                    child: Container(
+                      height: 170,
+                      color: Colors.white.withOpacity(0.1),
                     ),
                   ),
                   errorWidget: (context, url, error) => Icon(Icons.error),

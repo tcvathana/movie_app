@@ -40,8 +40,9 @@ class MovieItem extends StatelessWidget {
                   width: 160,
                   imageUrl: "$IMAGE_BASE_URL/w185${result.posterPath}",
                   placeholder: (context, url) => Container(
-                    child: Center(
-                      child: CircularProgressIndicator(),
+                    child: Container(
+                      height: 240,
+                      color: Colors.white.withOpacity(0.1),
                     ),
                   ),
                   errorWidget: (context, url, error) => Icon(Icons.error),
