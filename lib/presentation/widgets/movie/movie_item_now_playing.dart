@@ -5,10 +5,10 @@ import 'package:movie_app/presentation/pages/movie_detail_page.dart';
 import '../../../data/models/movie_list.dart';
 import '../../../config.dart';
 
-class MovieItemPlayNow extends StatelessWidget {
+class MovieItemNowPlaying extends StatelessWidget {
   final ResultMovie movieResult;
 
-  const MovieItemPlayNow({Key key, @required this.movieResult})
+  const MovieItemNowPlaying({Key key, @required this.movieResult})
       : super(key: key);
 
   @override
@@ -55,6 +55,7 @@ class MovieItemPlayNow extends StatelessWidget {
                     children: <Widget>[
                       Text(
                         movieResult.title,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontSize: 20,
                           color: Colors.white,
@@ -62,6 +63,7 @@ class MovieItemPlayNow extends StatelessWidget {
                       ),
                       Text(
                         movieResult.overview.substring(0, 40),
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(color: Colors.grey),
                       ),
                     ],
@@ -70,13 +72,13 @@ class MovieItemPlayNow extends StatelessWidget {
               ],
             ),
             Positioned(
-              bottom: 15,
+              bottom: 10,
               right: 10,
               child: Container(
                 height: 160,
                 width: 100,
                 decoration: BoxDecoration(
-                  color: Colors.blue,
+                  color: Colors.white,
                   image: DecorationImage(
                     fit: BoxFit.fill,
                     image: CachedNetworkImageProvider(

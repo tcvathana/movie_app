@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:movie_app/presentation/bloc/movie_list/movie_list_bloc.dart';
-import 'package:movie_app/presentation/widgets/movie/movie_item_horizontal_loading_widget.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../../data/models/movie_list.dart';
-import '../movie_item_play_now.dart';
+import '../loading/movie_item_now_playing_loading_widget.dart';
+import '../movie_item_now_playing.dart';
 
 class NowPlayingMovies extends StatelessWidget {
   const NowPlayingMovies({Key key}) : super(key: key);
@@ -33,7 +33,7 @@ class NowPlayingMovies extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemCount: state.nowPlayingMovie.results.length,
                     itemBuilder: (context, index) {
-                      return MovieItemPlayNow(
+                      return MovieItemNowPlaying(
                         movieResult: state.nowPlayingMovie.results[index],
                       );
                     },
@@ -49,7 +49,7 @@ class NowPlayingMovies extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemCount: 4,
                     itemBuilder: (context, index) {
-                      return MovieItemHorizontalLoadingWidget();
+                      return MovieItemNowPlayingLoadingWidget();
                     },
                   ),
                 ),

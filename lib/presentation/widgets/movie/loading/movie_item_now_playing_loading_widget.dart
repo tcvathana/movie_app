@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
 
-class MovieItemHorizontalLoadingWidget extends StatelessWidget {
+class MovieItemNowPlayingLoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -41,7 +40,7 @@ class MovieItemHorizontalLoadingWidget extends StatelessWidget {
             ],
           ),
           Positioned(
-            bottom: 15,
+            bottom: 10,
             right: 10,
             child: Container(
               height: 160,

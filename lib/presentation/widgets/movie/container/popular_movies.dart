@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:movie_app/presentation/bloc/movie_list/movie_list_bloc.dart';
+import 'package:movie_app/presentation/widgets/movie/loading/movie_item_loading_widget.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../pages/see_all_movie_page.dart';
 import 'package:page_transition/page_transition.dart';
 import '../../../../data/models/movie_list.dart';
 import '../movie_item_popular.dart';
 
 class PopularMovies extends StatelessWidget {
-  final Future<MovieList> fetchData;
-
-  const PopularMovies({Key key, @required this.fetchData}) : super(key: key);
+  const PopularMovies({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,72 +19,103 @@ class PopularMovies extends StatelessWidget {
       padding: EdgeInsets.only(left: 10, top: 15, bottom: 30),
       margin: EdgeInsets.only(top: 20),
       color: Colors.white.withOpacity(0.08),
-      child: FutureBuilder<MovieList>(
-        future: fetchData,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasData) {
-              return Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        "Most Popular Movies",
+      child: BlocBuilder<MovieListBloc, MovieListState>(
+        builder: (BuildContext context, MovieListState state) {
+          if (state is MovieListLoaded) {
+            return Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "Most Popular Movies",
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.white,
+                      ),
+                    ),
+                    FlatButton(
+                      color: Colors.transparent,
+                      child: Text(
+                        "SEE MORE",
                         style: TextStyle(
-                          fontSize: 25,
-                          color: Colors.white,
+                          color: Colors.blue,
                         ),
                       ),
-                      FlatButton(
-                        color: Colors.transparent,
-                        child: Text(
-                          "SEE ALL",
-                          style: TextStyle(
-                            color: Colors.blue,
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            PageTransition(
-                              type: PageTransitionType.fade,
-                              child: SeeAllMoviesPage(
-                                "Most Popular Movie",
-                                "Popularity",
-                                snapshot.data
-                              ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.fade,
+                            child: SeeAllMoviesPage(
+                              "Most Popular Movie",
+                              "Popularity",
+                              state.popularMovie,
                             ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  Container(
-                    height: 350,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: snapshot.data.results.length,
-                      itemBuilder: (context, index) {
-                        return MovieItemPopular(
-                          result: snapshot.data.results[index],
+                          ),
                         );
                       },
                     ),
+                  ],
+                ),
+                Container(
+                  height: 350,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: state.popularMovie.results.length,
+                    itemBuilder: (context, index) {
+                      return MovieItemPopular(
+                        result: state.popularMovie.results[index],
+                      );
+                    },
                   ),
-                ],
-              );
-            } else {
-              return Center(
-                child: Text("Error: ${snapshot.error}"),
-              );
-            }
-          } else {
-            return Center(
-              child: CircularProgressIndicator(),
+                ),
+              ],
             );
           }
+          // Otherwise, Loading
+          return Shimmer.fromColors(
+            baseColor: Colors.white,
+            highlightColor: Colors.grey,
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "Most Popular Movies",
+                      style: TextStyle(
+                        fontSize: 25,
+                        color: Colors.white,
+                      ),
+                    ),
+                    FlatButton(
+                      color: Colors.transparent,
+                      child: Text(
+                        "SEE MORE",
+                        style: TextStyle(
+                          color: Colors.blue,
+                        ),
+                      ),
+                      onPressed: () => null,
+                    ),
+                  ],
+                ),
+                Container(
+                  height: 350,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 4,
+                    itemBuilder: (context, index) {
+                      return MovieItemLoadingWidget();
+                    },
+                  ),
+                ),
+              ],
+            ),
+          );
         },
       ),
     );

@@ -70,9 +70,7 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             children: <Widget>[
               NowPlayingMovies(),
-              PopularMovies(
-                fetchData: movieRepository.getMostPopularMovieList(),
-              ),
+              PopularMovies(),
               TopRatedMovies(
                 fetchData: movieRepository.getTopRatedMovieList(),
               ),
