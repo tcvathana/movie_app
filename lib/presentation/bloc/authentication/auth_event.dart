@@ -15,8 +15,9 @@ class LoginEvent extends AuthEvent {
 }
 
 class LogoutEvent extends AuthEvent {
-  const LogoutEvent();
+  final String sessionId;
+  const LogoutEvent(this.sessionId);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [sessionId];
 }

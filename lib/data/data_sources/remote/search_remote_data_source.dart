@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
 import '../../../config.dart';
@@ -15,7 +17,9 @@ class SearchRemoteDataSource implements ISearchRemoteDataSource {
     if (response.statusCode == 200) {
       return MovieList.fromJson(response.body);
     } else {
-      throw Exception("Error ${response.toString()}");
+      final responseMap =  json.decode(response.body);
+      final String statusMessage = responseMap['status_message'];
+      throw Exception(statusMessage);
     }
   }
 }

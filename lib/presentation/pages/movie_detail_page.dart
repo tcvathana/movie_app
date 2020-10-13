@@ -1,18 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_app/data/models/movie_detail.dart';
-import 'package:movie_app/data/repositories/movie_detail_repository.dart';
-import 'package:movie_app/injection_container.dart';
 import 'package:movie_app/presentation/bloc/movie_detail/movie_detail_bloc.dart';
 import 'package:movie_app/presentation/bloc/movie_detail/movie_favorite_status/movie_favorite_status_bloc.dart';
 import 'package:movie_app/presentation/bloc/movie_detail/movie_watchlist_status/movie_watchlist_status_bloc.dart';
-import 'package:movie_app/presentation/widgets/movie_detail/container/cast_list.dart';
+import 'package:movie_app/presentation/widgets/movie_detail/container/cast_list_widget.dart';
 import 'package:movie_app/presentation/widgets/movie_detail/container/movie_account_states_widget.dart';
 import 'package:movie_app/presentation/widgets/movie_detail/container/movie_detail_widget.dart';
-import 'package:movie_app/presentation/widgets/movie_detail/container/review_list.dart';
-import 'package:movie_app/presentation/widgets/movie_detail/container/similar_movie_list.dart';
-import 'package:movie_app/presentation/widgets/movie_detail/container/video_list.dart';
+import 'package:movie_app/presentation/widgets/movie_detail/container/review_list_widget.dart';
+import 'package:movie_app/presentation/widgets/movie_detail/container/similar_movie_list_widget.dart';
+import 'package:movie_app/presentation/widgets/movie_detail/container/video_list_widget.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../injection_container.dart' as di;
 
 class MovieDetailPage extends StatelessWidget {
@@ -41,21 +39,9 @@ class MovieDetailPage extends StatelessWidget {
             BlocProvider.of<MovieDetailBloc>(context).add(
               GetMovieDetailEvent(movieId),
             );
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+            return Container();
           }
-          if (state is MovieDetailLoaded) {
-            return MovieDetailBody(
-              movieDetail: state.movieDetail,
-            );
-          }
-          if (state is MovieDetailLoading) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return Container();
+          return MovieDetailBody();
         },
       ),
     );
@@ -63,73 +49,63 @@ class MovieDetailPage extends StatelessWidget {
 }
 
 class MovieDetailBody extends StatelessWidget {
-  final MovieDetail movieDetail;
-
-  const MovieDetailBody({Key key, this.movieDetail}) : super(key: key);
+  const MovieDetailBody({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> _scaffoldKey =
         new GlobalKey<ScaffoldState>();
-
-    final MovieDetailRepository movieDetailRepository =
-        sl<MovieDetailRepository>();
+    final MovieDetailState movieDetailState =
+        context.bloc<MovieDetailBloc>().state;
     return Scaffold(
       key: _scaffoldKey,
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text(movieDetail.title),
-        backgroundColor: Colors.black87,
-        actions: <Widget>[],
+        title: (movieDetailState is MovieDetailLoaded)
+            ? Text(movieDetailState.movieDetail.title)
+            : Shimmer.fromColors(
+                baseColor: Colors.white,
+                highlightColor: Colors.grey,
+                child: Container(
+                  height: 20,
+                  width: 100,
+                  color: Colors.white,
+                ),
+              ),
+        backgroundColor: Colors.white.withOpacity(0.1),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 30),
-          color: Colors.black87,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              MovieDetailWidget(
-                getMovieDetail: movieDetailRepository.getMovieDetail(
-                  movieId: movieDetail.id.toString(),
+      body: Container(
+        color: Colors.white.withOpacity(0.2),
+        padding: EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 30),
+        height: MediaQuery.of(context).size.height,
+        child: SingleChildScrollView(
+          child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                MovieDetailWidget(),
+                Divider(
+                  color: Colors.white.withOpacity(0.8),
                 ),
-              ),
-              Divider(
-                color: Colors.white.withOpacity(0.8),
-              ),
-              MovieAccountStatesWidget(),
-              Divider(
-                color: Colors.white.withOpacity(0.8),
-              ),
-              ReviewList(
-                getMovieReview: movieDetailRepository.getMovieReview(
-                  movieId: movieDetail.id.toString(),
+                MovieAccountStatesWidget(),
+                Divider(
+                  color: Colors.white.withOpacity(0.8),
                 ),
-              ),
-              Divider(
-                color: Colors.white.withOpacity(0.8),
-              ),
-              VideoList(
-                getMovieVideo: movieDetailRepository.getMovieVideo(
-                  movieId: movieDetail.id.toString(),
+                ReviewListWidget(),
+                Divider(
+                  color: Colors.white.withOpacity(0.8),
                 ),
-              ),
-              Divider(
-                color: Colors.white.withOpacity(0.8),
-              ),
-              CastList(
-                getMovieCredit: movieDetailRepository.getMovieCredit(
-                  movieId: movieDetail.id.toString(),
+                VideoListWidget(),
+                Divider(
+                  color: Colors.white.withOpacity(0.8),
                 ),
-              ),
-              Divider(
-                color: Colors.white.withOpacity(0.8),
-              ),
-              SimilarMovieList(
-                getMovieSimilar: movieDetailRepository.getMovieSimilar(
-                  movieId: movieDetail.id.toString(),
+                CastListWidget(),
+                Divider(
+                  color: Colors.white.withOpacity(0.8),
                 ),
-              ),
-            ],
+                SimilarMovieListWidget(),
+              ],
+            ),
           ),
         ),
       ),

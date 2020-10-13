@@ -24,28 +24,6 @@ class WatchlistPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.black87,
         title: Text("Watchlist"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.account_circle,
-            ),
-            color: Colors.blueAccent,
-            tooltip: "Account Page",
-            onPressed: () {
-              Navigator.push(
-                context,
-                PageTransition(
-                  type: PageTransitionType.fade,
-                  child: AccountPage(),
-                ),
-              );
-            },
-          ),
-        ],
       ),
       body: Container(
         color: Colors.black87,

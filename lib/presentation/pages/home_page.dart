@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/presentation/bloc/movie_list/movie_list_bloc.dart';
 import 'package:movie_app/presentation/pages/auth_page.dart';
 import 'package:page_transition/page_transition.dart';
 import '../../data/repositories/movie_repository.dart';
@@ -6,7 +8,7 @@ import '../widgets/movie/container/popular_movies.dart';
 import '../widgets/movie/container/top_rated_movies.dart';
 import '../widgets/movie/container/up_coming_movies.dart';
 import '../widgets/movie/container/now_playing_movies.dart';
-import './search_page.dart';
+import './search_movie_page.dart';
 import '../../injection_container.dart';
 
 class HomePage extends StatefulWidget {
@@ -24,9 +26,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<MovieListBloc>(context).add(GetMovieListEvent());
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.black87,
+        backgroundColor: Colors.white.withOpacity(0.1),
         title: Text("Movie Trailer"),
         actions: <Widget>[
           IconButton(
@@ -36,7 +40,7 @@ class _HomePageState extends State<HomePage> {
                 context,
                 PageTransition(
                   type: PageTransitionType.fade,
-                  child: SearchPage(),
+                  child: SearchMoviePage(),
                 ),
               );
             },
@@ -61,16 +65,12 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: Container(
-        color: Colors.black87,
+        color: Colors.white.withOpacity(0.2),
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              NowPlayingMovies(
-                fetchData: movieRepository.getNowPlayingMovieList(),
-              ),
-              PopularMovies(
-                fetchData: movieRepository.getMostPopularMovieList(),
-              ),
+              NowPlayingMovies(),
+              PopularMovies(),
               TopRatedMovies(
                 fetchData: movieRepository.getTopRatedMovieList(),
               ),

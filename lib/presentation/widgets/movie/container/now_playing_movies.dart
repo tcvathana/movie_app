@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:movie_app/presentation/bloc/movie_list/movie_list_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../../../data/models/movie_list.dart';
-import '../movie_item_play_now.dart';
+import '../loading/movie_item_now_playing_loading_widget.dart';
+import '../movie_item_now_playing.dart';
 
 class NowPlayingMovies extends StatelessWidget {
-  final Future<MovieList> fetchData;
-
-  const NowPlayingMovies({Key key, @required this.fetchData}) : super(key: key);
+  const NowPlayingMovies({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,38 +24,36 @@ class NowPlayingMovies extends StatelessWidget {
             "Now Playing Movies",
             style: TextStyle(color: Colors.white, fontSize: 25),
           ),
-          FutureBuilder<MovieList>(
-            future: fetchData,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.hasData) {
-                  return Container(
-                    height: 250,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: snapshot.data.results.length,
-                      itemBuilder: (context, index) {
-                        return MovieItemPlayNow(
-                          movieResult: snapshot.data.results[index],
-                        );
-                      },
-                    ),
-                  );
-                } else {
-                  return Center(
-                    child: Text("Error: ${snapshot.error}"),
-                  );
-                }
-              } else {
+          BlocBuilder<MovieListBloc, MovieListState>(
+            builder: (BuildContext context, MovieListState state) {
+              if (state is MovieListLoaded) {
                 return Container(
-                  height: MediaQuery.of(context).size.width * 3 / 4,
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.white,
-                  child: Center(
-                    child: CircularProgressIndicator(),
+                  height: 250,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: state.nowPlayingMovie.results.length,
+                    itemBuilder: (context, index) {
+                      return MovieItemNowPlaying(
+                        movieResult: state.nowPlayingMovie.results[index],
+                      );
+                    },
                   ),
                 );
               }
+              return Shimmer.fromColors(
+                baseColor: Colors.white,
+                highlightColor: Colors.grey,
+                child: Container(
+                  height: 250,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 4,
+                    itemBuilder: (context, index) {
+                      return MovieItemNowPlayingLoadingWidget();
+                    },
+                  ),
+                ),
+              );
             },
           ),
         ],

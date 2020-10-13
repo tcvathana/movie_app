@@ -40,8 +40,11 @@ class AuthRemoteDataSource extends IAuthRemoteDataSource {
   }
 
   @override
-  Future<String> validateTokenWithLogin(
-      {String username, String password, String requestToken}) async {
+  Future<String> validateTokenWithLogin({
+    String username,
+    String password,
+    String requestToken,
+  }) async {
     http.Response response = await http.post(
       "$BASE_URL/authentication/token/validate_with_login?api_key=$API_KEY",
       body: {
@@ -56,7 +59,7 @@ class AuthRemoteDataSource extends IAuthRemoteDataSource {
       return token;
     } else {
       final String statusMessage = responseMap['status_message'];
-      throw Exception("ValidateWithLogging ,Error $statusMessage");
+      throw Exception(statusMessage);
     }
   }
 
@@ -73,7 +76,7 @@ class AuthRemoteDataSource extends IAuthRemoteDataSource {
       return session;
     } else {
       final String statusMessage = responseMap['status_message'];
-      throw Exception("Create Session, Error $statusMessage");
+      throw Exception(statusMessage);
     }
   }
 
@@ -87,11 +90,18 @@ class AuthRemoteDataSource extends IAuthRemoteDataSource {
         ),
       )..bodyFields = {"session_id": sessionId},
     );
+    String responseBody = await response.stream.bytesToString();
+    final Map<String, dynamic> responseMap = json.decode(responseBody);
     if (response.statusCode == 200) {
-      // response.stream.bytesToString().then((value) => print(value));
-      return true;
+      final bool success = responseMap['success'];
+      if(!success) {
+        final String statusMessage = responseMap['status_message'];
+        throw Exception(statusMessage);
+      }
+      return success;
     } else {
-      throw Exception("Delete Session, Error ${response.toString()}");
+      final String statusMessage = responseMap['status_message'];
+      throw Exception(statusMessage);
     }
   }
 }

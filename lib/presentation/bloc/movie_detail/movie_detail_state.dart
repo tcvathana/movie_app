@@ -16,11 +16,27 @@ class MovieDetailLoading extends MovieDetailState {
 
 class MovieDetailLoaded extends MovieDetailState {
   final MovieDetail movieDetail;
+  final MovieReview movieReview;
+  final MovieVideo movieVideo;
+  final MovieCredit movieCredit;
+  final MovieList movieSimilar;
 
-  MovieDetailLoaded(this.movieDetail);
+  MovieDetailLoaded({
+    this.movieDetail,
+    this.movieReview,
+    this.movieVideo,
+    this.movieCredit,
+    this.movieSimilar,
+  });
 
   @override
-  List<Object> get props => [movieDetail];
+  List<Object> get props => [
+        movieDetail,
+        movieReview,
+        movieVideo,
+        movieCredit,
+        movieSimilar,
+      ];
 }
 
 class MovieDetailError extends MovieDetailState {

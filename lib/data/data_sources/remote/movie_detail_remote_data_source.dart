@@ -11,11 +11,11 @@ import '../../models/movie_review.dart';
 import '../../models/movie_video.dart';
 
 abstract class IMovieDetailRemoteDataSource {
-  Future<MovieDetail> fetchMovieDetail({@required String movieId});
-  Future<MovieReview> fetchMovieReview({@required String movieId});
-  Future<MovieVideo> fetchMovieVideo({@required String movieId});
-  Future<MovieCredit> fetchMovieCredit({@required String movieId});
-  Future<MovieList> fetchMovieSimilar({@required String movieId});
+  Future<MovieDetail> fetchMovieDetail({@required int movieId});
+  Future<MovieReview> fetchMovieReview({@required int movieId});
+  Future<MovieVideo> fetchMovieVideo({@required int movieId});
+  Future<MovieCredit> fetchMovieCredit({@required int movieId});
+  Future<MovieList> fetchMovieSimilar({@required int movieId});
   Future<MovieAccountStates> fetchMovieAccountStates({
     @required String sessionId,
     @required int movieId,
@@ -24,7 +24,7 @@ abstract class IMovieDetailRemoteDataSource {
 
 class MovieDetailRemoteDataSource implements IMovieDetailRemoteDataSource {
   @override
-  Future<MovieCredit> fetchMovieCredit({@required String movieId}) async {
+  Future<MovieCredit> fetchMovieCredit({@required int movieId}) async {
     http.Response response =
         await http.get("$BASE_URL/movie/$movieId/credits?api_key=$API_KEY");
     if (response.statusCode == 200) {
@@ -35,7 +35,7 @@ class MovieDetailRemoteDataSource implements IMovieDetailRemoteDataSource {
   }
 
   @override
-  Future<MovieDetail> fetchMovieDetail({String movieId}) async {
+  Future<MovieDetail> fetchMovieDetail({int movieId}) async {
     http.Response response =
         await http.get("$BASE_URL/movie/$movieId?api_key=$API_KEY");
     final responseMap = json.decode(response.body);
@@ -48,7 +48,7 @@ class MovieDetailRemoteDataSource implements IMovieDetailRemoteDataSource {
   }
 
   @override
-  Future<MovieReview> fetchMovieReview({String movieId}) async {
+  Future<MovieReview> fetchMovieReview({int movieId}) async {
     http.Response response =
         await http.get("$BASE_URL/movie/$movieId/reviews?api_key=$API_KEY");
     if (response.statusCode == 200) {
@@ -59,7 +59,7 @@ class MovieDetailRemoteDataSource implements IMovieDetailRemoteDataSource {
   }
 
   @override
-  Future<MovieList> fetchMovieSimilar({String movieId}) async {
+  Future<MovieList> fetchMovieSimilar({int movieId}) async {
     http.Response response =
         await http.get("$BASE_URL/movie/$movieId/similar?api_key=$API_KEY");
     if (response.statusCode == 200) {
@@ -70,7 +70,7 @@ class MovieDetailRemoteDataSource implements IMovieDetailRemoteDataSource {
   }
 
   @override
-  Future<MovieVideo> fetchMovieVideo({String movieId}) async {
+  Future<MovieVideo> fetchMovieVideo({int movieId}) async {
     http.Response response =
         await http.get("$BASE_URL/movie/$movieId/videos?api_key=$API_KEY");
     if (response.statusCode == 200) {

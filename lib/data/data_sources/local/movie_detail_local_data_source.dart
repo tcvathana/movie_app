@@ -8,30 +8,30 @@ import '../../models/movie_video.dart';
 import 'package:flutter/foundation.dart';
 
 abstract class IMovieDetailLocalDataSource {
-  Future<MovieDetail> getMovieDetail({@required String movieId});
+  Future<MovieDetail> getMovieDetail({@required int movieId});
 
-  Future<MovieReview> getMovieReview({@required String movieId});
+  Future<MovieReview> getMovieReview({@required int movieId});
 
-  Future<MovieVideo> getMovieVideo({@required String movieId});
+  Future<MovieVideo> getMovieVideo({@required int movieId});
 
-  Future<MovieCredit> getMovieCredit({@required String movieId});
+  Future<MovieCredit> getMovieCredit({@required int movieId});
 
-  Future<MovieList> getMovieSimilar({@required String movieId});
+  Future<MovieList> getMovieSimilar({@required int movieId});
 
   Future<void> cacheMovieDetail(
-      {@required String movieId, MovieDetail movieDetail});
+      {@required int movieId, MovieDetail movieDetail});
 
   Future<void> cacheMovieReview(
-      {@required String movieId, MovieReview movieReview});
+      {@required int movieId, MovieReview movieReview});
 
   Future<void> cacheMovieVideo(
-      {@required String movieId, MovieVideo movieVideo});
+      {@required int movieId, MovieVideo movieVideo});
 
   Future<void> cacheMovieCredit(
-      {@required String movieId, MovieCredit movieCredit});
+      {@required int movieId, MovieCredit movieCredit});
 
   Future<void> cacheMovieSimilar(
-      {@required String movieId, MovieList movieList});
+      {@required int movieId, MovieList movieList});
 }
 
 class MovieDetailLocalDataSource implements IMovieDetailLocalDataSource {
@@ -40,7 +40,7 @@ class MovieDetailLocalDataSource implements IMovieDetailLocalDataSource {
   MovieDetailLocalDataSource({@required this.sharedPreferences});
 
   @override
-  Future<MovieCredit> getMovieCredit({@required String movieId}) {
+  Future<MovieCredit> getMovieCredit({@required int movieId}) {
     final String jsonString = sharedPreferences.getString("/movie/$movieId/credits");
     if (jsonString != null) {
       return Future.value(MovieCredit.fromJson(jsonString));
@@ -50,7 +50,7 @@ class MovieDetailLocalDataSource implements IMovieDetailLocalDataSource {
   }
 
   @override
-  Future<MovieDetail> getMovieDetail({@required String movieId}) {
+  Future<MovieDetail> getMovieDetail({@required int movieId}) {
     final String jsonString = sharedPreferences.getString("/movie/$movieId");
     if (jsonString != null) {
       return Future.value(MovieDetail.fromJson(jsonString));
@@ -60,7 +60,7 @@ class MovieDetailLocalDataSource implements IMovieDetailLocalDataSource {
   }
 
   @override
-  Future<MovieReview> getMovieReview({@required String movieId}) {
+  Future<MovieReview> getMovieReview({@required int movieId}) {
     final String jsonString = sharedPreferences.getString("/movie/$movieId/reviews");
     if (jsonString != null) {
       return Future.value(MovieReview.fromJson(jsonString));
@@ -70,7 +70,7 @@ class MovieDetailLocalDataSource implements IMovieDetailLocalDataSource {
   }
 
   @override
-  Future<MovieList> getMovieSimilar({@required String movieId}) {
+  Future<MovieList> getMovieSimilar({@required int movieId}) {
     final String jsonString = sharedPreferences.getString("/movie/$movieId/similar");
     if (jsonString != null) {
       return Future.value(MovieList.fromJson(jsonString));
@@ -80,7 +80,7 @@ class MovieDetailLocalDataSource implements IMovieDetailLocalDataSource {
   }
 
   @override
-  Future<MovieVideo> getMovieVideo({@required String movieId}) {
+  Future<MovieVideo> getMovieVideo({@required int movieId}) {
     final String jsonString = sharedPreferences.getString("/movie/$movieId/videos");
     if (jsonString != null) {
       return Future.value(MovieVideo.fromJson(jsonString));
@@ -91,7 +91,7 @@ class MovieDetailLocalDataSource implements IMovieDetailLocalDataSource {
 
   // CACHE METHOD
   @override
-  Future<void> cacheMovieCredit({String movieId, MovieCredit movieCredit}) {
+  Future<void> cacheMovieCredit({int movieId, MovieCredit movieCredit}) {
     return sharedPreferences.setString(
       "/movie/$movieId/credits",
       movieCredit.toJson(),
@@ -99,7 +99,7 @@ class MovieDetailLocalDataSource implements IMovieDetailLocalDataSource {
   }
 
   @override
-  Future<void> cacheMovieDetail({String movieId, MovieDetail movieDetail}) {
+  Future<void> cacheMovieDetail({int movieId, MovieDetail movieDetail}) {
     return sharedPreferences.setString(
       "/movie/$movieId",
       movieDetail.toJson(),
@@ -107,7 +107,7 @@ class MovieDetailLocalDataSource implements IMovieDetailLocalDataSource {
   }
 
   @override
-  Future<void> cacheMovieReview({String movieId, MovieReview movieReview}) {
+  Future<void> cacheMovieReview({int movieId, MovieReview movieReview}) {
     return sharedPreferences.setString(
       "/movie/$movieId/reviews",
       movieReview.toJson(),
@@ -115,7 +115,7 @@ class MovieDetailLocalDataSource implements IMovieDetailLocalDataSource {
   }
 
   @override
-  Future<void> cacheMovieSimilar({String movieId, MovieList movieList}) {
+  Future<void> cacheMovieSimilar({int movieId, MovieList movieList}) {
     return sharedPreferences.setString(
       "/movie/$movieId/similar",
       movieList.toJson(),
@@ -123,7 +123,7 @@ class MovieDetailLocalDataSource implements IMovieDetailLocalDataSource {
   }
 
   @override
-  Future<void> cacheMovieVideo({String movieId, MovieVideo movieVideo}) {
+  Future<void> cacheMovieVideo({int movieId, MovieVideo movieVideo}) {
     return sharedPreferences.setString(
       "/movie/$movieId/videos",
       movieVideo.toJson(),

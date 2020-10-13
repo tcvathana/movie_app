@@ -1,59 +1,43 @@
 import 'package:flutter/material.dart';
-import '../../../../data/models/movie_review.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/presentation/bloc/movie_detail/movie_detail_bloc.dart';
 import '../review_item.dart';
 
-class ReviewList extends StatelessWidget {
-  final Future<MovieReview> getMovieReview;
-
-  const ReviewList({Key key, @required this.getMovieReview}) : super(key: key);
+class ReviewListWidget extends StatelessWidget {
+  const ReviewListWidget({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            "Reviews",
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-          FutureBuilder<MovieReview>(
-            future: getMovieReview,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.hasData) {
-                  return Container(
-                    height: 200,
-                    width: MediaQuery.of(context).size.width,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: snapshot.data.results.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return ReviewItem(
-                          result: snapshot.data.results[index],
-                        );
-                      },
-                    ),
+    final MovieDetailState movieDetailState =
+        context.bloc<MovieDetailBloc>().state;
+    if (movieDetailState is MovieDetailLoaded) {
+      return Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              "Reviews",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            Container(
+              height: 200,
+              width: MediaQuery.of(context).size.width,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: movieDetailState.movieReview.results.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ReviewItem(
+                    result: movieDetailState.movieReview.results[index],
                   );
-                } else {
-                  return Container(
-                    child: Center(
-                      child: Text(
-                        "No Reviews",
-                        style: TextStyle(color: Colors.white, fontSize: 25),
-                      ),
-                    ),
-                  );
-                }
-              } else {
-                //return _buildReviewListLoading();
-                return CircularProgressIndicator();
-              }
-            },
-          ),
-        ],
-      ),
-    );
+                },
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+    // TODO: Implement Shimmer HERE
+    return Container();
   }
 /*Widget _buildReviewListLoading() {
     return SingleChildScrollView(
