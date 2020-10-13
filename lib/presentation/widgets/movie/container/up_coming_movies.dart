@@ -9,9 +9,7 @@ import '../../../../data/models/movie_list.dart';
 import '../movie_item_up_coming.dart';
 
 class UpComingMovies extends StatelessWidget {
-  final Future<MovieList> fetchData;
-
-  const UpComingMovies({Key key, this.fetchData}) : super(key: key);
+  const UpComingMovies({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

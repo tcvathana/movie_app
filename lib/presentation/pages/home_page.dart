@@ -71,12 +71,8 @@ class _HomePageState extends State<HomePage> {
             children: <Widget>[
               NowPlayingMovies(),
               PopularMovies(),
-              TopRatedMovies(
-                fetchData: movieRepository.getTopRatedMovieList(),
-              ),
-              UpComingMovies(
-                fetchData: movieRepository.getUpComingMovieList(),
-              ),
+              TopRatedMovies(),
+              UpComingMovies(),
             ],
           ),
         ),

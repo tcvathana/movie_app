@@ -10,9 +10,7 @@ import '../../../../data/models/movie_list.dart';
 import '../movie_item_top_rated.dart';
 
 class TopRatedMovies extends StatelessWidget {
-  final Future<MovieList> fetchData;
-
-  const TopRatedMovies({Key key, @required this.fetchData}) : super(key: key);
+  const TopRatedMovies({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
