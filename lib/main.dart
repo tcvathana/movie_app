@@ -4,6 +4,7 @@ import 'package:movie_app/presentation/bloc/account/favorite_movie/favorite_movi
 import 'package:movie_app/presentation/bloc/authentication/auth_bloc.dart';
 import 'presentation/bloc/account/account_bloc.dart';
 import 'presentation/bloc/account/watchlist_movie/watchlist_movie_bloc.dart';
+import 'presentation/bloc/movie_list/movie_list_bloc.dart';
 import 'presentation/pages/home_page.dart';
 import 'injection_container.dart' as di;
 
@@ -30,6 +31,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => di.sl<WatchlistMovieBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => di.sl<MovieListBloc>(),
         ),
       ],
       child: MaterialApp(
