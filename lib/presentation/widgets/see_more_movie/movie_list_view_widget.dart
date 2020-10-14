@@ -13,10 +13,34 @@ class MovieListViewWidget extends StatefulWidget {
 
 class _MovieListViewWidgetState extends State<MovieListViewWidget> {
   List<ResultMovie> _movieResults = [];
+  ScrollController _scroller = ScrollController();
+
+  Future<List<ResultMovie>> fetchMore() async {
+    List<ResultMovie> _list = [];
+    await Future.delayed(Duration(seconds: 1), () {
+      for (int i = 0; i < 3; i++) {
+        _list.add(widget.movieList.results[0]);
+      }
+    });
+    return _list;
+  }
+
+  _scrollLister() {
+    if (_scroller.offset >= _scroller.position.maxScrollExtent &&
+        !_scroller.position.outOfRange) {
+      print("At the bottom scroller");
+      fetchMore().then((value) {
+        _movieResults.addAll(value);
+        setState(() {});
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
+    _scroller.addListener(_scrollLister);
+    _movieResults = widget.movieList.results;
   }
 
   @override
@@ -24,6 +48,7 @@ class _MovieListViewWidgetState extends State<MovieListViewWidget> {
     return Container(
       child: ListView.separated(
         scrollDirection: Axis.vertical,
+        controller: _scroller,
         padding: EdgeInsets.only(bottom: 40),
         itemCount: _movieResults.length,
         separatorBuilder: (BuildContext context, int index) {
