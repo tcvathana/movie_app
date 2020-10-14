@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/presentation/widgets/see_more_movie/movie_list_view_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import '../../data/models/movie_list.dart';
 import '../widgets/movie/movie_item_horizontal.dart';
@@ -89,20 +90,7 @@ class _SeeMoreMoviesPageState extends State<SeeMoreMoviesPage> {
                 color: Colors.white.withOpacity(0.8),
               ),
               Expanded(
-                child: ListView.separated(
-                  scrollDirection: Axis.vertical,
-                  itemCount: widget.movieList.results.length,
-                  separatorBuilder: (BuildContext context, int index) {
-                    return Divider(
-                      color: Colors.white.withOpacity(0.8),
-                    );
-                  },
-                  itemBuilder: (BuildContext context, int index) {
-                    return MovieItemHorizontal(
-                      movieResult: widget.movieList.results[index],
-                    );
-                  },
-                ),
+                child: MovieListViewWidget(movieList: widget.movieList,),
               )
             ],
           ),

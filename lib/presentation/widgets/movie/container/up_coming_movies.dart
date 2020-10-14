@@ -4,7 +4,7 @@ import 'package:movie_app/presentation/bloc/movie_list/movie_list_bloc.dart';
 import 'package:movie_app/presentation/widgets/movie/loading/movie_item_loading_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shimmer/shimmer.dart';
-import '../../../pages/see_all_movie_page.dart';
+import '../../../pages/see_more_movie_page.dart';
 import '../../../../data/models/movie_list.dart';
 import '../movie_item_up_coming.dart';
 
