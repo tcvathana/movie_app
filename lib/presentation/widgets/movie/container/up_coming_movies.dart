@@ -47,10 +47,10 @@ class UpComingMovies extends StatelessWidget {
                           context,
                           PageTransition(
                             type: PageTransitionType.fade,
-                            child: SeeAllMoviesPage(
-                              "Up Coming Movies",
-                              'Up Coming',
-                              state.upComingMovie,
+                            child: SeeMoreMoviesPage(
+                              title:"Up Coming Movies",
+                              sortedBy: 'Up Coming',
+                              movieList: state.upComingMovie,
                             ),
                           ),
                         );

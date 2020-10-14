@@ -48,10 +48,10 @@ class PopularMovies extends StatelessWidget {
                           context,
                           PageTransition(
                             type: PageTransitionType.fade,
-                            child: SeeAllMoviesPage(
-                              "Most Popular Movie",
-                              "Popularity",
-                              state.popularMovie,
+                            child: SeeMoreMoviesPage(
+                              title: "Most Popular Movie",
+                              sortedBy:"Popularity",
+                              movieList: state.popularMovie,
                             ),
                           ),
                         );

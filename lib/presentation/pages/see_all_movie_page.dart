@@ -4,19 +4,23 @@ import '../../data/models/movie_list.dart';
 import '../widgets/movie/movie_item_horizontal.dart';
 import './account_page.dart';
 
-class SeeAllMoviesPage extends StatefulWidget {
+class SeeMoreMoviesPage extends StatefulWidget {
   String title;
   String sortedBy;
 
   MovieList movieList;
 
-  SeeAllMoviesPage(this.title, this.sortedBy, this.movieList);
+  SeeMoreMoviesPage({
+    this.title,
+    this.sortedBy,
+    this.movieList,
+  });
 
   @override
-  _SeeAllMoviesPageState createState() => _SeeAllMoviesPageState();
+  _SeeMoreMoviesPageState createState() => _SeeMoreMoviesPageState();
 }
 
-class _SeeAllMoviesPageState extends State<SeeAllMoviesPage> {
+class _SeeMoreMoviesPageState extends State<SeeMoreMoviesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
