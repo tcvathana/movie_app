@@ -3,7 +3,7 @@ import 'package:movie_app/data/models/movie_list.dart';
 import 'package:movie_app/presentation/widgets/movie/movie_item_horizontal.dart';
 
 class MovieListViewWidget extends StatefulWidget {
-  List<ResultMovie> initList;
+  final List<ResultMovie> initList;
 
   MovieListViewWidget({Key key, this.initList}) : super(key: key);
 
