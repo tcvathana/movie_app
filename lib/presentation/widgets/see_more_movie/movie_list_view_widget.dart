@@ -3,9 +3,9 @@ import 'package:movie_app/data/models/movie_list.dart';
 import 'package:movie_app/presentation/widgets/movie/movie_item_horizontal.dart';
 
 class MovieListViewWidget extends StatefulWidget {
-  MovieList movieList;
+  List<ResultMovie> initList;
 
-  MovieListViewWidget({Key key, this.movieList}) : super(key: key);
+  MovieListViewWidget({Key key, this.initList}) : super(key: key);
 
   @override
   _MovieListViewWidgetState createState() => _MovieListViewWidgetState();
@@ -19,7 +19,7 @@ class _MovieListViewWidgetState extends State<MovieListViewWidget> {
     List<ResultMovie> _list = [];
     await Future.delayed(Duration(seconds: 1), () {
       for (int i = 0; i < 3; i++) {
-        _list.add(widget.movieList.results[0]);
+        _list.add(widget.initList[0]);
       }
     });
     return _list;
@@ -40,7 +40,7 @@ class _MovieListViewWidgetState extends State<MovieListViewWidget> {
   void initState() {
     super.initState();
     _scroller.addListener(_scrollLister);
-    _movieResults = widget.movieList.results;
+    _movieResults = widget.initList;
   }
 
   @override
@@ -49,7 +49,7 @@ class _MovieListViewWidgetState extends State<MovieListViewWidget> {
       child: ListView.separated(
         scrollDirection: Axis.vertical,
         controller: _scroller,
-        padding: EdgeInsets.only(bottom: 40),
+        padding: EdgeInsets.only(top: 10,bottom: 40),
         itemCount: _movieResults.length,
         separatorBuilder: (BuildContext context, int index) {
           return Divider(

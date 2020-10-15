@@ -50,8 +50,7 @@ class TopRatedMovies extends StatelessWidget {
                             type: PageTransitionType.fade,
                             child: SeeMoreMoviesPage(
                               title: "Top Rated Movie",
-                              sortedBy: 'Top Rate',
-                              movieList: state.topRatedMovie,
+                              initList: state.topRatedMovie.results,
                             ),
                           ),
                         );

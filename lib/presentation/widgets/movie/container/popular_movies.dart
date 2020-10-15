@@ -50,8 +50,7 @@ class PopularMovies extends StatelessWidget {
                             type: PageTransitionType.fade,
                             child: SeeMoreMoviesPage(
                               title: "Most Popular Movie",
-                              sortedBy:"Popularity",
-                              movieList: state.popularMovie,
+                              initList: state.popularMovie.results,
                             ),
                           ),
                         );

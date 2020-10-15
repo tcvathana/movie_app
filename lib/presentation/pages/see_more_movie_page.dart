@@ -2,19 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/presentation/widgets/see_more_movie/movie_list_view_widget.dart';
 import 'package:page_transition/page_transition.dart';
 import '../../data/models/movie_list.dart';
-import '../widgets/movie/movie_item_horizontal.dart';
 import './account_page.dart';
 
 class SeeMoreMoviesPage extends StatefulWidget {
-  String title;
-  String sortedBy;
-
-  MovieList movieList;
+  final String title;
+  final List<ResultMovie> initList;
 
   SeeMoreMoviesPage({
     this.title,
-    this.sortedBy,
-    this.movieList,
+    this.initList,
   });
 
   @override
@@ -27,7 +23,7 @@ class _SeeMoreMoviesPageState extends State<SeeMoreMoviesPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black87,
-        title: Text("Movie Trailer"),
+        title: Text(widget.title),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -57,43 +53,7 @@ class _SeeMoreMoviesPageState extends State<SeeMoreMoviesPage> {
           color: Colors.black87,
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(left: 10, top: 15),
-                child: Text(
-                  widget.title,
-                  style: TextStyle(color: Colors.white, fontSize: 23),
-                ),
-              ),
-              Divider(
-                color: Colors.white.withOpacity(0.8),
-              ),
-              Container(
-                padding: EdgeInsets.only(left: 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "20 Titles",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    Text(
-                      "Sorted by ${widget.sortedBy}",
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                  ],
-                ),
-              ),
-              Divider(
-                color: Colors.white.withOpacity(0.8),
-              ),
-              Expanded(
-                child: MovieListViewWidget(movieList: widget.movieList,),
-              )
-            ],
-          ),
+          child: MovieListViewWidget(initList: widget.initList,),
         ),
       ),
     );
