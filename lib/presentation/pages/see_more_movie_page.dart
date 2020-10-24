@@ -61,6 +61,7 @@ class _SeeMoreMoviesPageState extends State<SeeMoreMoviesPage> {
 
   Future<void> onRefresh() {
     // TODO: Implement onRefresh
+    print("Hello");
     return Future.value(0);
   }
 }
