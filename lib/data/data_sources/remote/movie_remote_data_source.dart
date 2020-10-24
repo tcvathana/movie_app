@@ -14,27 +14,29 @@ abstract class IMovieRemoteDataSource {
 
 class MovieRemoteDataSource implements IMovieRemoteDataSource {
   @override
-  Future<MovieList> fetchMostPopularMovieList() async {
-    return await _getMovieListFromUrl("/movie/popular");
+  Future<MovieList> fetchMostPopularMovieList({int page = 1}) async {
+    return await _getMovieListFromUrl("/movie/popular", page: page);
   }
 
   @override
-  Future<MovieList> fetchNowPlayingMovieList() async {
-    return await _getMovieListFromUrl("/movie/now_playing");
+  Future<MovieList> fetchNowPlayingMovieList({int page = 1}) async {
+    return await _getMovieListFromUrl("/movie/now_playing", page: page);
   }
 
   @override
-  Future<MovieList> fetchTopRatedMovieList() async {
-    return await _getMovieListFromUrl("/movie/top_rated");
+  Future<MovieList> fetchTopRatedMovieList({int page = 1}) async {
+    return await _getMovieListFromUrl("/movie/top_rated", page: page);
   }
 
   @override
-  Future<MovieList> fetchUpComingMovieList() async {
-    return await _getMovieListFromUrl("/movie/upcoming");
+  Future<MovieList> fetchUpComingMovieList({int page = 1}) async {
+    return await _getMovieListFromUrl("/movie/upcoming", page: page);
   }
 
-  Future<MovieList> _getMovieListFromUrl(String url) async {
-    http.Response response = await http.get("$BASE_URL$url?api_key=$API_KEY");
+  Future<MovieList> _getMovieListFromUrl(String url, {int page}) async {
+    http.Response response = await http.get(
+      "$BASE_URL$url?api_key=$API_KEY&page=$page",
+    );
     if (response.statusCode == 200) {
       return MovieList.fromJson(response.body);
     } else {

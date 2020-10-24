@@ -4,7 +4,7 @@ import 'package:meta/meta.dart';
 import 'package:movie_app/presentation/bloc/movie_list/movie_list_bloc.dart';
 import 'package:movie_app/presentation/widgets/movie/loading/movie_item_loading_widget.dart';
 import 'package:shimmer/shimmer.dart';
-import '../../../pages/see_all_movie_page.dart';
+import '../../../pages/see_more_movie_page.dart';
 import 'package:page_transition/page_transition.dart';
 import '../../../../data/models/movie_list.dart';
 import '../movie_item_popular.dart';
@@ -48,10 +48,9 @@ class PopularMovies extends StatelessWidget {
                           context,
                           PageTransition(
                             type: PageTransitionType.fade,
-                            child: SeeAllMoviesPage(
-                              "Most Popular Movie",
-                              "Popularity",
-                              state.popularMovie,
+                            child: SeeMoreMoviesPage(
+                              title: "Most Popular Movie",
+                              initList: state.popularMovie.results,
                             ),
                           ),
                         );
